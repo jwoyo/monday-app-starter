@@ -1,0 +1,21 @@
+diff --git a/package.json b/package.json
+index 17daf57d97d4ad62d7f4b526b4689d0c38264706..735e2a5989f5ed268dfa52de84f736ed0c8ee6c3 100644
+--- a/package.json
++++ b/package.json
+@@ -8,10 +8,14 @@
+     "./package.json": "./package.json",
+     ".": {
+       "import": "./dist/esm/src/index.js",
+-      "default": "./dist/main.js"
++      "default": "./dist/main.js",
++      "types": "./dist/types.d.ts"
+     },
+     "./dist/": "./dist/",
+-    "./icons": "./dist/esm/src/components/Icon/Icons/icons.js",
++    "./icons": {
++      "default": "./dist/esm/src/components/Icon/Icons/icons.js",
++      "types": "./dist/types/components/Icon/Icons/index.d.ts"
++    },
+     "./interactionsTests": "./dist/esm/src/tests/interactionsTests.js",
+     "./testIds": "./dist/esm/src/tests/testIds.js",
+     "./storybookComponents": "./dist/storybook/index.js",

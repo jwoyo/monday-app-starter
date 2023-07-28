@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 patchedDependencies:
   monday-ui-react-core@2.17.1:
-    hash: bjjccseqvva3qevsy2d3dhu5ra
+    hash: l5imnbphv7wdnvhymdfhzo35fq
     path: patches/monday-ui-react-core@2.17.1.patch
 
 importers:
@@ -31,7 +31,6 @@ importers:
       '@typescript-eslint/parser': ^6.0.0
       '@vanilla-extract/css': ^1.12.0
       '@vanilla-extract/vite-plugin': ^3.8.2
-      '@vercel/node': ^2.15.6
       '@vitejs/plugin-react': ^4.0.3
       '@vitejs/plugin-react-swc': ^3.3.2
       eslint: ^8.45.0
@@ -47,10 +46,9 @@ importers:
     dependencies:
       '@tanstack/react-query': 4.32.0_wcqkhtmu7mswc6yz4uyexck3ty
       '@vanilla-extract/css': 1.12.0
-      '@vercel/node': 2.15.6
       '@vitejs/plugin-react': 4.0.3_vite@4.4.7
       monday-sdk-js: 0.4.8
-      monday-ui-react-core: 2.17.1_bjjccseqvva3qevsy2d3dhu5ra_qdptt4hppc5xf7atj22fz4gzly
+      monday-ui-react-core: 2.17.1_l5imnbphv7wdnvhymdfhzo35fq_qdptt4hppc5xf7atj22fz4gzly
       react: 16.14.0
       react-dom: 16.14.0_react@16.14.0
       react-router-dom: 6.14.2_wcqkhtmu7mswc6yz4uyexck3ty
@@ -60,13 +58,22 @@ importers:
       '@types/react-dom': 16.9.19
       '@typescript-eslint/eslint-plugin': 6.2.0_w3tbsvtiyibnil5vzurrrrj72m
       '@typescript-eslint/parser': 6.2.0_ko3fmmbeyij36muomfgt2u76xu
-      '@vanilla-extract/vite-plugin': 3.8.2_ck52cgrgp72u4zopg4do5yxjmq
+      '@vanilla-extract/vite-plugin': 3.8.2_vite@4.4.7
       '@vitejs/plugin-react-swc': 3.3.2_vite@4.4.7
       eslint: 8.45.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.45.0
       eslint-plugin-react-refresh: 0.4.3_eslint@8.45.0
       typescript: 5.1.6
-      vite: 4.4.7_@types+node@14.18.33
+      vite: 4.4.7
+
+  packages/api:
+    specifiers:
+      '@vercel/node': ^2.15.6
+      typescript: '5'
+    dependencies:
+      '@vercel/node': 2.15.6
+    devDependencies:
+      typescript: 5.1.6
 
   packages/eslint-config-custom:
     specifiers:
@@ -79,9 +86,6 @@ importers:
       eslint-config-prettier: 8.8.0_eslint@8.45.0
       eslint-config-turbo: 1.10.12_eslint@8.45.0
       eslint-plugin-react: 7.28.0_eslint@8.45.0
-
-  packages/tsconfig:
-    specifiers: {}
 
 packages:
 
@@ -1392,6 +1396,7 @@ packages:
 
   /@types/node/14.18.33:
     resolution: {integrity: sha512-qelS/Ra6sacc4loe/3MSjXNL1dNQ/GjxNHVzuChwMfmk7HuycRLVQN2qNY3XahK+fZc5E2szqQSKUyAF0E+2bg==}
+    dev: false
 
   /@types/node/20.4.5:
     resolution: {integrity: sha512-rt40Nk13II9JwQBdeYqmbn2Q6IVTA5uPhvSO+JVqdXw/6/4glI6oR9ezty/A9Hg5u7JH4OmYmuQ+XvjKm0Datg==}
@@ -1676,7 +1681,7 @@ packages:
       media-query-parser: 2.0.2
       outdent: 0.8.0
 
-  /@vanilla-extract/integration/6.2.1_@types+node@14.18.33:
+  /@vanilla-extract/integration/6.2.1:
     resolution: {integrity: sha512-+xYJz07G7TFAMZGrOqArOsURG+xcYvqctujEkANjw2McCBvGEK505RxQqOuNiA9Mi9hgGdNp2JedSa94f3eoLg==}
     dependencies:
       '@babel/core': 7.22.9
@@ -1690,8 +1695,8 @@ packages:
       lodash: 4.17.21
       mlly: 1.4.0
       outdent: 0.8.0
-      vite: 4.4.7_@types+node@14.18.33
-      vite-node: 0.28.5_@types+node@14.18.33
+      vite: 4.4.7
+      vite-node: 0.28.5
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -1706,16 +1711,16 @@ packages:
   /@vanilla-extract/private/1.0.3:
     resolution: {integrity: sha512-17kVyLq3ePTKOkveHxXuIJZtGYs+cSoev7BlP+Lf4916qfDhk/HBjvlYDe8egrea7LNPHKwSZJK/bzZC+Q6AwQ==}
 
-  /@vanilla-extract/vite-plugin/3.8.2_ck52cgrgp72u4zopg4do5yxjmq:
+  /@vanilla-extract/vite-plugin/3.8.2_vite@4.4.7:
     resolution: {integrity: sha512-i0vpuBUoh10Obl0hJr0dWQa6M3Udu/irm4tnsg1lUze8DXTbv3ctHmVu/wrRZHKw1EzzW/v+nLoJJRvisApspQ==}
     peerDependencies:
       vite: ^2.2.3 || ^3.0.0 || ^4.0.3
     dependencies:
-      '@vanilla-extract/integration': 6.2.1_@types+node@14.18.33
+      '@vanilla-extract/integration': 6.2.1
       outdent: 0.8.0
       postcss: 8.4.27
       postcss-load-config: 3.1.4_postcss@8.4.27
-      vite: 4.4.7_@types+node@14.18.33
+      vite: 4.4.7
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -1776,7 +1781,7 @@ packages:
       vite: ^4
     dependencies:
       '@swc/core': 1.3.71
-      vite: 4.4.7_@types+node@14.18.33
+      vite: 4.4.7
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -1791,7 +1796,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5_@babel+core@7.22.9
       '@babel/plugin-transform-react-jsx-source': 7.22.5_@babel+core@7.22.9
       react-refresh: 0.14.0
-      vite: 4.4.7_@types+node@14.18.33
+      vite: 4.4.7
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4763,7 +4768,7 @@ packages:
       - encoding
     dev: false
 
-  /monday-ui-react-core/2.17.1_bjjccseqvva3qevsy2d3dhu5ra_qdptt4hppc5xf7atj22fz4gzly:
+  /monday-ui-react-core/2.17.1_l5imnbphv7wdnvhymdfhzo35fq_qdptt4hppc5xf7atj22fz4gzly:
     resolution: {integrity: sha512-VIffrszjcd0AHx4hw8j8mJzs4fjA2u9r47KQUIC/JuhCQ8rCT45L6jnUX7FPiNmpIGmEBB/ZFNN2k3wpOqHkYg==}
     peerDependencies:
       moment: ^2.29.1
@@ -6812,7 +6817,7 @@ packages:
       react-dom: 16.14.0_react@16.14.0
     dev: false
 
-  /vite-node/0.28.5_@types+node@14.18.33:
+  /vite-node/0.28.5:
     resolution: {integrity: sha512-LmXb9saMGlrMZbXTvOveJKwMTBTNUH66c8rJnQ0ZPNX+myPEol64+szRzXtV5ORb0Hb/91yq+/D3oERoyAt6LA==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
@@ -6824,7 +6829,7 @@ packages:
       picocolors: 1.0.0
       source-map: 0.6.1
       source-map-support: 0.5.21
-      vite: 4.4.7_@types+node@14.18.33
+      vite: 4.4.7
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -6836,7 +6841,7 @@ packages:
       - terser
     dev: true
 
-  /vite/4.4.7_@types+node@14.18.33:
+  /vite/4.4.7:
     resolution: {integrity: sha512-6pYf9QJ1mHylfVh39HpuSfMPojPSKVxZvnclX1K1FyZ1PXDOcLBibdq5t1qxJSnL63ca8Wf4zts6mD8u8oc9Fw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -6864,7 +6869,6 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 14.18.33
       esbuild: 0.18.17
       postcss: 8.4.27
       rollup: 3.26.3

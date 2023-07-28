@@ -1,0 +1,7 @@
+dist
+
+# TypeScript v1 declaration files
+typings/
+
+# Node.js dependency directory
+node_modules/

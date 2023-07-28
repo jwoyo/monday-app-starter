@@ -18,7 +18,8 @@
     "monday-ui-react-core": "^2.17.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-router-dom": "^6.14.2"
+    "react-router-dom": "^6.14.2",
+    "bridge": "*"
   },
   "devDependencies": {
     "@mondaydotcomorg/tunnel": "^0.4.2",

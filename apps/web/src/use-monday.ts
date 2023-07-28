@@ -1,16 +1,30 @@
 import {useQuery} from "@tanstack/react-query";
 import monday from "monday-sdk-js";
-import {ClientData} from "monday-sdk-js/types/client-data.interface.ts";
+import {
+    MondayClientContext,
+    MondayClientSessionToken,
+    MondayClientSettings
+} from "bridge/monday-client-context.types.ts";
 
 export function useMonday() {
-    const [context, settings, itemIds, sessionToken] = ['context', 'settings', 'itemIds', 'sessionToken'].map(key => useQuery({
-        queryKey: ["monday", key],
-        queryFn: () => monday().get(key as Parameters<ClientData["get"]>[0])
-    }));
+    const context = useQuery({
+        queryKey: ["monday", "context"],
+        queryFn: () => monday().get("context") as Promise<MondayClientContext>
+    })
+    const settings = useQuery({
+        queryKey: ["monday", "settings"],
+        queryFn: () => monday().get("settings") as Promise<MondayClientSettings>
+    })
+    const sessionToken = useQuery({
+        queryKey: ["monday", "sessionToken"],
+        queryFn: () => monday().get("sessionToken") as Promise<MondayClientSessionToken>
+    })
     return {
-        context,
-        settings,
-        itemIds,
-        sessionToken
+        contextQuery: context,
+        settingsQuery: settings,
+        sessionTokenQuery: sessionToken,
+        context: context.data?.data,
+        settings: settings.data?.data,
+        sessionToken: sessionToken.data?.data,
     }
 }

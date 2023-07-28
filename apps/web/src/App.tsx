@@ -8,7 +8,6 @@ import {AttentionBox} from "monday-ui-react-core";
 import {errorMessageStyles} from "./App.css.ts";
 
 const router = createBrowserRouter([
-
     {
         path: "/module",
         children: [
@@ -48,12 +47,12 @@ function App() {
 }
 
 function MondayBoundary({children}: { children: ReactElement }) {
-    const {context} = useMonday();
-    if (context.isLoading) {
+    const {contextQuery} = useMonday();
+    if (contextQuery.isLoading) {
         // Monday.com postMessage calls seem to load very fast, so we don't need to show a loading indicator.
         return <></>
     }
-    if (context.isError || (context.data && !context.data.data?.app?.id)) {
+    if (contextQuery.isError || (contextQuery.data && !contextQuery.data.data?.app?.id)) {
         return <div className={errorMessageStyles}>
             <AttentionBox title="No monday.com context found"
                           text="If you see this message you likely opened this application outside of monday.com"

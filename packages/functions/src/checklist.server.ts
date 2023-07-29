@@ -1,17 +1,17 @@
-import type * as trpcExpress from "@trpc/server/adapters/express";
+import * as trpcExpress from "@trpc/server/adapters/express";
 import type {inferAsyncReturnType} from "@trpc/server";
 import {initTRPC} from "@trpc/server";
+import {router} from "./checklist.router";
 
-export const createContext = ({req, res}: trpcExpress.CreateExpressContextOptions): { name: string } => ({
-  name: "test",
-}); // no context
 type Context = inferAsyncReturnType<typeof createContext>;
-
-const t = initTRPC.context<Context>().create();
-export const router = t.router({
-  asyncTest: t.procedure.query(async () => {
-    return "Success!";
-  }),
-});
-
+export const createContext = ({req}: trpcExpress.CreateExpressContextOptions): { authorization?: string } => {
+  const authorization = req.headers.authorization;
+  return ({
+    authorization,
+  });
+};
+export const checklistTRPC = initTRPC.context<Context>().create();
+export const middleware = checklistTRPC.middleware;
 export type AppRouter = typeof router;
+export type Middleware = typeof middleware;
+

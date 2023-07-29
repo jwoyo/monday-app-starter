@@ -10,12 +10,14 @@ importers:
   .:
     specifiers:
       '@turbo/gen': ^1.9.7
+      dotenv: ^16.3.1
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       prettier: ^2.5.1
       turbo: ^1.9.7
     devDependencies:
       '@turbo/gen': 1.10.12_bir6x3g64ycygfv3l4v3letmxi
+      dotenv: 16.3.1
       eslint: 7.32.0
       eslint-config-custom: link:packages/eslint-config-custom
       prettier: 2.8.8
@@ -33,7 +35,9 @@ importers:
       '@vanilla-extract/vite-plugin': ^3.8.2
       '@vitejs/plugin-react': ^4.0.3
       '@vitejs/plugin-react-swc': ^3.3.2
+      axios: ^1.4.0
       bridge: '*'
+      dotenv: ^16.3.1
       eslint: ^8.45.0
       eslint-plugin-react-hooks: ^4.6.0
       eslint-plugin-react-refresh: ^0.4.3
@@ -48,7 +52,9 @@ importers:
       '@tanstack/react-query': 4.32.0_wcqkhtmu7mswc6yz4uyexck3ty
       '@vanilla-extract/css': 1.12.0
       '@vitejs/plugin-react': 4.0.3_vite@4.4.7
+      axios: 1.4.0
       bridge: 2.0.70
+      dotenv: 16.3.1
       monday-sdk-js: 0.4.8
       monday-ui-react-core: 2.17.1_l5imnbphv7wdnvhymdfhzo35fq_qdptt4hppc5xf7atj22fz4gzly
       react: 16.14.0
@@ -1455,7 +1461,7 @@ packages:
       '@mondaydotcomorg/tunnel-common': 0.0.2_tslib@2.6.1
       axios: 0.27.2_debug@4.3.4
       debug: 4.3.4
-      dotenv: 16.0.3
+      dotenv: 16.3.1
       openurl: 1.1.1
       pino: 8.14.1
       pino-pretty: 8.1.0
@@ -2728,7 +2734,6 @@ packages:
 
   /asynckit/0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
-    dev: true
 
   /atomic-sleep/1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
@@ -2751,11 +2756,21 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2_debug@4.3.4
+      follow-redirects: 1.15.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
     dev: true
+
+  /axios/1.4.0:
+    resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
+    dependencies:
+      follow-redirects: 1.15.2
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /axobject-query/3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
@@ -3196,7 +3211,6 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
-    dev: true
 
   /commander/10.0.1:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
@@ -3463,7 +3477,6 @@ packages:
   /delayed-stream/1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
-    dev: true
 
   /depd/2.0.0:
     resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
@@ -3537,6 +3550,11 @@ packages:
 
   /dotenv/16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /dotenv/16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
 
   /duplexify/4.1.2:
@@ -4615,7 +4633,7 @@ packages:
     resolution: {integrity: sha512-tc/236hUU3xemsRLu1RKhRQ5UWHjRM9iJTli1zdac43h7b1biRSgG0mILM0qrcsKaGCHcOPJ6NKbk12ouKHLpw==}
     dev: false
 
-  /follow-redirects/1.15.2_debug@4.3.4:
+  /follow-redirects/1.15.2:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -4623,9 +4641,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dependencies:
-      debug: 4.3.4
-    dev: true
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -4639,7 +4654,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-    dev: true
 
   /forwarded/0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
@@ -7245,7 +7259,6 @@ packages:
 
   /proxy-from-env/1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
-    dev: true
 
   /pseudomap/1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}

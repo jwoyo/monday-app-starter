@@ -4,7 +4,7 @@ import {defineSecret} from "firebase-functions/params";
 
 const MONDAY_APP_SECRET = defineSecret("MONDAY_APP_SECRET");
 
-export const helloWorld = onRequest({
+export const checklist = onRequest({
   secrets: [MONDAY_APP_SECRET]},
 async (request, response) => {
   const session = await authenticateMondaySession(request);

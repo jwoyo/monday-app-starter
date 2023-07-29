@@ -26,6 +26,7 @@ export default defineConfig({
     resolve: {
         alias: {
             bridge: "bridge/src",
+            functions: "functions/src",
         }
     },
     define: {

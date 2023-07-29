@@ -16,7 +16,7 @@ importers:
       prettier: ^2.5.1
       turbo: ^1.9.7
     devDependencies:
-      '@turbo/gen': 1.10.12_bir6x3g64ycygfv3l4v3letmxi
+      '@turbo/gen': 1.10.12_gamchj74f4cosewgiaiggc3fvy
       dotenv: 16.3.1
       eslint: 7.32.0
       eslint-config-custom: link:packages/eslint-config-custom
@@ -27,6 +27,7 @@ importers:
     specifiers:
       '@mondaydotcomorg/tunnel': ^0.4.2
       '@tanstack/react-query': ^4.32.0
+      '@trpc/client': ^10.36.0
       '@types/react': ^16.14.43
       '@types/react-dom': ^16.9.19
       '@typescript-eslint/eslint-plugin': ^6.0.0
@@ -50,6 +51,7 @@ importers:
       vite: ^4.4.5
     dependencies:
       '@tanstack/react-query': 4.32.0_wcqkhtmu7mswc6yz4uyexck3ty
+      '@trpc/client': 10.36.0_@trpc+server@10.36.0
       '@vanilla-extract/css': 1.12.0
       '@vitejs/plugin-react': 4.0.3_vite@4.4.7
       axios: 1.4.0
@@ -91,24 +93,36 @@ importers:
 
   packages/functions:
     specifiers:
+      '@trpc/server': ^10.36.0
+      '@types/cors': ^2.8.13
+      '@types/express': ^4.17.17
       '@types/jsonwebtoken': ^9.0.2
       '@typescript-eslint/eslint-plugin': ^5.12.0
       '@typescript-eslint/parser': ^5.12.0
       bridge: '*'
+      cors: ^2.8.5
       eslint: ^8.9.0
       eslint-config-google: ^0.14.0
       eslint-plugin-import: ^2.25.4
+      express: ^4.18.2
       firebase-admin: ^11.8.0
       firebase-functions: ^4.3.1
       firebase-functions-test: ^3.1.0
       jsonwebtoken: ^9.0.1
       typescript: ^4.9.0
+      zod: ^3.21.4
     dependencies:
+      '@trpc/server': 10.36.0
       bridge: 2.0.70
+      cors: 2.8.5
+      express: 4.18.2
       firebase-admin: 11.10.1
       firebase-functions: 4.4.1_firebase-admin@11.10.1
       jsonwebtoken: 9.0.1
+      zod: 3.21.4
     devDependencies:
+      '@types/cors': 2.8.13
+      '@types/express': 4.17.17
       '@types/jsonwebtoken': 9.0.2
       '@typescript-eslint/eslint-plugin': 5.62.0_qe654ii6t7wri3iauos2e6o25y
       '@typescript-eslint/parser': 5.62.0_mhvizudgavq6jzvqzwcqcv4nnm
@@ -1785,6 +1799,18 @@ packages:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
     dev: true
 
+  /@trpc/client/10.36.0_@trpc+server@10.36.0:
+    resolution: {integrity: sha512-Qj1T4vwhEEeLgXCUHFT7S5fqytkNYAudHwZtooEZ+NN+yN/a5oDZy1wd5D/gkY9y+nO8JCSgc7P5KhLjwzdeVw==}
+    peerDependencies:
+      '@trpc/server': 10.36.0
+    dependencies:
+      '@trpc/server': 10.36.0
+    dev: false
+
+  /@trpc/server/10.36.0:
+    resolution: {integrity: sha512-9kwFeGBuihUPZT2wRv2cmTpSoI+sSGj0/lBwvtgIq1P0+ONpj5NJOcWlvYbpnr5nRxc/+44lM/mg4TnSuTd5Kg==}
+    dev: false
+
   /@tsconfig/node10/1.0.9:
     resolution: {integrity: sha512-jNsYVVxU8v5g43Erja32laIDHXeoNvFEpX33OK4d6hljo3jDhCBDhx5dhCCTMWUojscpAagGiRkBKxpdl9fxqA==}
     dev: true
@@ -1801,7 +1827,7 @@ packages:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
     dev: true
 
-  /@turbo/gen/1.10.12_bir6x3g64ycygfv3l4v3letmxi:
+  /@turbo/gen/1.10.12_gamchj74f4cosewgiaiggc3fvy:
     resolution: {integrity: sha512-noop5+3MBFsgPQ7O2vQpS6YYiah+ZrOioa4cDDpZceUVsKVXvUHFmC2nEVyKSJZhO/8SLvbDE/esB/MGw5b2tw==}
     hasBin: true
     dependencies:
@@ -1813,7 +1839,7 @@ packages:
       node-plop: 0.26.3
       proxy-agent: 6.3.0
       semver: 7.5.4
-      ts-node: 10.9.1_bir6x3g64ycygfv3l4v3letmxi
+      ts-node: 10.9.1_gamchj74f4cosewgiaiggc3fvy
       update-check: 1.5.4
       validate-npm-package-name: 5.0.0
     transitivePeerDependencies:
@@ -8458,7 +8484,7 @@ packages:
     resolution: {integrity: sha512-3phiGcxPSSR47RBubQxPoZ+pqXsEsozLo4G4AlSrsMKTFg9TA3l+3he5BqpUi9wiuDbaHWXH/amlzQ49uEdXtg==}
     dev: true
 
-  /ts-node/10.9.1_bir6x3g64ycygfv3l4v3letmxi:
+  /ts-node/10.9.1_gamchj74f4cosewgiaiggc3fvy:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -8484,7 +8510,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 5.1.6
+      typescript: 4.9.5
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -9051,3 +9077,7 @@ packages:
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  /zod/3.21.4:
+    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false

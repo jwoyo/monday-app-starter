@@ -6,6 +6,7 @@ import {ReactElement} from "react";
 import {Info} from "monday-ui-react-core/icons";
 import {AttentionBox} from "monday-ui-react-core";
 import {errorMessageStyles} from "./App.css.ts";
+import {trpc} from "./trpc.ts";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient()
 
 function App() {
+    console.log(trpc.asyncTest.query())
     return <QueryClientProvider client={queryClient}>
         <RouterProvider router={router}/>
     </QueryClientProvider>

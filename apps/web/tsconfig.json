@@ -21,7 +21,8 @@
     "noFallthroughCasesInSwitch": true,
 
     "paths": {
-      "bridge/*": ["../../packages/bridge/src/*"]
+      "bridge/*": ["../../packages/bridge/src/*"],
+      "functions/*": ["../../packages/functions/src/*"]
     }
   },
   "include": ["src"],

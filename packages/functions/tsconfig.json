@@ -10,7 +10,8 @@
     "esModuleInterop": true,
     "paths": {
       "bridge/*": ["../bridge/src/*"],
-    }
+    },
+    "noEmit": true
   },
   "compileOnSave": true,
   "include": [

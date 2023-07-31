@@ -35,5 +35,7 @@ export default defineConfig({
                 environment.parsed.FUNCTION_URL_CHECKLIST_LOCAL :
                 environment.parsed.FUNCTION_URL_CHECKLIST
         ),
+        "import.meta.env.__MONDAY_APP_CLIENT_ID__": JSON.stringify(environment.parsed.MONDAY_APP_CLIENT_ID),
+        "import.meta.env.__MONDAY_APP_HOSTING_URL__": JSON.stringify(isLocalDevServer ? "http://localhost:5173" : environment.parsed.MONDAY_APP_HOSTING_URL),
     },
 });

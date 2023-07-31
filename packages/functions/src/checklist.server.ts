@@ -16,7 +16,7 @@ export const publicProcedure = checklistTRPC.procedure;
 
 const {mondayIsUserMiddleware, mondayIsAdminMiddleware} =
     buildRequireMondayAuthenticationMiddlewares(middleware);
-export const mondayUserProcedure = publicProcedure.use(mondayIsUserMiddleware);
-export const mondayAdminProcedure = publicProcedure.use(mondayIsAdminMiddleware);
+export const mondaySessionUserProcedure = publicProcedure.use(mondayIsUserMiddleware);
+export const mondaySessionAdminProcedure = publicProcedure.use(mondayIsAdminMiddleware);
 
 export type Middleware = typeof middleware;

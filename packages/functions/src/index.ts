@@ -1,7 +1,7 @@
 import {onRequest} from "firebase-functions/v2/https";
 import express from "express";
 import cors from "cors";
-import {MONDAY_APP_SECRET} from "./secrets";
+import {MONDAY_APP_SECRET} from "./variables";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import {createContext} from "./checklist.server";
 import {router} from "./checklist.router";

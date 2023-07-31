@@ -1,8 +1,15 @@
 import {TRPCError} from "@trpc/server";
 import {verify} from "jsonwebtoken";
 import type {Middleware} from "./checklist.server";
-import {MONDAY_APP_SECRET} from "./secrets";
+import {MONDAY_APP_SECRET} from "./variables";
 import {MondayJsonWebTokenDecoded} from "bridge/json-web-token.types";
+
+/**
+ * Build middlewares that require Monday authentication. We pass in the middleware object to reduce circular dependencies.
+ *
+ * @param middleware {middleware} The middleware object.
+ * @return {{mondayIsUserMiddleware: Middleware, mondayIsAdminMiddleware: Middleware}} The middlewares.
+ */
 export const buildRequireMondayAuthenticationMiddlewares = (middleware: Middleware) => {
   const baseMondayMiddleware = middleware((opts) => {
     const authorization = opts.ctx.authorization;
@@ -18,7 +25,7 @@ export const buildRequireMondayAuthenticationMiddlewares = (middleware: Middlewa
     return opts.next({
       ctx: {
         mondayContext: mondayJwtVerified,
-        authorization,
+        mondayToken: jwt,
       },
     });
   });

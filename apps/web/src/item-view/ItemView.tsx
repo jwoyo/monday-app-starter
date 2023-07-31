@@ -7,11 +7,7 @@ type Props = {};
 export function ItemView({}: Props) {
     const {context, sessionToken, settings} = useMonday();
     useEffect(() => {
-        fetch("http://127.0.0.1:5001/monday-app-checklist-prod/us-central1/helloWorld", {
-            headers: {
-                "Authorization": "JWT " + sessionToken
-            }
-        })
+
     })
     return (
         <div className={className}>

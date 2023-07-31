@@ -10,14 +10,14 @@ importers:
   .:
     specifiers:
       '@turbo/gen': ^1.9.7
-      dotenv: ^16.3.1
+      dotenv-cli: ^7.2.1
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       prettier: ^2.5.1
       turbo: ^1.9.7
     devDependencies:
-      '@turbo/gen': 1.10.12_gamchj74f4cosewgiaiggc3fvy
-      dotenv: 16.3.1
+      '@turbo/gen': 1.10.12_bir6x3g64ycygfv3l4v3letmxi
+      dotenv-cli: 7.2.1
       eslint: 7.32.0
       eslint-config-custom: link:packages/eslint-config-custom
       prettier: 2.8.8
@@ -28,6 +28,7 @@ importers:
       '@mondaydotcomorg/tunnel': ^0.4.2
       '@tanstack/react-query': ^4.32.0
       '@trpc/client': ^10.36.0
+      '@trpc/react-query': ^10.36.0
       '@types/react': ^16.14.43
       '@types/react-dom': ^16.9.19
       '@typescript-eslint/eslint-plugin': ^6.0.0
@@ -52,6 +53,7 @@ importers:
     dependencies:
       '@tanstack/react-query': 4.32.0_wcqkhtmu7mswc6yz4uyexck3ty
       '@trpc/client': 10.36.0_@trpc+server@10.36.0
+      '@trpc/react-query': 10.36.0_od2aehox2xhrxwlntg2m2jn4eq
       '@vanilla-extract/css': 1.12.0
       '@vitejs/plugin-react': 4.0.3_vite@4.4.7
       axios: 1.4.0
@@ -111,6 +113,7 @@ importers:
       firebase-functions: ^4.3.1
       firebase-functions-test: ^3.1.0
       jsonwebtoken: ^9.0.1
+      monday-sdk-js: ^0.4.8
       nodemon: ^3.0.1
       typescript: ^4.9.0
       zod: ^3.21.4
@@ -122,6 +125,7 @@ importers:
       firebase-admin: 11.10.1
       firebase-functions: 4.4.1_firebase-admin@11.10.1
       jsonwebtoken: 9.0.1
+      monday-sdk-js: 0.4.8
       zod: 3.21.4
     devDependencies:
       '@types/cors': 2.8.13
@@ -1813,6 +1817,22 @@ packages:
       '@trpc/server': 10.36.0
     dev: false
 
+  /@trpc/react-query/10.36.0_od2aehox2xhrxwlntg2m2jn4eq:
+    resolution: {integrity: sha512-ueIdfP/Xl4DIeBLMh6hEb0QdvcUjDZ+V+4lzIuztmkpRIvL4ZpwyBS7TGbKs+1EUwWu42AJB0t8n/LrtO6MxgQ==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.18.0
+      '@trpc/client': 10.36.0
+      '@trpc/server': 10.36.0
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.32.0_wcqkhtmu7mswc6yz4uyexck3ty
+      '@trpc/client': 10.36.0_@trpc+server@10.36.0
+      '@trpc/server': 10.36.0
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+    dev: false
+
   /@trpc/server/10.36.0:
     resolution: {integrity: sha512-9kwFeGBuihUPZT2wRv2cmTpSoI+sSGj0/lBwvtgIq1P0+ONpj5NJOcWlvYbpnr5nRxc/+44lM/mg4TnSuTd5Kg==}
     dev: false
@@ -1833,7 +1853,7 @@ packages:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
     dev: true
 
-  /@turbo/gen/1.10.12_gamchj74f4cosewgiaiggc3fvy:
+  /@turbo/gen/1.10.12_bir6x3g64ycygfv3l4v3letmxi:
     resolution: {integrity: sha512-noop5+3MBFsgPQ7O2vQpS6YYiah+ZrOioa4cDDpZceUVsKVXvUHFmC2nEVyKSJZhO/8SLvbDE/esB/MGw5b2tw==}
     hasBin: true
     dependencies:
@@ -1845,7 +1865,7 @@ packages:
       node-plop: 0.26.3
       proxy-agent: 6.3.0
       semver: 7.5.4
-      ts-node: 10.9.1_gamchj74f4cosewgiaiggc3fvy
+      ts-node: 10.9.1_bir6x3g64ycygfv3l4v3letmxi
       update-check: 1.5.4
       validate-npm-package-name: 5.0.0
     transitivePeerDependencies:
@@ -3614,6 +3634,21 @@ packages:
     resolution: {integrity: sha512-HnM6ZlFqcajLsyudHq7LeeLDr2rFAVYtDv/hV5qchQEidSck8j9OPUsXY9KwJv/lHMtYlX4DjRQqwFYa+0r8Ug==}
     dependencies:
       no-case: 2.3.2
+    dev: true
+
+  /dotenv-cli/7.2.1:
+    resolution: {integrity: sha512-ODHbGTskqRtXAzZapDPvgNuDVQApu4oKX8lZW7Y0+9hKA6le1ZJlyRS687oU9FXjOVEDU/VFV6zI125HzhM1UQ==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.3.1
+      dotenv-expand: 10.0.0
+      minimist: 1.2.8
+    dev: true
+
+  /dotenv-expand/10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
     dev: true
 
   /dotenv/16.0.3:
@@ -8597,7 +8632,7 @@ packages:
     resolution: {integrity: sha512-3phiGcxPSSR47RBubQxPoZ+pqXsEsozLo4G4AlSrsMKTFg9TA3l+3he5BqpUi9wiuDbaHWXH/amlzQ49uEdXtg==}
     dev: true
 
-  /ts-node/10.9.1_gamchj74f4cosewgiaiggc3fvy:
+  /ts-node/10.9.1_bir6x3g64ycygfv3l4v3letmxi:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -8623,7 +8658,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.9.5
+      typescript: 5.1.6
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true

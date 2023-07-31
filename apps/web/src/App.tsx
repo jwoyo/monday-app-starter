@@ -1,11 +1,14 @@
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router-dom";
 import {ItemView} from "./item-view/ItemView.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {useMonday} from "./use-monday.ts";
-import {ReactElement} from "react";
+import {trpc, useTrpcClient} from "./trpc.ts";
+import React from "react";
 import {Info} from "monday-ui-react-core/icons";
 import {AttentionBox} from "monday-ui-react-core";
 import {errorMessageStyles} from "./App.css.ts";
+import {CallbackDestination} from "./oauth/CallbackDestination";
+import {MondayOAuthBoundary} from "./oauth/MondayOAuthBoundary";
+import {MondayBoundary} from "./MondayBoundary";
 
 const router = createBrowserRouter([
     {
@@ -17,8 +20,20 @@ const router = createBrowserRouter([
             },
         ],
         element: <MondayBoundary>
-            <Outlet/>
+            <MondayOAuthBoundary>
+                <Outlet/>
+            </MondayOAuthBoundary>
         </MondayBoundary>,
+    },
+    {
+        path: "/oauth",
+        children: [
+            {
+                path: "callback",
+                element: <CallbackDestination/>,
+            },
+        ],
+        element: <Outlet/>,
     },
     {
         path: "/",
@@ -40,26 +55,23 @@ const router = createBrowserRouter([
 
 const queryClient = new QueryClient()
 
+/**
+ * initializes react-query
+ */
 function App() {
     return <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router}/>
+        <TrpcAwareApp/>
     </QueryClientProvider>
 }
 
-function MondayBoundary({children}: { children: ReactElement }) {
-    const {contextQuery} = useMonday();
-    if (contextQuery.isLoading) {
-        // Monday.com postMessage calls seem to load very fast, so we don't need to show a loading indicator.
-        return <></>
-    }
-    if (contextQuery.isError || (contextQuery.data && !contextQuery.data.data?.app?.id)) {
-        return <div className={errorMessageStyles}>
-            <AttentionBox title="No monday.com context found"
-                          text="If you see this message you likely opened this application outside of monday.com"
-                          icon={Info}/>
-        </div>
-    }
-    return children;
+/**
+ * injects trpc client into the app
+ */
+function TrpcAwareApp() {
+    const trpcClient = useTrpcClient();
+    return <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <RouterProvider router={router}/>
+    </trpc.Provider>
 }
 
 export default App

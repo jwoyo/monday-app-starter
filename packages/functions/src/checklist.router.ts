@@ -1,18 +1,11 @@
-import {checklistTRPC, createContext, middleware} from "./checklist.server";
-import * as trpcExpress from "@trpc/server/adapters/express";
-import {buildRequireMondayAuthenticationMiddleware} from "./monday.middleware";
+import {checklistTRPC, mondayUserProcedure} from "./checklist.server";
 
-const requireMonday = buildRequireMondayAuthenticationMiddleware(middleware);
 export const router = checklistTRPC.router({
-  asyncTest: checklistTRPC.procedure
-    .use(requireMonday)
+  getChecklist: mondayUserProcedure
     .query(async (opts) => {
+      console.log(opts);
       return "Success!";
     }),
 });
 
-export const checklistExpressMiddleware = trpcExpress.createExpressMiddleware({
-  router,
-  createContext,
-});
-
+export type AppRouter = typeof router;

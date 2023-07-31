@@ -1,5 +1,5 @@
 import {createTRPCProxyClient, httpBatchLink} from "@trpc/client";
-import {AppRouter} from "functions/checklist.server.ts";
+import {AppRouter} from "functions/checklist.router.ts";
 
 export const checklistFunctionUrl = import.meta.env.__FUNCTION_URL_CHECKLIST__;
 

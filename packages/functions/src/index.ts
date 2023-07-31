@@ -1,8 +1,15 @@
 import {onRequest} from "firebase-functions/v2/https";
 import express from "express";
 import cors from "cors";
-import {checklistExpressMiddleware} from "./checklist.router";
 import {MONDAY_APP_SECRET} from "./secrets";
+import * as trpcExpress from "@trpc/server/adapters/express";
+import {createContext} from "./checklist.server";
+import {router} from "./checklist.router";
+
+export const checklistExpressMiddleware = trpcExpress.createExpressMiddleware({
+  router,
+  createContext,
+});
 
 const app = express()
   .use(

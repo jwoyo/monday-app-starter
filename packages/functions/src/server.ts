@@ -10,9 +10,9 @@ export const createContext = ({req}: trpcExpress.CreateExpressContextOptions): {
     authorization,
   });
 };
-export const checklistTRPC = initTRPC.context<Context>().create();
-export const middleware = checklistTRPC.middleware;
-export const publicProcedure = checklistTRPC.procedure;
+export const trpc = initTRPC.context<Context>().create();
+export const middleware = trpc.middleware;
+export const publicProcedure = trpc.procedure;
 
 const {mondayIsUserMiddleware, mondayIsAdminMiddleware, mondayIsOAuthUserMiddleware} = buildRequireMondayAuthenticationMiddlewares(middleware);
 export const mondaySessionUserProcedure = publicProcedure.use(mondayIsUserMiddleware);

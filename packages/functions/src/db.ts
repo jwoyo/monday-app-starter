@@ -44,7 +44,7 @@ export async function getChecklistForItemId({accountId, itemId}: { accountId: nu
   if (!snapshot.exists) {
     return null;
   }
-  return snapshot.data();
+  return snapshot.data() || null;
 }
 
 /**
@@ -55,10 +55,6 @@ export async function getChecklistForItemId({accountId, itemId}: { accountId: nu
  */
 export async function setChecklistForItemId({accountId, itemId, checklist}: { accountId: number, itemId: number, checklist: ChecklistInFirestore }) {
   const doc = getChecklistCollection({accountId}).doc(itemId.toString());
-  const snapshot = await doc.get();
-  if (!snapshot.exists) {
-    throw new Error('Checklist does not exist');
-  }
   return doc.set(checklist);
 }
 

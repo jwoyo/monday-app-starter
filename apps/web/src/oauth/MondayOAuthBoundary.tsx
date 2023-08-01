@@ -3,6 +3,7 @@ import {trpc} from '../trpc.ts';
 import {useMutation} from '@tanstack/react-query';
 import {errorMessageStyles, signUpMessageChildStyles, signUpMessageStyles} from '../App.css.ts';
 import {AttentionBox, Button, Heading, Text} from 'monday-ui-react-core';
+import {Card} from 'antd';
 
 
 /**
@@ -38,15 +39,18 @@ export function MondayOAuthBoundary({children}: { children: ReactElement }) {
     </div>;
   }
   if (isSignedUp.data === false) {
-    return <div className={signUpMessageStyles}>
-      <div className={signUpMessageChildStyles}>
-        <Heading value="Welcome to checklists" size={Heading.sizes.SMALL}/>
-        <Text>
-                    Hey there! checklists is ready to use. Connect you account to get started.
-        </Text>
-        <Button onClick={() => signUp.mutate()}>Connect account</Button>
+    return <Card >
+      <div className={signUpMessageStyles}>
+        <div className={signUpMessageChildStyles}>
+          <Text>
+            Welcome! checklists app is ready to use. Connect you account to get started.
+          </Text>
+          <div>
+            <Button color={Button.colors.BRAND} onClick={() => signUp.mutate()}>Get started</Button>
+          </div>
+        </div>
       </div>
-    </div>;
+    </Card>;
   }
   return children;
 }

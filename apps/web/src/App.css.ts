@@ -9,9 +9,6 @@ export const errorMessageStyles = style({
 
 export const signUpMessageStyles = style({
   display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  width: '100%',
 });
 
 export const signUpMessageChildStyles = style({
@@ -20,6 +17,7 @@ export const signUpMessageChildStyles = style({
       display: 'flex',
       flexDirection: 'column',
       gap: '1rem',
+      maxWidth: '80%',
     },
   },
 });

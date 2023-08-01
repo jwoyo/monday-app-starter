@@ -1,4 +1,4 @@
-import {checklistTRPC, mondaySessionUserProcedure, publicProcedure} from './checklist.server';
+import {checklistTRPC, mondaySessionUserProcedure, publicProcedure} from './server';
 import {z} from 'zod';
 import {exchangeOAuthCodeForAccessToken} from './monday-oauth-api';
 import {getChecklistForItemId, getGlobalOAuthTokenByAccountId, setChecklistForItemId, setGlobalOAuthToken} from './db';

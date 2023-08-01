@@ -1,5 +1,5 @@
 import {httpBatchLink} from '@trpc/client';
-import type {AppRouter} from 'functions/checklist.router.ts';
+import type {AppRouter} from 'functions/router.ts';
 import {useMonday} from './use-monday.ts';
 import {createTRPCReact} from '@trpc/react-query';
 

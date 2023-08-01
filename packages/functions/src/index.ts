@@ -3,8 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import {MONDAY_APP_SECRET} from './variables';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import {createContext} from './checklist.server';
-import {router} from './checklist.router';
+import {createContext} from './server';
+import {router} from './router';
 
 export const checklistExpressMiddleware = trpcExpress.createExpressMiddleware({
   router,

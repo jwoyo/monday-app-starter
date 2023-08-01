@@ -1,4 +1,4 @@
-import {mondayOAuthUserProcedure} from './checklist.server';
+import {mondayOAuthUserProcedure} from './server';
 import {z} from 'zod';
 
 /**

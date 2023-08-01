@@ -1,6 +1,6 @@
 import {TRPCError} from '@trpc/server';
 import {verify} from 'jsonwebtoken';
-import type {Middleware} from './checklist.server';
+import type {Middleware} from './server';
 import {MONDAY_APP_SECRET} from './variables';
 import {MondayJsonWebTokenDecoded} from 'bridge/json-web-token.types';
 import {getGlobalOAuthTokenByAccountId} from './db';

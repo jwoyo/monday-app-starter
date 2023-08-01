@@ -1,58 +1,15 @@
-import {useMonday} from '../../use-monday.ts';
-import {trpc} from '../../trpc.ts';
 import {AttentionBox, Button, Skeleton, TextField} from 'monday-ui-react-core';
 import {AddSmall} from 'monday-ui-react-core/icons';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {addItemClassName, checklistClassName, checklistSkeletonClassName} from './Checklist.css.ts';
-import {v4 as uuidv4} from 'uuid';
-import {produce} from 'immer';
-import {ChecklistInFirestore} from 'functions/firestore.schemas.ts';
-import {getQueryKey} from '@trpc/react-query';
-import {useQueryClient} from '@tanstack/react-query';
-
+import {useChecklist} from './use-checklist.ts';
 
 /**
  * checklist view
  * @return {ReactElement}
  */
 export function Checklist() {
-  const {context} = useMonday();
-  const queryClient = useQueryClient();
-  const queryKey = getQueryKey( trpc.checklist.get, {itemId: context!.itemId}, 'query');
-  const query = trpc.checklist.get.useQuery({itemId: context!.itemId});
-
-  const {mutate} = trpc.checklist.set.useMutation({
-    onMutate: async ({checklist}) => {
-      await queryClient.cancelQueries({queryKey});
-      const previousChecklist = queryClient.getQueryData(queryKey);
-      queryClient.setQueryData(queryKey, checklist);
-      return {previousChecklist};
-    },
-    onError: (error, data, context) => {
-      queryClient.setQueriesData(queryKey, context?.previousChecklist);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(queryKey);
-    },
-  });
-
-  const addItem = (title: string) => {
-    const newChecklist = produce(query.data || EMPTY_CHECKLIST, (state) => {
-      state.items = [...state.items, {
-        id: uuidv4(),
-        type: 'item',
-        title,
-        isChecked: false,
-        assigneeIds: [],
-        isOptional: false,
-      }];
-    }) as ChecklistInFirestore;
-    mutate({
-      itemId: context!.itemId,
-      checklist: newChecklist,
-    });
-  };
-
+  const {checklistQuery: query} = useChecklist();
   if (query.isLoading) {
     return <div className={checklistClassName}>
       <div className={checklistSkeletonClassName}>
@@ -72,17 +29,14 @@ export function Checklist() {
 
   return (
     <div className={checklistClassName}>
-      <AddItem addItem={addItem}/>
+      <AddItem/>
       {query.data?.items.map((item) => <div key={item.id}>{JSON.stringify(item)}</div>)}
     </div>
   );
 }
 
-const EMPTY_CHECKLIST: ChecklistInFirestore = {
-  items: [],
-};
-
-function AddItem({addItem}: {addItem: (title: string) => void}) {
+function AddItem() {
+  const {addItem} = useChecklist();
   const [value, setValue] = useState('');
   const add = useCallback(() => {
     if (!value) {

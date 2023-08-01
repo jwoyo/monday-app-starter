@@ -38,12 +38,14 @@ importers:
       '@vitejs/plugin-react': ^4.0.3
       '@vitejs/plugin-react-swc': ^3.3.2
       axios: ^1.4.0
-      bridge: '*'
+      bridge: workspace:*
       dotenv: ^16.3.1
       eslint: ^8.45.0
       eslint-config-custom: '*'
       eslint-plugin-react-hooks: ^4.6.0
       eslint-plugin-react-refresh: ^0.4.3
+      functions: workspace:*
+      monday-client: workspace:*
       monday-sdk-js: ^0.4.8
       monday-ui-react-core: ^2.17.1
       react: ^16.14.0
@@ -58,8 +60,10 @@ importers:
       '@vanilla-extract/css': 1.12.0
       '@vitejs/plugin-react': 4.0.3_vite@4.4.7
       axios: 1.4.0
-      bridge: 2.0.70
+      bridge: link:../../packages/bridge
       dotenv: 16.3.1
+      functions: link:../../packages/functions
+      monday-client: link:../../packages/monday-client
       monday-sdk-js: 0.4.8
       monday-ui-react-core: 2.17.1_l5imnbphv7wdnvhymdfhzo35fq_qdptt4hppc5xf7atj22fz4gzly
       react: 16.14.0
@@ -150,6 +154,7 @@ importers:
 
   packages/monday-client:
     specifiers:
+      '@graphql-codegen/add': ^5.0.0
       '@graphql-codegen/cli': ^5.0.0
       '@graphql-codegen/typescript-graphql-request': ^5.0.0
       '@graphql-codegen/typescript-operations': ^4.0.1
@@ -157,6 +162,7 @@ importers:
       graphql-request: ^6.1.0
       graphql-tag: ^2.12.6
     dependencies:
+      '@graphql-codegen/add': 5.0.0_graphql@15.8.0
       '@graphql-codegen/cli': 5.0.0_urj67ufjqhhv7cac7gxe4crjam
       '@graphql-codegen/typescript-graphql-request': 5.0.0_qdnil3sxonv4bxc7w4jvmdg3nu
       '@graphql-codegen/typescript-operations': 4.0.1_graphql@15.8.0
@@ -1518,6 +1524,16 @@ packages:
       - encoding
       - supports-color
     optional: true
+
+  /@graphql-codegen/add/5.0.0_graphql@15.8.0:
+    resolution: {integrity: sha512-ynWDOsK2yxtFHwcJTB9shoSkUd7YXd6ZE57f0nk7W5cu/nAgxZZpEsnTPEpZB/Mjf14YRGe2uJHQ7AfElHjqUQ==}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 5.0.1_graphql@15.8.0
+      graphql: 15.8.0
+      tslib: 2.5.3
+    dev: false
 
   /@graphql-codegen/cli/5.0.0_urj67ufjqhhv7cac7gxe4crjam:
     resolution: {integrity: sha512-A7J7+be/a6e+/ul2KI5sfJlpoqeqwX8EzktaKCeduyVKgOLA6W5t+NUGf6QumBDXU8PEOqXk3o3F+RAwCWOiqA==}

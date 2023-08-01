@@ -1,0 +1,2434 @@
+"""
+Requires that exactly one field must be supplied and that field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
+"""Your monday.com account"""
+type Account {
+  """The account's country two-letter code in ISO3166 format"""
+  country_code: String
+
+  """The first day of the week for the account (sunday / monday)"""
+  first_day_of_the_week: FirstDayOfTheWeek!
+
+  """The account's unique identifier."""
+  id: Int!
+
+  """The account's logo."""
+  logo: String
+
+  """The account's name."""
+  name: String!
+
+  """The account's payment plan."""
+  plan: Plan
+
+  """The account's active products"""
+  products: [AccountProduct]
+
+  """Show weekends in timeline"""
+  show_timeline_weekends: Boolean!
+
+  """The product the account signed up to first."""
+  sign_up_product_kind: String
+
+  """The account's slug."""
+  slug: String!
+
+  """The account's tier."""
+  tier: String
+}
+
+"""The product a workspace is used in."""
+type AccountProduct {
+  """The account product id"""
+  id: Int
+
+  """
+  The account product kind (core / marketing / crm / software /
+  projectManagement / project_management / forms / whiteboard).
+  """
+  kind: AccountProductKind
+}
+
+"""The account product kinds available."""
+enum AccountProductKind {
+  """monday work management"""
+  core
+
+  """monday marketer"""
+  marketing
+
+  """monday sales CRM"""
+  crm
+
+  """monday dev"""
+  software
+
+  """monday projects (Deprecated)"""
+  projectManagement
+
+  """monday projects"""
+  project_management
+
+  """workforms"""
+  forms
+
+  """canvas"""
+  whiteboard
+}
+
+"""An activity log event"""
+type ActivityLogType {
+  account_id: String!
+  created_at: String!
+
+  """The item's column values in string form."""
+  data: String!
+  entity: String!
+  event: String!
+  id: String!
+  user_id: String!
+}
+
+"""The app monetization status for the current account"""
+type AppMonetizationStatus {
+  """Is apps monetization is supported for the account"""
+  is_supported: Boolean!
+}
+
+"""The account subscription details for the app."""
+type AppSubscription {
+  """The type of the billing period [monthly/yearly]."""
+  billing_period: String
+
+  """The number of days left until the subscription ends."""
+  days_left: Int
+
+  """Is the subscription a trial"""
+  is_trial: Boolean
+
+  """The subscription plan id (on the app's side)."""
+  plan_id: String!
+
+  """The subscription renewal date."""
+  renewal_date: Date!
+}
+
+"""A file uploaded to monday.com"""
+type Asset {
+  """The file's creation date."""
+  created_at: Date
+
+  """The file's extension."""
+  file_extension: String!
+
+  """The file's size in bytes."""
+  file_size: Int!
+
+  """The file's unique identifier."""
+  id: ID!
+
+  """The file's name."""
+  name: String!
+
+  """original geometry of the asset."""
+  original_geometry: String
+
+  """public url to the asset, valid for 1 hour."""
+  public_url: String!
+
+  """The user who uploaded the file."""
+  uploaded_by: User!
+
+  """url to view the asset."""
+  url: String!
+
+  """url to view the asset in thumbnail mode. Only available for images."""
+  url_thumbnail: String
+}
+
+"""The source of the asset"""
+enum AssetsSource {
+  """Assets from file columns and item's files gallery"""
+  all
+
+  """Assets only from file columns"""
+  columns
+
+  """Assets only from item's files gallery"""
+  gallery
+}
+
+"""A monday.com board."""
+type Board {
+  """The board log events."""
+  activity_logs(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """User ids to filter."""
+    user_ids: [Int]
+
+    """Column ids to filter"""
+    column_ids: [String]
+
+    """Group ids to filter"""
+    group_ids: [String]
+
+    """Item id to filter"""
+    item_ids: [Int]
+
+    """From timestamp (ISO8601)"""
+    from: ISO8601DateTime
+
+    """To timestamp (ISO8601)"""
+    to: ISO8601DateTime
+  ): [ActivityLogType]
+
+  """The board's folder unique identifier."""
+  board_folder_id: Int
+
+  """The board's kind (public / private / share)."""
+  board_kind: BoardKind!
+
+  """The board's visible columns."""
+  columns(
+    """A list of column unique identifiers."""
+    ids: [String]
+
+    """A list of column types."""
+    types: [String]
+  ): [Column]
+
+  """Get the board communication value - typically meeting ID"""
+  communication: JSON
+
+  """The creator of the board."""
+  creator: User!
+
+  """The board's description."""
+  description: String
+
+  """The board's visible groups."""
+  groups(
+    """A list of group unique identifiers."""
+    ids: [String]
+  ): [Group]
+
+  """The unique identifier of the board."""
+  id: ID!
+
+  """
+  The Board's item nickname, one of a predefined set of values, or a custom user value
+  """
+  item_terminology: String
+
+  """The board's items (rows)."""
+  items(
+    """A list of items unique identifiers."""
+    ids: [Int]
+
+    """Number of items to get"""
+    limit: Int
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """Get the recently created items at the top of the list"""
+    newest_first: Boolean
+
+    """
+    When providing a list of item IDs, this flag will exclude items that are archived, deleted or belong to deleted items
+    """
+    exclude_nonactive: Boolean
+  ): [Item] @deprecated(reason: "Replaced by Board.items_page in 2023-10")
+
+  """The number of items on the board"""
+  items_count: Int
+
+  """The board's name."""
+  name: String!
+
+  """The owner of the board."""
+  owner: User! @deprecated(reason: "This field returned creator of the board. Please use 'creator' or 'owners' fields instead.")
+
+  """List of user board owners"""
+  owners: [User]!
+
+  """The board's permissions."""
+  permissions: String!
+
+  """The board's position."""
+  pos: String @deprecated(reason: "pos is no longer supported and returns invalid value")
+
+  """The board's state (all / active / archived / deleted)."""
+  state: State!
+
+  """The board's subscribers."""
+  subscribers: [User]!
+
+  """The board's specific tags."""
+  tags: [Tag]
+
+  """List of team board owners"""
+  team_owners(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [Team!]
+
+  """The top group at this board."""
+  top_group: Group!
+
+  """The board object type."""
+  type: BoardObjectType
+
+  """The last time the board was updated at."""
+  updated_at: ISO8601DateTime
+
+  """The board's updates."""
+  updates(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [Update]
+
+  """The board's views."""
+  views(
+    """A list of view unique identifiers."""
+    ids: [Int]
+
+    """The view's type"""
+    type: String
+  ): [BoardView]
+
+  """The workspace that contains this board (null for main workspace)."""
+  workspace: Workspace
+
+  """The board's workspace unique identifier (null for main workspace)."""
+  workspace_id: Int
+}
+
+"""The board attributes available."""
+enum BoardAttributes {
+  """Board name."""
+  name
+
+  """Board description."""
+  description
+
+  """Object that contains available Video conferences on the board."""
+  communication
+}
+
+"""A board duplication"""
+type BoardDuplication {
+  """The new board created by the duplication"""
+  board: Board!
+
+  """Was the board duplication performed asynchronously"""
+  is_async: Boolean!
+}
+
+"""The board kinds available."""
+enum BoardKind {
+  """Public boards."""
+  public
+
+  """Private boards."""
+  private
+
+  """Shareable boards."""
+  share
+}
+
+"""The board object types."""
+enum BoardObjectType {
+  """Parent Board."""
+  board
+
+  """Sub Items Board."""
+  sub_items_board
+
+  """Document."""
+  document
+
+  """Custom Object."""
+  custom_object
+}
+
+"""Options to order by."""
+enum BoardsOrderBy {
+  """The rank order of the board creation time (desc)."""
+  created_at
+
+  """The last time the user making the request used the board (desc)."""
+  used_at
+}
+
+"""The board subscriber kind."""
+enum BoardSubscriberKind {
+  """Board subscriber."""
+  subscriber
+
+  """Board owner."""
+  owner
+}
+
+"""A board's view."""
+type BoardView {
+  """The view's unique identifier."""
+  id: ID!
+
+  """The view's name."""
+  name: String!
+
+  """The view's settings in a string form."""
+  settings_str: String!
+
+  """The view's type."""
+  type: String!
+
+  """Specific board view data (supported only for forms)"""
+  view_specific_data_str: String!
+}
+
+type Column {
+  """Is the column archived or not."""
+  archived: Boolean!
+
+  """The column's description."""
+  description: String
+
+  """The column's unique identifier."""
+  id: ID!
+
+  """The column's position in the board."""
+  pos: String @deprecated(reason: "The field will always return null. Columns are sorted by position by default.")
+
+  """The column's settings in a string form."""
+  settings_str: String!
+
+  """The column's title."""
+  title: String!
+
+  """The column's type."""
+  type: String!
+
+  """The column's width."""
+  width: Int
+}
+
+"""The property name of the column to be changed."""
+enum ColumnProperty {
+  """the column title."""
+  title
+
+  """the column description."""
+  description
+}
+
+"""The columns to create."""
+enum ColumnType {
+  """Number items according to their order in the group/board"""
+  auto_number
+
+  """Connect data from other boards"""
+  board_relation
+
+  """Perform actions on items by clicking a button"""
+  button
+
+  """Check off items and see what's done at a glance"""
+  checkbox
+
+  """Manage a design system using a color palette"""
+  color_picker
+
+  """Choose a country"""
+  country
+
+  """Add the item's creator and creation date automatically"""
+  creation_log
+
+  """Add dates like deadlines to ensure you never drop the ball"""
+  date
+
+  """Set up dependencies between items in the board"""
+  dependency
+
+  """Instantly add collaborative rich text editor"""
+  doc
+
+  """Create a dropdown list of options"""
+  dropdown
+
+  """Email team members and clients directly from your board"""
+  email
+
+  """Add files & docs to your item"""
+  file
+
+  """Use functions to manipulate data across multiple columns"""
+  formula
+
+  """Add times to manage and schedule tasks, shifts and more"""
+  hour
+
+  """Integration is really cool..."""
+  integration
+
+  """Show all item's assignees"""
+  item_assignees
+
+  """Show a unique ID for each item"""
+  item_id
+
+  """Add the person that last updated the item and the date"""
+  last_updated
+
+  """Simply hyperlink to any website"""
+  link
+
+  """Place multiple locations on a geographic map"""
+  location
+
+  """Add large amounts of text without changing column width"""
+  long_text
+
+  """Show and edit columns' data from connected boards"""
+  mirror
+
+  """Name is really cool..."""
+  name
+
+  """Add revenue, costs, time estimations and more"""
+  numbers
+
+  """Assign people to improve team work"""
+  people
+
+  """Call your contacts directly from monday.com"""
+  phone
+
+  """Show progress by combining status columns in a battery"""
+  progress
+
+  """Rate or rank anything visually"""
+  rating
+
+  """Get an instant overview of where things stand"""
+  status
+
+  """Use the subtasks column to create another level of tasks"""
+  subtasks
+
+  """Add tags to categorize items across multiple boards"""
+  tags
+
+  """Assign a full team to an item """
+  team
+
+  """Add textual information e.g. addresses, names or keywords"""
+  text
+
+  """Visualize your item’s duration, with a start and end date"""
+  timeline
+
+  """Easily track time spent on each item, group, and board"""
+  time_tracking
+
+  """Vote on an item e.g. pick a new feature or a favorite lunch place"""
+  vote
+
+  """Select the week on which each item should be completed"""
+  week
+
+  """Keep track of the time anywhere in the world"""
+  world_clock
+
+  """Unsupported column type"""
+  unsupported
+}
+
+"""The value of an items column"""
+type ColumnValue {
+  """The column value's additional information."""
+  additional_info: JSON
+
+  """The column's description."""
+  description: String
+
+  """The column's unique identifier."""
+  id: ID!
+
+  """The column's textual value in string form."""
+  text: String
+
+  """The column's title."""
+  title: String!
+
+  """The column's type."""
+  type: String!
+
+  """The column's value in json format."""
+  value: JSON
+}
+
+"""Complexity data."""
+type Complexity {
+  """The remainder of complexity after the query's execution."""
+  after: Int!
+
+  """The remainder of complexity before the query's execution."""
+  before: Int!
+
+  """The specific query's complexity."""
+  query: Int!
+
+  """How long in seconds before the complexity budget is reset"""
+  reset_in_x_seconds: Int!
+}
+
+input CreateDocBoardInput {
+  """Item id"""
+  item_id: ID!
+
+  """Column id"""
+  column_id: String!
+}
+
+input CreateDocInput {
+  board: CreateDocBoardInput
+}
+
+"""A date."""
+scalar Date
+
+"""Various documents blocks types, such as text."""
+enum DocBlockContentType {
+  """Simple text block"""
+  normal_text
+
+  """Large title block"""
+  large_title
+
+  """Medium title block"""
+  medium_title
+
+  """Small title block"""
+  small_title
+
+  """Quote text block"""
+  quote
+
+  """Divider block"""
+  divider
+
+  """Bulleted list block"""
+  bulleted_list
+
+  """Numbered list block"""
+  numbered_list
+
+  """Check list block"""
+  check_list
+
+  """Image block"""
+  image
+
+  """Video block"""
+  video
+
+  """Table block"""
+  table
+
+  """Layout block"""
+  layout
+
+  """Code block"""
+  code
+
+  """Notice block"""
+  notice_box
+}
+
+"""Options to order by."""
+enum DocsOrderBy {
+  """The rank order of the document creation time (desc)."""
+  created_at
+
+  """The last time the user making the request viewd the document (desc)."""
+  used_at
+}
+
+"""A monday.com document."""
+type Document {
+  """The document's content blocks"""
+  blocks(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [DocumentBlock]
+
+  """The document's creation date."""
+  created_at: Date
+
+  """The document's creator"""
+  created_by: User
+
+  """The document's folder unique identifier (null for first level)."""
+  doc_folder_id: Int
+
+  """The document's kind (public / private / share)."""
+  doc_kind: BoardKind!
+
+  """The document's unique identifier."""
+  id: Int!
+
+  """The document's name."""
+  name: String!
+
+  """The associated board or object's unique identifier."""
+  object_id: Int!
+
+  """The document's relative url"""
+  relative_url: String
+
+  """The document's settings."""
+  settings: JSON
+
+  """The document's direct url"""
+  url: String
+
+  """The workspace that contains this document (null for main workspace)."""
+  workspace: Workspace
+
+  """The document's workspace unique identifier (null for main workspace)."""
+  workspace_id: Int
+}
+
+"""A monday.com document block."""
+type DocumentBlock {
+  """The block's content."""
+  content: JSON
+
+  """The block's creation date."""
+  created_at: Date
+
+  """The block's creator"""
+  created_by: User
+
+  """The block's document unique identifier."""
+  doc_id: Int
+
+  """The block's unique identifier."""
+  id: String!
+
+  """The block's parent block unique identifier."""
+  parent_block_id: String
+
+  """The block's position on the document."""
+  position: Float
+
+  """The block content type."""
+  type: String
+
+  """The block's last updated date."""
+  updated_at: Date
+}
+
+"""A monday.com doc block."""
+type DocumentBlockIdOnly {
+  """The block's unique identifier."""
+  id: String!
+}
+
+"""The board duplicate types available."""
+enum DuplicateBoardType {
+  """Duplicate board with structure."""
+  duplicate_board_with_structure
+
+  """Duplicate board with structure and items."""
+  duplicate_board_with_pulses
+
+  """Duplicate board with structure, items and updates."""
+  duplicate_board_with_pulses_and_updates
+}
+
+"""A multipart file"""
+scalar File
+
+"""The first day of work week"""
+enum FirstDayOfTheWeek {
+  """Sunday"""
+  sunday
+
+  """Monday"""
+  monday
+}
+
+"""A workspace folder containing boards, docs, sub folders, etc."""
+type Folder {
+  """
+  The various items in the folder, not including sub-folders and dashboards.
+  """
+  children: [Board]!
+
+  """The folder's color."""
+  color: FolderColor
+
+  """The folder's creation date."""
+  created_at: Date!
+
+  """The folder's unique identifier."""
+  id: Int!
+
+  """The folder's name."""
+  name: String!
+
+  """The folder's user owner unique identifier."""
+  owner_id: Int
+
+  """The folder's parent folder."""
+  parent: Folder
+
+  """Sub-folders inside this folder."""
+  sub_folders: [Folder]!
+
+  """The workspace that contains this folder (null id for main workspace)."""
+  workspace: Workspace!
+}
+
+"""One value out of a list of valid folder colors"""
+enum FolderColor {
+  """done-green"""
+  DONE_GREEN
+
+  """bright-green"""
+  BRIGHT_GREEN
+
+  """working_orange"""
+  WORKING_ORANGE
+
+  """dark-orange"""
+  DARK_ORANGE
+
+  """sunset"""
+  SUNSET
+
+  """stuck-red"""
+  STUCK_RED
+
+  """dark-red"""
+  DARK_RED
+
+  """sofia_pink"""
+  SOFIA_PINK
+
+  """lipstick"""
+  LIPSTICK
+
+  """purple"""
+  PURPLE
+
+  """dark_purple"""
+  DARK_PURPLE
+
+  """indigo"""
+  INDIGO
+
+  """bright-blue"""
+  BRIGHT_BLUE
+
+  """aquamarine"""
+  AQUAMARINE
+
+  """chili-blue"""
+  CHILI_BLUE
+
+  """No color"""
+  NULL
+}
+
+"""A group of items in a board."""
+type Group {
+  """Is the group archived or not."""
+  archived: Boolean
+
+  """The group's color."""
+  color: String!
+
+  """Is the group deleted or not."""
+  deleted: Boolean
+
+  """The group's unique identifier."""
+  id: ID!
+
+  """The items in the group."""
+  items(
+    """A list of items unique identifiers."""
+    ids: [Int]
+
+    """Number of items to get"""
+    limit: Int
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """Get the recently created items at the top of the list"""
+    newest_first: Boolean
+
+    """
+    When providing a list of item IDs, this flag will exclude items that are archived, deleted or belong to deleted items
+    """
+    exclude_nonactive: Boolean
+  ): [Item]
+
+  """The group's position in the board."""
+  position: String!
+
+  """The group's title."""
+  title: String!
+}
+
+"""The group attributes available."""
+enum GroupAttributes {
+  """Group title."""
+  title
+
+  """
+  Group color (one of the supported colors, check the API documentation).
+  """
+  color
+
+  """
+  The group's position in the board. Deprecated! - replaced with relative position
+  """
+  position
+
+  """The group's relative position after another group in the board."""
+  relative_position_after
+
+  """The group's relative position before another group in the board."""
+  relative_position_before
+}
+
+"""An ISO 8601-encoded datetime"""
+scalar ISO8601DateTime
+
+"""An item (table row)."""
+type Item {
+  """The item's assets/files."""
+  assets(
+    """The assets source (all / columns / gallery)"""
+    assets_source: AssetsSource
+
+    """Ids of the columns you want to get assets from."""
+    column_ids: [String]
+  ): [Asset]
+
+  """The board that contains this item."""
+  board: Board
+
+  """The item's column values."""
+  column_values(
+    """A list of column ids to return"""
+    ids: [String]
+  ): [ColumnValue]
+
+  """The item's create date."""
+  created_at: Date
+
+  """The item's creator."""
+  creator: User
+
+  """The unique identifier of the item creator."""
+  creator_id: String!
+
+  """The item's email."""
+  email: String!
+
+  """The group that contains this item."""
+  group: Group
+
+  """The item's unique identifier."""
+  id: ID!
+
+  """The item's name."""
+  name: String!
+
+  """The parent item of a subitem."""
+  parent_item: Item
+
+  """The item's relative path"""
+  relative_link: String
+
+  """The item's state (all / active / archived / deleted)."""
+  state: State
+
+  """The item's subitems."""
+  subitems: [Item]
+
+  """The pulses's subscribers."""
+  subscribers: [User]!
+
+  """The item's last update date."""
+  updated_at: Date
+
+  """The item's updates."""
+  updates(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [Update]
+}
+
+"""A JSON formatted string."""
+scalar JSON
+
+"""Update your monday.com data."""
+type Mutation {
+  """Add a file to a column value."""
+  add_file_to_column(
+    """The item to add the file to."""
+    item_id: Int!
+
+    """The column to add the file to."""
+    column_id: String!
+
+    """The file to upload."""
+    file: File!
+  ): Asset
+
+  """Add a file to an update."""
+  add_file_to_update(
+    """The update to add the file to."""
+    update_id: Int!
+
+    """The file to upload."""
+    file: File!
+  ): Asset
+
+  """Add subscribers to a board."""
+  add_subscribers_to_board(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """User ids to subscribe to a board"""
+    user_ids: [Int]!
+
+    """Subscribers kind (subscriber / owner)"""
+    kind: BoardSubscriberKind = subscriber
+  ): [User] @deprecated(reason: "use add_users_to_board instead")
+
+  """Add teams subscribers to a board."""
+  add_teams_to_board(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """Team ids to subscribe to a board"""
+    team_ids: [Int]!
+  ): [Team]
+
+  """Add teams to a workspace."""
+  add_teams_to_workspace(
+    """The workspace's unique identifier."""
+    workspace_id: Int!
+
+    """Team ids to subscribe to a workspace"""
+    team_ids: [Int]!
+
+    """Subscribers kind (subscriber / owner)"""
+    kind: WorkspaceSubscriberKind = subscriber
+  ): [Team]
+
+  """Add subscribers to a board."""
+  add_users_to_board(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """User ids to subscribe to a board"""
+    user_ids: [Int]!
+
+    """Subscribers kind (subscriber / owner)"""
+    kind: BoardSubscriberKind = subscriber
+  ): [User]
+
+  """Add users to a workspace."""
+  add_users_to_workspace(
+    """The workspace's unique identifier."""
+    workspace_id: Int!
+
+    """User ids to subscribe to a workspace"""
+    user_ids: [Int]!
+
+    """Subscribers kind (subscriber / owner)"""
+    kind: WorkspaceSubscriberKind = subscriber
+  ): [User]
+
+  """Archive a board."""
+  archive_board(
+    """The board's unique identifier"""
+    board_id: Int!
+  ): Board
+
+  """Archives a group in a specific board."""
+  archive_group(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The group's unique identifier."""
+    group_id: String!
+  ): Group
+
+  """Archive an item."""
+  archive_item(
+    """The item's unique identifier."""
+    item_id: Int
+  ): Item
+
+  """Change a column's properties"""
+  change_column_metadata(
+    """The column's unique identifier."""
+    column_id: String!
+
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The property name of the column to be changed (title / description)."""
+    column_property: ColumnProperty
+
+    """The new description of the column."""
+    value: String
+  ): Column
+
+  """Change a column's title"""
+  change_column_title(
+    """The column's unique identifier."""
+    column_id: String!
+
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The new title of the column."""
+    title: String!
+  ): Column
+
+  """Change an item's column value."""
+  change_column_value(
+    """The item's unique identifier."""
+    item_id: Int
+
+    """The column's unique identifier."""
+    column_id: String!
+
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The new value of the column."""
+    value: JSON!
+
+    """
+    Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)
+    """
+    create_labels_if_missing: Boolean
+  ): Item
+
+  """Changes the column values of a specific item."""
+  change_multiple_column_values(
+    """The item's unique identifier."""
+    item_id: Int
+
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The column values updates."""
+    column_values: JSON!
+
+    """
+    Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)
+    """
+    create_labels_if_missing: Boolean
+  ): Item
+
+  """Change an item's column with simple value."""
+  change_simple_column_value(
+    """The item's unique identifier."""
+    item_id: Int
+
+    """The column's unique identifier."""
+    column_id: String!
+
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The new simple value of the column."""
+    value: String!
+
+    """
+    Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)
+    """
+    create_labels_if_missing: Boolean
+  ): Item
+
+  """Clear an item's updates."""
+  clear_item_updates(
+    """The item's unique identifier."""
+    item_id: Int!
+  ): Item
+
+  """Get the complexity data of your mutations."""
+  complexity: Complexity
+
+  """Create a new board."""
+  create_board(
+    """The board's name"""
+    board_name: String!
+
+    """Optional board's description"""
+    description: String
+
+    """The board's kind (public / private / share)"""
+    board_kind: BoardKind!
+
+    """Optional board folder id"""
+    folder_id: Int
+
+    """Optional workspace id"""
+    workspace_id: Int
+
+    """Optional board template id"""
+    template_id: Int
+
+    """Optional board owner user ids"""
+    board_owner_ids: [Int]
+
+    """Optional board owner team ids"""
+    board_owner_team_ids: [ID!]
+
+    """Optional board subscriber ids"""
+    board_subscriber_ids: [Int]
+
+    """Optional list of subscriber team ids"""
+    board_subscriber_teams_ids: [Int]
+  ): Board
+
+  """Create a new column in board."""
+  create_column(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The new column's title."""
+    title: String!
+
+    """The new column's description."""
+    description: String
+
+    """The type of column to create."""
+    column_type: ColumnType
+
+    """The new column's defaults."""
+    defaults: JSON
+
+    """The column's user-specified unique identifier."""
+    id: String
+  ): Column
+
+  """Create a new doc."""
+  create_doc(
+    """new monday doc location"""
+    location: CreateDocInput!
+  ): Document
+
+  """Create new document block"""
+  create_doc_block(
+    """The doc's unique identifier."""
+    doc_id: Int!
+
+    """
+    After which block to insert this one. If not provided, will be inserted first in the document
+    """
+    after_block_id: String
+
+    """The parent block id to append the created block under."""
+    parent_block_id: String
+
+    """The block's content type."""
+    type: DocBlockContentType!
+
+    """The block's content."""
+    content: JSON!
+  ): DocumentBlock
+
+  """Creates a folder in a specific workspace."""
+  create_folder(
+    """The unique identifier of the workspace to create this folder in"""
+    workspace_id: Int
+
+    """The folder's name"""
+    name: String!
+
+    """The folder's color."""
+    color: FolderColor
+
+    """The folder's parent folder unique identifier."""
+    parent_folder_id: Int
+  ): Folder
+
+  """Creates a new group in a specific board."""
+  create_group(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The name of the new group."""
+    group_name: String!
+
+    """
+    The group's position in the board. DEPRECATED! Replaced with relative position (position_relative_method, relative_to)
+    """
+    position: String
+
+    """The group to set the position next to."""
+    relative_to: String
+
+    """The position relative method to another group (before_at / after_at)"""
+    position_relative_method: PositionRelative
+  ): Group
+
+  """Create a new item."""
+  create_item(
+    """
+    The new item's name. Note: this argument will be required starting from 2023-10.
+    """
+    item_name: String
+
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The group's unique identifier."""
+    group_id: String
+
+    """The column values of the new item."""
+    column_values: JSON
+
+    """
+    Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)
+    """
+    create_labels_if_missing: Boolean
+  ): Item
+
+  """Create a new notification."""
+  create_notification(
+    """The notification text."""
+    text: String!
+
+    """The user's unique identifier."""
+    user_id: Int!
+
+    """The target's unique identifier."""
+    target_id: Int!
+
+    """The target's type (Project / Post)"""
+    target_type: NotificationTargetType!
+  ): Notification
+
+  """Create a new tag or get it if it already exists."""
+  create_or_get_tag(
+    """The new tag's name."""
+    tag_name: String
+
+    """
+    The private board id to create the tag at (not needed for public boards)
+    """
+    board_id: Int
+  ): Tag
+
+  """Create subitem."""
+  create_subitem(
+    """The parent item's unique identifier."""
+    parent_item_id: Int!
+
+    """The new item's name."""
+    item_name: String!
+
+    """The column values of the new item."""
+    column_values: JSON
+
+    """
+    Create Status/Dropdown labels if they're missing. (Requires permission to change board structure)
+    """
+    create_labels_if_missing: Boolean
+  ): Item
+
+  """Create a new update."""
+  create_update(
+    """The update text."""
+    body: String!
+
+    """The item's unique identifier."""
+    item_id: Int
+
+    """The parent post identifier."""
+    parent_id: Int
+  ): Update
+
+  """Create a new webhook."""
+  create_webhook(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The webhook URL."""
+    url: String!
+
+    """
+    The event to listen to (incoming_notification / change_column_value /
+    create_column / change_status_column_value / change_subitem_column_value /
+    change_specific_column_value / create_item / create_subitem / create_update
+    / edit_update / delete_update / create_subitem_update / change_subitem_name
+    / change_name / when_date_arrived / item_deleted / subitem_deleted /
+    item_archived / subitem_archived / item_restored / item_moved_to_any_group /
+    item_moved_to_specific_group / move_subitem)
+    """
+    event: WebhookEventType!
+
+    """The webhook config"""
+    config: JSON
+  ): Webhook
+
+  """Create a new workspace."""
+  create_workspace(
+    """The Workspace's name"""
+    name: String!
+
+    """The workspace's kind (open / closed)"""
+    kind: WorkspaceKind!
+
+    """The Workspace's description"""
+    description: String
+  ): Workspace
+
+  """Delete a board."""
+  delete_board(
+    """The board's unique identifier"""
+    board_id: Int!
+  ): Board
+
+  """Delete a column."""
+  delete_column(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The column's unique identifier."""
+    column_id: String!
+  ): Column
+
+  """Delete a document block"""
+  delete_doc_block(
+    """The block's unique identifier."""
+    block_id: String!
+  ): DocumentBlockIdOnly
+
+  """Deletes a folder in a specific workspace."""
+  delete_folder(
+    """The folder's unique identifier."""
+    folder_id: Int!
+  ): Folder
+
+  """Deletes a group in a specific board."""
+  delete_group(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The group's unique identifier."""
+    group_id: String!
+  ): Group
+
+  """Delete an item."""
+  delete_item(
+    """The item's unique identifier."""
+    item_id: Int
+  ): Item
+
+  """Remove subscribers from the board."""
+  delete_subscribers_from_board(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """User ids to unsubscribe from a board"""
+    user_ids: [Int]!
+  ): [User]
+
+  """Delete teams from a workspace."""
+  delete_teams_from_workspace(
+    """The workspace's unique identifier."""
+    workspace_id: Int!
+
+    """Team ids to unsubscribe from a workspace"""
+    team_ids: [Int]!
+  ): [Team]
+
+  """Delete an update."""
+  delete_update(
+    """The update's unique identifier."""
+    id: Int!
+  ): Update
+
+  """Delete users from a workspace."""
+  delete_users_from_workspace(
+    """The workspace's unique identifier."""
+    workspace_id: Int!
+
+    """User ids to unsubscribe from a workspace"""
+    user_ids: [Int]!
+  ): [User]
+
+  """Delete a new webhook."""
+  delete_webhook(
+    """The webhook's unique identifier."""
+    id: Int!
+  ): Webhook
+
+  """Delete workspace."""
+  delete_workspace(
+    """The workspace's unique identifier"""
+    workspace_id: Int!
+  ): Workspace
+
+  """Duplicate a board."""
+  duplicate_board(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The duplication type."""
+    duplicate_type: DuplicateBoardType!
+
+    """Optional the new board's name. If omitted then automatically generated"""
+    board_name: String
+
+    """
+    Optional destination workspace. Defaults to the original board workspace.
+    """
+    workspace_id: Int
+
+    """
+    Optional destination folder in destination workspace. Defaults to the original board folder.
+    """
+    folder_id: Int
+
+    """Duplicate the subscribers to the new board. Defaults to false."""
+    keep_subscribers: Boolean
+  ): BoardDuplication
+
+  """Duplicate a group."""
+  duplicate_group(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The group's unique identifier."""
+    group_id: String!
+
+    """Should the new group be added to the top."""
+    add_to_top: Boolean
+
+    """The group's title."""
+    group_title: String
+  ): Group
+
+  """Duplicate an item."""
+  duplicate_item(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """Duplicate with the item's updates."""
+    with_updates: Boolean
+
+    """The item's unique identifier. *Required"""
+    item_id: Int
+  ): Item
+
+  """Like an update."""
+  like_update(
+    """The update identifier."""
+    update_id: Int
+  ): Update
+
+  """Move an item to a different group."""
+  move_item_to_group(
+    """The item's unique identifier."""
+    item_id: Int
+
+    """The group's unique identifier."""
+    group_id: String!
+  ): Item
+
+  """Remove mock app subscription for the current account"""
+  remove_mock_app_subscription(
+    """The app id of the app to remove the mocked subscription for."""
+    app_id: Int!
+
+    """The last 10 characters of the app's signing secret."""
+    partial_signing_secret: String!
+  ): AppSubscription
+
+  """Set mock app subscription for the current account"""
+  set_mock_app_subscription(
+    """The app id of the app to mock subscription for."""
+    app_id: Int!
+
+    """The last 10 characters of the app's signing secret."""
+    partial_signing_secret: String!
+
+    """The plan id for the mocked plan"""
+    plan_id: String
+
+    """Is the subscription a trial"""
+    is_trial: Boolean
+
+    """The subscription renewal date"""
+    renewal_date: Date
+
+    """Billing period [monthly/yearly]"""
+    billing_period: String
+
+    """Pricing plans version"""
+    pricing_version: Int
+  ): AppSubscription
+
+  """Update Board attribute."""
+  update_board(
+    """The board's unique identifier"""
+    board_id: Int!
+
+    """The board's attribute to update (name / description / communication)"""
+    board_attribute: BoardAttributes!
+
+    """The new attribute value."""
+    new_value: String!
+  ): JSON
+
+  """Update a document block"""
+  update_doc_block(
+    """The block's unique identifier."""
+    block_id: String!
+
+    """The block's content."""
+    content: JSON!
+  ): DocumentBlock
+
+  """Updates a folder."""
+  update_folder(
+    """The folder's unique identifier"""
+    folder_id: Int!
+
+    """The folder's name"""
+    name: String
+
+    """The folder's color."""
+    color: FolderColor
+
+    """The folder's parent folder."""
+    parent_folder_id: Int
+  ): Folder
+
+  """Update an existing group."""
+  update_group(
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The Group's unique identifier."""
+    group_id: String!
+
+    """
+    The groups's attribute to update (title / color / position / relative_position_after / relative_position_before)
+    """
+    group_attribute: GroupAttributes!
+
+    """The new attribute value."""
+    new_value: String!
+  ): Group
+}
+
+"""A notification."""
+type Notification {
+  """The notification's unique identifier."""
+  id: ID!
+
+  """The notification text."""
+  text: String
+}
+
+"""The notification's target type."""
+enum NotificationTargetType {
+  """Item or Board."""
+  Project
+
+  """Update"""
+  Post
+}
+
+"""The working status of a user."""
+type OutOfOffice {
+  """Is the status active?"""
+  active: Boolean
+
+  """Are notification disabled?"""
+  disable_notifications: Boolean
+
+  """The status end date."""
+  end_date: Date
+
+  """The status start date."""
+  start_date: Date
+
+  """Out of office type."""
+  type: String
+}
+
+"""A payment plan."""
+type Plan {
+  """The maximum users allowed in the plan."""
+  max_users: Int!
+
+  """The plan's time period."""
+  period: String
+
+  """The plan's tier."""
+  tier: String
+
+  """The plan's versoin."""
+  version: Int!
+}
+
+"""The position relative method."""
+enum PositionRelative {
+  """position before at the given entity."""
+  before_at
+
+  """position after at the given entity."""
+  after_at
+}
+
+"""Get your data from monday.com"""
+type Query {
+  """Get the connected account's information."""
+  account: Account
+
+  """
+  Get the current app subscription. Note: This query does not work in the playground
+  """
+  app_subscription: [AppSubscription]
+
+  """Get apps monetization status for an account"""
+  apps_monetization_status: AppMonetizationStatus
+
+  """Get a collection of assets by ids."""
+  assets(
+    """Ids of the assets/files you want to get"""
+    ids: [Int]!
+  ): [Asset]
+
+  """Get a collection of boards."""
+  boards(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """A list of boards unique identifiers."""
+    ids: [Int]
+
+    """The board's kind (public / private / share)"""
+    board_kind: BoardKind
+
+    """
+    The state of the board (all / active / archived / deleted), the default is active.
+    """
+    state: State = active
+
+    """
+    Get the recently created boards at the top of the list, (Deprecated, use order_by:created_at)
+    """
+    newest_first: Boolean
+
+    """Property to order by (created_at / used_at)."""
+    order_by: BoardsOrderBy
+
+    """A list of workspace ids the boards are contained in."""
+    workspace_ids: [Int]
+  ): [Board]
+
+  """Get the complexity data of your queries."""
+  complexity: Complexity
+
+  """Get a collection of docs."""
+  docs(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """A list of document unique identifiers."""
+    ids: [Int]
+
+    """A list of workspace ids the documents are contained in."""
+    workspace_ids: [Int]
+
+    """Property to order by (created_at / used_at)."""
+    order_by: DocsOrderBy
+
+    """A list of associated board or object’s unique identifier."""
+    object_ids: [Int]
+  ): [Document]
+
+  """
+  Get a collection of folders. Note: This query won't return folders from closed workspaces to which you are not subscribed
+  """
+  folders(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """A list of folders unique identifiers."""
+    ids: [Int!]
+
+    """
+    A list of workspace unique identifiers to filter folders by workspaces. (pass null to include Main Workspace)
+    """
+    workspace_ids: [Int]
+  ): [Folder]
+
+  """Get a collection of items."""
+  items(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """A list of items unique identifiers."""
+    ids: [Int]
+
+    """Get the recently created items at the top of the list"""
+    newest_first: Boolean
+
+    """Excludes items that are inactive, deleted or belong to deleted items"""
+    exclude_nonactive: Boolean
+  ): [Item]
+
+  """Search items by their column values."""
+  items_by_column_values(
+    """Number of items to get"""
+    limit: Int
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The column's unique identifier."""
+    column_id: String!
+
+    """The column value to search items by."""
+    column_value: String!
+
+    """The column type."""
+    column_type: String
+
+    """
+    The state of the item (all / active / archived / deleted), the default is active.
+    """
+    state: State = active
+  ): [Item] @deprecated(reason: "Replaced by Query.items_page_by_column_values since 2023-10")
+
+  """Search items by multiple column values."""
+  items_by_multiple_column_values(
+    """Number of items to get"""
+    limit: Int
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """The board's unique identifier."""
+    board_id: Int!
+
+    """The column's unique identifier."""
+    column_id: String!
+
+    """The column values to search items by."""
+    column_values: [String]!
+
+    """The column type."""
+    column_type: String
+
+    """
+    The state of the item (all / active / archived / deleted), the default is active.
+    """
+    state: State = active
+  ): [Item] @deprecated(reason: "Replaced by Query.items_page_by_column_values since 2023-10")
+
+  """Get the connected user's information."""
+  me: User
+
+  """Get a collection of tags."""
+  tags(
+    """A list of tags unique identifiers."""
+    ids: [Int]
+  ): [Tag]
+
+  """Get a collection of teams."""
+  teams(
+    """A list of teams unique identifiers."""
+    ids: [Int]
+  ): [Team]
+
+  """Get a collection of updates."""
+  updates(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [Update]
+
+  """Get a collection of users."""
+  users(
+    """A list of users' unique identifiers."""
+    ids: [Int]
+
+    """The kind to search users by (all / non_guests / guests / non_pending)."""
+    kind: UserKind
+
+    """Get the recently created users at the top of the list"""
+    newest_first: Boolean
+
+    """A list of users' emails."""
+    emails: [String]
+
+    """Allows to fuzzy search by name"""
+    name: String
+
+    """Return non active users in the account."""
+    non_active: Boolean
+
+    """Number of users to get."""
+    limit: Int
+
+    """Page number to get, starting at 1."""
+    page: Int
+  ): [User]
+
+  """Get the API version in use"""
+  version: Version!
+
+  """Get a list containing the versions of the API"""
+  versions: [Version!]!
+
+  """Get a collection of webhooks for the board"""
+  webhooks(
+    """Board unique identifier."""
+    board_id: Int!
+  ): [Webhook]
+
+  """Get a collection of workspaces."""
+  workspaces(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+
+    """A list of workspace unique identifiers."""
+    ids: [Int]
+
+    """The workspace's kind (open / closed)"""
+    kind: WorkspaceKind
+
+    """
+    The state of the workspace (all / active / archived / deleted), the default is active.
+    """
+    state: State = active
+
+    """Property to order by (created_at)."""
+    order_by: WorkspacesOrderBy
+  ): [Workspace]
+}
+
+"""A reply for an update."""
+type Reply {
+  """The reply's html formatted body."""
+  body: String!
+
+  """The reply's creation date."""
+  created_at: Date
+
+  """The reply's creator."""
+  creator: User
+
+  """The unique identifier of the reply creator."""
+  creator_id: String
+
+  """The reply's unique identifier."""
+  id: ID!
+
+  """The reply's text body."""
+  text_body: String
+
+  """The reply's last edit date."""
+  updated_at: Date
+}
+
+"""The possible states for a board or item."""
+enum State {
+  """Active, Archived and Deleted."""
+  all
+
+  """Active only (Default)."""
+  active
+
+  """Archived only."""
+  archived
+
+  """Deleted only."""
+  deleted
+}
+
+"""A tag"""
+type Tag {
+  """The tag's color."""
+  color: String!
+
+  """The tag's unique identifier."""
+  id: Int!
+
+  """The tag's name."""
+  name: String!
+}
+
+"""A team of users."""
+type Team {
+  """The team's unique identifier."""
+  id: Int!
+
+  """The team's name."""
+  name: String!
+
+  """The team's picture url."""
+  picture_url: String
+
+  """The users in the team."""
+  users(
+    """A list of users' unique identifiers."""
+    ids: [Int]
+
+    """The kind to search users by (all / non_guests / guests / non_pending)."""
+    kind: UserKind
+
+    """Get the recently created users at the top of the list"""
+    newest_first: Boolean
+
+    """A list of users' emails."""
+    emails: [String]
+
+    """Allows to fuzzy search by name"""
+    name: String
+
+    """Return non active users in the account."""
+    non_active: Boolean
+
+    """Number of users to get."""
+    limit: Int
+
+    """Page number to get, starting at 1."""
+    page: Int
+  ): [User]
+}
+
+"""An update."""
+type Update {
+  """The update's assets/files."""
+  assets: [Asset]
+
+  """The update's html formatted body."""
+  body: String!
+
+  """The update's creation date."""
+  created_at: Date
+
+  """The update's creator."""
+  creator: User
+
+  """The unique identifier of the update creator."""
+  creator_id: String
+
+  """The update's unique identifier."""
+  id: ID!
+
+  """The update's item ID."""
+  item_id: String
+
+  """The update's replies."""
+  replies: [Reply]
+
+  """The update's text body."""
+  text_body: String
+
+  """The update's last edit date."""
+  updated_at: Date
+}
+
+"""A monday.com user."""
+type User {
+  """The user's account."""
+  account: Account!
+
+  """The user's birthday."""
+  birthday: Date
+
+  """The user's country code."""
+  country_code: String
+
+  """The user's creation date."""
+  created_at: Date
+
+  """The current user's language"""
+  current_language: String
+
+  """The user's email."""
+  email: String!
+
+  """Is the user enabled or not."""
+  enabled: Boolean!
+
+  """The user's unique identifier."""
+  id: Int!
+
+  """Is the user an account admin."""
+  is_admin: Boolean
+
+  """Is the user a guest or not."""
+  is_guest: Boolean
+
+  """Is the user a pending user"""
+  is_pending: Boolean
+
+  """Is user verified his email."""
+  is_verified: Boolean
+
+  """Is the user a view only user or not."""
+  is_view_only: Boolean
+
+  """The date the user joined the account."""
+  join_date: Date
+
+  """Last date & time when user was active"""
+  last_activity: Date
+
+  """The user's location."""
+  location: String
+
+  """The user's mobile phone number."""
+  mobile_phone: String
+
+  """The user's name."""
+  name: String!
+
+  """The user's out of office status."""
+  out_of_office: OutOfOffice
+
+  """The user's phone number."""
+  phone: String
+
+  """The user's photo in the original size."""
+  photo_original: String
+
+  """The user's photo in small size (150x150)."""
+  photo_small: String
+
+  """The user's photo in thumbnail size (100x100)."""
+  photo_thumb: String
+
+  """The user's photo in small thumbnail size (50x50)."""
+  photo_thumb_small: String
+
+  """The user's photo in tiny size (30x30)."""
+  photo_tiny: String
+
+  """The product to which the user signed up to first."""
+  sign_up_product_kind: String
+
+  """The teams the user is a member in."""
+  teams(
+    """A list of teams unique identifiers."""
+    ids: [Int]
+  ): [Team]
+
+  """The user's timezone identifier."""
+  time_zone_identifier: String
+
+  """The user's title."""
+  title: String
+
+  """The user's profile url."""
+  url: String!
+
+  """The user’s utc hours difference."""
+  utc_hours_diff: Int
+}
+
+"""The possibilities for a user kind."""
+enum UserKind {
+  """All users in account."""
+  all
+
+  """Only company members."""
+  non_guests
+
+  """Only guests."""
+  guests
+
+  """All non pending members."""
+  non_pending
+}
+
+"""An object containing the API version details"""
+type Version {
+  """The type of the API version (deprecated / stable / preview / dev)"""
+  kind: VersionKind!
+
+  """Version string that can be used in API-Version header"""
+  value: String!
+}
+
+"""All possible API version types"""
+enum VersionKind {
+  """
+  Previous stable version. Migrate to current stable as soon as possible.
+  """
+  deprecated
+
+  """Current version."""
+  stable
+
+  """Next version to become stable."""
+  preview
+
+  """Bleeding-edge rolling version that constantly changes"""
+  dev
+}
+
+"""Monday webhooks"""
+type Webhook {
+  """The webhooks's board id."""
+  board_id: Int!
+
+  """The webhooks's config."""
+  config: String
+
+  """
+  The event webhook listen to (incoming_notification / change_column_value /
+  create_column / change_status_column_value / change_subitem_column_value /
+  change_specific_column_value / create_item / create_subitem / create_update /
+  edit_update / delete_update / create_subitem_update / change_subitem_name /
+  change_name / when_date_arrived / item_deleted / subitem_deleted /
+  item_archived / subitem_archived / item_restored / item_moved_to_any_group /
+  item_moved_to_specific_group / move_subitem)
+  """
+  event: WebhookEventType!
+
+  """The webhooks's unique identifier."""
+  id: ID!
+}
+
+"""The webhook's target type."""
+enum WebhookEventType {
+  """Column value changed on board"""
+  change_column_value
+
+  """Column created on a board"""
+  create_column
+
+  """Status column value changed on board"""
+  change_status_column_value
+
+  """Column value changed on board subitem"""
+  change_subitem_column_value
+
+  """Specific Column value changed on board"""
+  change_specific_column_value
+
+  """An item was created on board"""
+  create_item
+
+  """A subitem was created on a board"""
+  create_subitem
+
+  """An update was posted on board item"""
+  create_update
+
+  """An update was edited on board item"""
+  edit_update
+
+  """An update was deleted from board item"""
+  delete_update
+
+  """An update was posted on board subitem"""
+  create_subitem_update
+
+  """An subitem name changed on board"""
+  change_subitem_name
+
+  """An item name changed on board"""
+  change_name
+
+  """An item date has arrived"""
+  when_date_arrived
+
+  """An item was deleted from a board"""
+  item_deleted
+
+  """A subitem was deleted from a board"""
+  subitem_deleted
+
+  """An item was archived on a board"""
+  item_archived
+
+  """A subitem was archived on a board"""
+  subitem_archived
+
+  """An item restored back to board"""
+  item_restored
+
+  """An item is moved to any group"""
+  item_moved_to_any_group
+
+  """An item is moved to a specific group"""
+  item_moved_to_specific_group
+
+  """A subitem is moved from one parent to another"""
+  move_subitem
+}
+
+"""A monday.com workspace."""
+type Workspace {
+  """The account product that contains workspace."""
+  account_product: AccountProduct
+
+  """The workspace's creation date."""
+  created_at: Date
+
+  """The workspace's description."""
+  description: String
+
+  """The workspace's unique identifier."""
+  id: Int
+
+  """The workspace's kind (open / closed)."""
+  kind: WorkspaceKind
+
+  """The workspace's name."""
+  name: String!
+
+  """The workspace's user owners."""
+  owners_subscribers(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [User]
+
+  """The workspace's settings."""
+  settings: WorkspaceSettings
+
+  """The workspace's state (all / active / archived / deleted)."""
+  state: State
+
+  """The workspace's team owners."""
+  team_owners_subscribers(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [Team!]
+
+  """The teams subscribed to the workspace."""
+  teams_subscribers(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [Team]
+
+  """The users subscribed to the workspace"""
+  users_subscribers(
+    """Number of items to get, the default is 25."""
+    limit: Int = 25
+
+    """Page number to get, starting at 1."""
+    page: Int = 1
+  ): [User]
+}
+
+"""The workspace's icon."""
+type WorkspaceIcon {
+  """The icon color in hex value. Used as a background for the image."""
+  color: String
+
+  """
+  The public image URL, which is temporary in the case of a file that was
+  uploaded by the user, so you'll need to pull a new version at least once an hour.
+                                 In case it is null, you can use the first letter of the workspace name.
+  """
+  image: String
+}
+
+"""The workspace kinds available."""
+enum WorkspaceKind {
+  """Open workspace."""
+  open
+
+  """Closed workspace, available to enterprise only."""
+  closed
+}
+
+"""The workspace's settings."""
+type WorkspaceSettings {
+  """The workspace icon."""
+  icon: WorkspaceIcon
+}
+
+"""Options to order by."""
+enum WorkspacesOrderBy {
+  """The rank order of the workspace creation time (desc)."""
+  created_at
+}
+
+"""The workspace subscriber kind."""
+enum WorkspaceSubscriberKind {
+  """Workspace subscriber."""
+  subscriber
+
+  """Workspace owner."""
+  owner
+}
+

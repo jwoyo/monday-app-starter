@@ -1,4 +1,4 @@
-import {z} from "zod";
+import {z} from 'zod';
 
 export const oauthTokenInFirestoreSchema = z.object({
   token_type: z.string(),
@@ -15,3 +15,23 @@ export const oauthTokenInFirestoreSchema = z.object({
 });
 
 export type OAuthTokenInFirestore = z.infer<typeof oauthTokenInFirestoreSchema>;
+
+export const checklistInFirestoreSchema = z.object({
+  items: z.array(
+      z.object({
+        id: z.string(),
+        type: z.enum(['item']),
+        title: z.string(),
+        isChecked: z.boolean(),
+        assigneeIds: z.array(z.string()),
+        isOptional: z.boolean(),
+      }).or(
+          z.object({
+            id: z.string(),
+            type: z.enum(['headline']),
+            title: z.string(),
+          })
+      )),
+});
+
+export type ChecklistInFirestore = z.infer<typeof checklistInFirestoreSchema>;

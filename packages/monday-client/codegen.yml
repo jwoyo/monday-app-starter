@@ -1,0 +1,12 @@
+generates:
+  sdk.ts:
+    schema: "schema.graphql"
+    documents:
+      - "operations.graphql"
+    config:
+      namingConvention:
+        enumValues: 'change-case-all#upperCase'
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request

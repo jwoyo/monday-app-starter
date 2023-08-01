@@ -1,33 +1,43 @@
-import {checklistTRPC, mondaySessionUserProcedure, publicProcedure} from "./checklist.server";
-import monday from "monday-sdk-js";
-import {z} from "zod";
-import {exchangeOAuthCodeForAccessToken} from "./monday-oauth-api";
-import {getGlobalOAuthTokenByAccountId, setGlobalOAuthToken} from "./db";
+import {checklistTRPC, mondaySessionUserProcedure, publicProcedure} from './checklist.server';
+import {z} from 'zod';
+import {exchangeOAuthCodeForAccessToken} from './monday-oauth-api';
+import {getChecklistForItemId, getGlobalOAuthTokenByAccountId, setChecklistForItemId, setGlobalOAuthToken} from './db';
+import {checklistInFirestoreSchema, oauthTokenInFirestoreSchema} from './firestore.schemas';
+import {checklistProcedure} from './checklist.procedure';
 
+/**
+ * trpc router for the app. it orchestrates the various procedures for crud operations + validation and OAuth handling.
+ */
 export const router = checklistTRPC.router({
-  getChecklist: mondaySessionUserProcedure
-    .query(async (opts) => {
-      console.log(JSON.stringify(opts));
-      const api = monday();
-      api.setToken("eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI3MTk5Mzg1NSwiYWFpIjoxOTQ1NTcsInVpZCI6NDYxNzI1MzUsImlhZCI6IjIwMjMtMDctMzFUMDk6NTE6MjUuNjk3WiIsInBlciI6Im1lOnJlYWQsYm9hcmRzOnJlYWQsYm9hcmRzOndyaXRlLHdvcmtzcGFjZXM6cmVhZCx3b3Jrc3BhY2VzOndyaXRlLHVzZXJzOnJlYWQsdXNlcnM6d3JpdGUsYWNjb3VudDpyZWFkLG5vdGlmaWNhdGlvbnM6d3JpdGUsdXBkYXRlczpyZWFkIiwiYWN0aWQiOjE3OTg4NDI2LCJyZ24iOiJldWMxIn0.GbmBP-Maq2Vam_M8SMBUzpRlKrCqqv7itf_7it-ERcs");
-      api.api("query { users { id, name } }").then((res) => {
-        console.log(JSON.stringify(res));
-        /* { data: { users: [{id: 12312, name: "Bart Simpson"}, {id: 423423, name: "Homer Simpson"}] } } */
-      });
-      return "Success!";
-    }),
+  getChecklist: checklistProcedure
+      .query(async (opts) => {
+        const {itemId} = opts.input;
+        const {account_id: accountId} = opts.ctx.mondayContext.dat;
+        return await getChecklistForItemId({accountId, itemId});
+      }),
+  setChecklist: mondaySessionUserProcedure.input(
+      z.object({
+        itemId: z.number(),
+        checklist: checklistInFirestoreSchema,
+      }))
+      .mutation(async (opts) => {
+        const {itemId, checklist} = opts.input;
+        const {account_id: accountId} = opts.ctx.mondayContext.dat;
+        return await setChecklistForItemId({accountId, itemId, checklist});
+      }),
   OAuth: checklistTRPC.router({
     exchangeCode: publicProcedure
-      .input(
-        z.object({
-          code: z.string(),
+        .input(
+            z.object({
+              code: z.string(),
+            }),
+        )
+        .mutation(async (opts) => {
+          const {code} = opts.input;
+          const accessToken = await exchangeOAuthCodeForAccessToken(code);
+          oauthTokenInFirestoreSchema.parse(accessToken);
+          await setGlobalOAuthToken(accessToken);
         }),
-      )
-      .mutation(async (opts) => {
-        const {code} = opts.input;
-        const accessToken = await exchangeOAuthCodeForAccessToken(code);
-        await setGlobalOAuthToken(accessToken);
-      }),
     isSignedUp: mondaySessionUserProcedure.query(async (opts) => {
       return !!await getGlobalOAuthTokenByAccountId({accountId: opts.ctx.mondayContext.dat.account_id, userId: opts.ctx.mondayContext.dat.user_id});
     }),

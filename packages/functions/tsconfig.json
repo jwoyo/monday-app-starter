@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "paths": {
       "bridge/*": ["../bridge/src/*"],
+      "monday-client/*": ["../monday-client/*"],
     },
     "noEmit": true
   },

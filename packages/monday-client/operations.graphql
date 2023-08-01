@@ -1,0 +1,6 @@
+query itemById($id: Int!) {
+    items(ids: [$id]) {
+        id
+        name
+    }
+}

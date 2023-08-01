@@ -7,5 +7,5 @@ esbuild.build({
     outfile: 'dist/out.js',
     target: "node18",
     platform: "node",
-    plugins: [nodeExternalsPlugin({allowList: ["bridge"]})],
+    plugins: [nodeExternalsPlugin({allowList: ["bridge", "monday-client"]})],
 }).catch(() => process.exit(1))

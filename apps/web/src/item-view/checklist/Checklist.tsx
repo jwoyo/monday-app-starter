@@ -1,8 +1,17 @@
-import {AttentionBox, Button, Skeleton, TextField} from 'monday-ui-react-core';
+import {AttentionBox, Button, Checkbox, LinearProgressBar, Skeleton, Text, TextField} from 'monday-ui-react-core';
 import {AddSmall} from 'monday-ui-react-core/icons';
 import React, {useCallback, useState} from 'react';
-import {addItemClassName, checklistClassName, checklistSkeletonClassName} from './Checklist.css.ts';
+import {
+  addItemClassName,
+  checklistClassName,
+  checklistItemClassName, checklistItemsClassName,
+  checklistSkeletonClassName,
+} from './Checklist.css.ts';
 import {useChecklist} from './use-checklist.ts';
+import {
+  ChecklistItemHeadlineInFirestore,
+  ChecklistItemInFirestore,
+} from 'functions/firestore.schemas.ts';
 
 /**
  * checklist view
@@ -20,6 +29,7 @@ export function Checklist() {
       </div>
     </div>;
   }
+
   if (query.isError) {
     return <AttentionBox title="Could not load checklist"
       text="We could not fetch the checklist from monday.com. Please try again later or contact app support."
@@ -29,14 +39,15 @@ export function Checklist() {
 
   return (
     <div className={checklistClassName}>
+      <ChecklistProgressBar/>
+      <ChecklistItems/>
       <AddItem/>
-      {query.data?.items.map((item) => <div key={item.id}>{JSON.stringify(item)}</div>)}
     </div>
   );
 }
 
 function AddItem() {
-  const {addItem} = useChecklist();
+  const {addItem, isMutating} = useChecklist();
   const [value, setValue] = useState('');
   const add = useCallback(() => {
     if (!value) {
@@ -44,7 +55,7 @@ function AddItem() {
     }
     setValue('');
     addItem(value);
-  }, [value]);
+  }, [addItem, value]);
   return <div className={addItemClassName}>
     <TextField
       value={value}
@@ -57,5 +68,51 @@ function AddItem() {
       placeholder="Enter text for a new checklist item here"
     />
     <Button disabled={!value} size={Button.sizes.SMALL} rightIcon={AddSmall} onClick={add}>Add item</Button>
+    {JSON.stringify(isMutating)}
   </div>;
+}
+
+function ChecklistItems() {
+  const {checklistQuery: {data: checklist}} = useChecklist();
+  return <div className={checklistItemsClassName}>
+    {
+      checklist?.items.map((item) => {
+        if (item.type === 'headline') {
+          return <ChecklistItemHeadline key={item.id} item={item}/>;
+        }
+        return <ChecklistItem key={item.id} item={item}/>;
+      })
+    }
+  </div>;
+}
+
+function ChecklistItemHeadline({item}: { item: ChecklistItemHeadlineInFirestore }) {
+  return <div className={checklistItemClassName}>
+    <Text>{item.title}</Text>
+  </div>;
+}
+
+function ChecklistItem({item}: { item: ChecklistItemInFirestore }) {
+  const {updateItem} = useChecklist();
+  return <div className={checklistItemClassName}>
+    <Checkbox
+      onChange={(e) => updateItem(item.id, {isChecked: e.target.checked})}
+      defaultChecked={item.isChecked}
+    />
+    <Text>{item.title}</Text>
+  </div>;
+}
+
+function ChecklistProgressBar() {
+  const {checklistQuery: {data: checklist}} = useChecklist();
+  const items = checklist?.items.filter((item): item is ChecklistItemInFirestore => item.type === 'item');
+  const value = items ? items.filter((item) => item.isChecked).length / items.length : 0;
+  if (!checklist) {
+    return <></>;
+  }
+  return <LinearProgressBar
+    size={LinearProgressBar.sizes.LARGE as never}
+    indicateProgress
+    value={value * 100}
+  />;
 }

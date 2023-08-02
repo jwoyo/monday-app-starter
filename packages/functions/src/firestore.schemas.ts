@@ -16,22 +16,28 @@ export const oauthTokenInFirestoreSchema = z.object({
 
 export type OAuthTokenInFirestore = z.infer<typeof oauthTokenInFirestoreSchema>;
 
+
+const checklistItemInFirestoreItemSchema = z.object({
+  id: z.string(),
+  type: z.enum(['item']),
+  title: z.string(),
+  isChecked: z.boolean(),
+  assigneeIds: z.array(z.string()),
+  isOptional: z.boolean(),
+});
+const checklistItemHeadlineInFirestoreItemSchema = z.object({
+  id: z.string(),
+  type: z.enum(['headline']),
+  title: z.string(),
+});
+
 export const checklistInFirestoreSchema = z.object({
   items: z.array(
-      z.object({
-        id: z.string(),
-        type: z.enum(['item']),
-        title: z.string(),
-        isChecked: z.boolean(),
-        assigneeIds: z.array(z.string()),
-        isOptional: z.boolean(),
-      }).or(
-          z.object({
-            id: z.string(),
-            type: z.enum(['headline']),
-            title: z.string(),
-          })
+      checklistItemInFirestoreItemSchema.or(
+          checklistItemHeadlineInFirestoreItemSchema
       )),
 });
 
 export type ChecklistInFirestore = z.infer<typeof checklistInFirestoreSchema>;
+export type ChecklistItemInFirestore = z.infer<typeof checklistItemInFirestoreItemSchema>;
+export type ChecklistItemHeadlineInFirestore = z.infer<typeof checklistItemHeadlineInFirestoreItemSchema>;

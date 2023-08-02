@@ -1,8 +1,8 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {trpc} from '../trpc.ts';
 import {useMutation} from '@tanstack/react-query';
 import {errorMessageStyles, signUpMessageChildStyles, signUpMessageStyles} from '../App.css.ts';
-import {AttentionBox, Button, Heading, Text} from 'monday-ui-react-core';
+import {AttentionBox, Button, Text} from 'monday-ui-react-core';
 import {Card} from 'antd';
 
 
@@ -11,7 +11,13 @@ import {Card} from 'antd';
  * @return {ReactElement}
  */
 export function MondayOAuthBoundary({children}: { children: ReactElement }) {
-  const isSignedUp = trpc.OAuth.isSignedUp.useQuery();
+  const [hasBeenSuccessFullySignedUp, setHasBeenSuccessFullySignedUp] = useState(false);
+  const isSignedUp = trpc.OAuth.isSignedUp.useQuery(undefined, {
+    enabled: !hasBeenSuccessFullySignedUp,
+    onSettled: (data) => {
+      setHasBeenSuccessFullySignedUp(data === true);
+    },
+  });
   const signUp = useMutation(async () => {
     const redirectUri = import.meta.env.__MONDAY_APP_HOSTING_URL__ + '/oauth/callback';
     const clientId = import.meta.env.__MONDAY_APP_CLIENT_ID__;

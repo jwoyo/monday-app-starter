@@ -22,6 +22,7 @@ export const router = trpc.router({
           checklist: checklistInFirestoreSchema,
         }))
         .mutation(async (opts) => {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           const {itemId, checklist} = opts.input;
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           return await setChecklistForItemId({accountId, itemId, checklist});

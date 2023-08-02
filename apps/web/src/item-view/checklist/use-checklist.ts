@@ -4,7 +4,7 @@ import {trpc} from '../../trpc.ts';
 import {produce} from 'immer';
 import {v4 as uuidv4} from 'uuid';
 import {ChecklistInFirestore} from 'functions/firestore.schemas.ts';
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import {getQueryKey} from '@trpc/react-query';
 
 export function useChecklist() {
@@ -12,9 +12,7 @@ export function useChecklist() {
   const queryClient = useQueryClient();
   const queryKey = getQueryKey( trpc.checklist.get, {itemId: context!.itemId}, 'query');
   const [isMutating, setIsMutating] = useState(false);
-  const query = trpc.checklist.get.useQuery({itemId: context!.itemId}, {enabled: !isMutating});
-
-  const {mutate} = trpc.checklist.set.useMutation({
+  const {mutate, isLoading} = trpc.checklist.set.useMutation({
     onMutate: async ({checklist}) => {
       await queryClient.cancelQueries({queryKey});
       const previousChecklist = queryClient.getQueryData(queryKey);
@@ -30,15 +28,17 @@ export function useChecklist() {
     },
   });
 
-  const mutateServerState = (checklist: ChecklistInFirestore) => {
+  const query = trpc.checklist.get.useQuery({itemId: context!.itemId}, {enabled: !isLoading});
+
+  const mutateServerState = useCallback((checklist: ChecklistInFirestore) => {
     setIsMutating(true);
     return mutate({
       itemId: context!.itemId,
       checklist,
     });
-  };
+  }, [context, mutate]);
 
-  const addItem = (title: string) => {
+  const addItem = useCallback((title: string) => {
     const newChecklist = produce(query.data || EMPTY_CHECKLIST, (state) => {
       state.items.push({
         id: uuidv4(),
@@ -50,9 +50,9 @@ export function useChecklist() {
       });
     });
     mutateServerState(newChecklist);
-  };
+  }, [mutateServerState, query.data]);
 
-  const updateItem = (id: string, update: Partial<ChecklistInFirestore['items'][number]>) => {
+  const updateItem = useCallback((id: string, update: Partial<ChecklistInFirestore['items'][number]>) => {
     const newChecklist = produce(query.data!, (state) => {
       if (!state) {
         return;
@@ -82,7 +82,8 @@ export function useChecklist() {
       }
     });
     mutateServerState(newChecklist);
-  };
+  }, [query.data, mutateServerState]);
+
 
   return {
     checklistQuery: query,

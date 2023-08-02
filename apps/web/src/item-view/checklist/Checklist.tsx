@@ -7,9 +7,8 @@ import {
   checklistItemClassName, checklistItemsClassName,
   checklistSkeletonClassName,
 } from './Checklist.css.ts';
-import {useChecklist} from './use-checklist.ts';
+import {ChecklistContext, useChecklist, useChecklistMutations} from './use-checklist.ts';
 import {
-  ChecklistInFirestore,
   ChecklistItemHeadlineInFirestore,
   ChecklistItemInFirestore,
 } from 'functions/firestore.schemas.ts';
@@ -19,7 +18,9 @@ import {
  * @return {ReactElement}
  */
 export function Checklist() {
-  const {checklistQuery, checklist, addItem, updateItem, isMutating} = useChecklist();
+  const checklist = useChecklistMutations();
+  const {checklistQuery} = checklist;
+
   if (checklistQuery.isLoading) {
     return <div className={checklistClassName}>
       <div className={checklistSkeletonClassName}>
@@ -39,15 +40,18 @@ export function Checklist() {
   }
 
   return (
-    <div className={checklistClassName}>
-      <ChecklistProgressBar {...{checklistQuery, checklist, addItem, updateItem, isMutating}}/>
-      <ChecklistItems {...{checklistQuery, checklist, addItem, updateItem, isMutating}}/>
-      <AddItem addItem={addItem}/>
-    </div>
+    <ChecklistContext.Provider value={checklist}>
+      <div className={checklistClassName}>
+        <ChecklistProgressBar/>
+        <ChecklistItems/>
+        <AddItem/>
+      </div>
+    </ChecklistContext.Provider>
   );
 }
 
-function AddItem({addItem}: {addItem:(title: string) => void}) {
+function AddItem() {
+  const {addItem} = useChecklist();
   const [value, setValue] = useState('');
   const add = useCallback(() => {
     if (!value) {
@@ -71,14 +75,15 @@ function AddItem({addItem}: {addItem:(title: string) => void}) {
   </div>;
 }
 
-function ChecklistItems(props: ReturnType<typeof useChecklist>) {
+function ChecklistItems() {
+  const {checklist} = useChecklist();
   return <div className={checklistItemsClassName}>
     {
-      props.checklist?.items.map((item) => {
+      checklist?.items.map((item) => {
         if (item.type === 'headline') {
           return <ChecklistItemHeadline key={item.id} item={item}/>;
         }
-        return <ChecklistItem key={item.id} item={item} {...props}/>;
+        return <ChecklistItem key={item.id} item={item}/>;
       })
     }
   </div>;
@@ -90,7 +95,8 @@ function ChecklistItemHeadline({item}: {item: ChecklistItemHeadlineInFirestore})
   </div>;
 }
 
-function ChecklistItem({item, updateItem}: {item: ChecklistItemInFirestore} & ReturnType<typeof useChecklist>) {
+function ChecklistItem({item}: {item: ChecklistItemInFirestore}) {
+  const {updateItem} = useChecklist();
   return <div className={checklistItemClassName}>
     <Checkbox
       onChange={(e) => updateItem(item.id, {isChecked: e.target.checked})}
@@ -100,7 +106,8 @@ function ChecklistItem({item, updateItem}: {item: ChecklistItemInFirestore} & Re
   </div>;
 }
 
-function ChecklistProgressBar({checklist}: ReturnType<typeof useChecklist>) {
+function ChecklistProgressBar() {
+  const {checklist} = useChecklist();
   const items = checklist?.items.filter((item): item is ChecklistItemInFirestore => item.type === 'item');
   const value = items ? items.filter((item) => item.isChecked).length / items.length : 0;
   if (!checklist) {

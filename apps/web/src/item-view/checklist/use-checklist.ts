@@ -4,14 +4,19 @@ import {trpc} from '../../trpc.ts';
 import {produce} from 'immer';
 import {v4 as uuidv4} from 'uuid';
 import {ChecklistInFirestore} from 'functions/firestore.schemas.ts';
-import {useCallback, useState} from 'react';
+import {createContext, useCallback, useContext} from 'react';
 import {getQueryKey} from '@trpc/react-query';
 
-export function useChecklist() {
+/**
+ * handles query and mutation management for a single checklist in the item view.
+ * should not be called twice with the same itemId as multiple invocation would introduce states that prevent proper optimistic updates.
+ *
+ * @returns {object} checklist and server state operations
+ */
+export function useChecklistMutations() {
   const {context} = useMonday();
   const queryClient = useQueryClient();
   const queryKey = getQueryKey( trpc.checklist.get, {itemId: context!.itemId}, 'query');
-  const [isMutating, setIsMutating] = useState(false);
   const {mutate, isLoading} = trpc.checklist.set.useMutation({
     onMutate: async ({checklist}) => {
       await queryClient.cancelQueries({queryKey});
@@ -23,7 +28,6 @@ export function useChecklist() {
       queryClient.setQueriesData(queryKey, context?.previousChecklist);
     },
     onSettled: async () => {
-      setIsMutating(false);
       await queryClient.invalidateQueries(queryKey);
     },
   });
@@ -31,7 +35,6 @@ export function useChecklist() {
   const query = trpc.checklist.get.useQuery({itemId: context!.itemId}, {enabled: !isLoading});
 
   const mutateServerState = useCallback((checklist: ChecklistInFirestore) => {
-    setIsMutating(true);
     return mutate({
       itemId: context!.itemId,
       checklist,
@@ -90,9 +93,12 @@ export function useChecklist() {
     checklist: query.data,
     addItem,
     updateItem,
-    isMutating,
   };
 }
+
+export const ChecklistContext = createContext<ReturnType<typeof useChecklistMutations>>(null!);
+
+export const useChecklist = () => useContext(ChecklistContext);
 
 const EMPTY_CHECKLIST: ChecklistInFirestore = {
   items: [],

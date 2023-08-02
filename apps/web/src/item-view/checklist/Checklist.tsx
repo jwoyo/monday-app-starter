@@ -9,6 +9,7 @@ import {
 } from './Checklist.css.ts';
 import {useChecklist} from './use-checklist.ts';
 import {
+  ChecklistInFirestore,
   ChecklistItemHeadlineInFirestore,
   ChecklistItemInFirestore,
 } from 'functions/firestore.schemas.ts';
@@ -18,8 +19,8 @@ import {
  * @return {ReactElement}
  */
 export function Checklist() {
-  const {checklistQuery: query} = useChecklist();
-  if (query.isLoading) {
+  const {checklistQuery, checklist, addItem, updateItem, isMutating} = useChecklist();
+  if (checklistQuery.isLoading) {
     return <div className={checklistClassName}>
       <div className={checklistSkeletonClassName}>
         <Skeleton height={20}/>
@@ -30,7 +31,7 @@ export function Checklist() {
     </div>;
   }
 
-  if (query.isError) {
+  if (checklistQuery.isError) {
     return <AttentionBox title="Could not load checklist"
       text="We could not fetch the checklist from monday.com. Please try again later or contact app support."
       type={AttentionBox.types.DANGER}
@@ -39,15 +40,14 @@ export function Checklist() {
 
   return (
     <div className={checklistClassName}>
-      <ChecklistProgressBar/>
-      <ChecklistItems/>
-      <AddItem/>
+      <ChecklistProgressBar {...{checklistQuery, checklist, addItem, updateItem, isMutating}}/>
+      <ChecklistItems {...{checklistQuery, checklist, addItem, updateItem, isMutating}}/>
+      <AddItem addItem={addItem}/>
     </div>
   );
 }
 
-function AddItem() {
-  const {addItem, isMutating} = useChecklist();
+function AddItem({addItem}: {addItem:(title: string) => void}) {
   const [value, setValue] = useState('');
   const add = useCallback(() => {
     if (!value) {
@@ -68,32 +68,29 @@ function AddItem() {
       placeholder="Enter text for a new checklist item here"
     />
     <Button disabled={!value} size={Button.sizes.SMALL} rightIcon={AddSmall} onClick={add}>Add item</Button>
-    {JSON.stringify(isMutating)}
   </div>;
 }
 
-function ChecklistItems() {
-  const {checklistQuery: {data: checklist}} = useChecklist();
+function ChecklistItems(props: ReturnType<typeof useChecklist>) {
   return <div className={checklistItemsClassName}>
     {
-      checklist?.items.map((item) => {
+      props.checklist?.items.map((item) => {
         if (item.type === 'headline') {
           return <ChecklistItemHeadline key={item.id} item={item}/>;
         }
-        return <ChecklistItem key={item.id} item={item}/>;
+        return <ChecklistItem key={item.id} item={item} {...props}/>;
       })
     }
   </div>;
 }
 
-function ChecklistItemHeadline({item}: { item: ChecklistItemHeadlineInFirestore }) {
+function ChecklistItemHeadline({item}: {item: ChecklistItemHeadlineInFirestore}) {
   return <div className={checklistItemClassName}>
     <Text>{item.title}</Text>
   </div>;
 }
 
-function ChecklistItem({item}: { item: ChecklistItemInFirestore }) {
-  const {updateItem} = useChecklist();
+function ChecklistItem({item, updateItem}: {item: ChecklistItemInFirestore} & ReturnType<typeof useChecklist>) {
   return <div className={checklistItemClassName}>
     <Checkbox
       onChange={(e) => updateItem(item.id, {isChecked: e.target.checked})}
@@ -103,8 +100,7 @@ function ChecklistItem({item}: { item: ChecklistItemInFirestore }) {
   </div>;
 }
 
-function ChecklistProgressBar() {
-  const {checklistQuery: {data: checklist}} = useChecklist();
+function ChecklistProgressBar({checklist}: ReturnType<typeof useChecklist>) {
   const items = checklist?.items.filter((item): item is ChecklistItemInFirestore => item.type === 'item');
   const value = items ? items.filter((item) => item.isChecked).length / items.length : 0;
   if (!checklist) {

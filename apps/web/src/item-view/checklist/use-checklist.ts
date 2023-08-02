@@ -87,6 +87,7 @@ export function useChecklist() {
 
   return {
     checklistQuery: query,
+    checklist: query.data,
     addItem,
     updateItem,
     isMutating,

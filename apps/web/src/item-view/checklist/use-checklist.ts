@@ -89,6 +89,19 @@ export function useChecklist() {
     mutateServerState(newChecklist);
   }, [query.data, mutateServerState]);
 
+  const moveItem = useCallback((fromId: string, toId: string) => {
+    const newChecklist = produce(query.data!, (state) => {
+      if (!state) {
+        return;
+      }
+      const oldIndex = state.items.findIndex((item) => item.id === fromId);
+      const newIndex = state.items.findIndex((item) => item.id === toId);
+      const [removed] = state.items.splice(oldIndex, 1);
+      state.items.splice(newIndex, 0, removed);
+    });
+    mutateServerState(newChecklist);
+  }, [query.data, mutateServerState]);
+
   const deleteItem = useCallback((id: string) => {
     const newChecklist = produce(query.data!, (state) => {
       if (!state) {
@@ -107,6 +120,7 @@ export function useChecklist() {
     addItem,
     updateItem,
     deleteItem,
+    moveItem,
   };
 }
 

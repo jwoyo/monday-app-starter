@@ -4,11 +4,10 @@ import {
   Checkbox, EditableHeading,
   IconButton,
   Skeleton,
-  Text,
   TextField,
 } from 'monday-ui-react-core';
-import {AddSmall, Erase, Note, Quote, Help, Completed, Edit} from 'monday-ui-react-core/icons';
-import React, {forwardRef, useCallback, useRef, useState} from 'react';
+import {AddSmall, Erase, Note, Completed, Edit} from 'monday-ui-react-core/icons';
+import React, {ReactElement, useCallback, useEffect, useRef, useState} from 'react';
 import {
   addItemClassName,
   checklistClassName,
@@ -22,6 +21,7 @@ import {
 } from 'functions/firestore.schemas.ts';
 import {Progress} from 'antd';
 import {CHECKLIST_ITEM_MAX_LENGTH} from 'bridge/constants.ts';
+import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
 
 /**
  * checklist view
@@ -87,11 +87,62 @@ function AddItem() {
 }
 
 function ChecklistItems() {
-  const {checklist} = useChecklist();
-  return <div className={checklistItemsClassName}>
-    {
-      checklist?.items.map((item) => <div className={'checklist-item-wrapper-' + item.type}><ChecklistItem key={item.id} item={item}/></div>)
+  const {checklist, moveItem} = useChecklist();
+  const [itemIds, setItemIds] = useState<string[]>(checklist?.items.map((item) => item.id) || []);
+  useEffect(() => {
+    setItemIds(checklist?.items.map((item) => item.id) || []);
+  }, [checklist?.items]);
+  if (!checklist) {
+    return <></>;
+  }
+  const onDragEnd = (result: DropResult) => {
+    if (result.destination?.index === undefined) {
+      return;
     }
+    const from = checklist.items[result.source.index];
+    const to = checklist.items[result.destination.index];
+    if (from === undefined || to === undefined || from.id === to.id) {
+      return;
+    }
+    setItemIds((ids) => {
+      const newIds = [...ids];
+      const [deleted] = newIds.splice(result.source.index, 1);
+      newIds.splice(result.destination!.index, 0, deleted);
+      return newIds;
+    });
+    moveItem(from.id, to.id);
+  };
+
+  return <div className={checklistItemsClassName}><DragDropContext onDragEnd={onDragEnd}>
+    <Droppable droppableId="droppable">
+      {(provided) => (
+        <div
+          {...provided.droppableProps}
+          ref={provided.innerRef}
+        >
+          {itemIds
+              .map((id) => checklist.items.find((i) => i.id === id))
+              .filter((i): i is ChecklistItemInFirestore => !!i)
+              .map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <div key={item.id} className={'checklist-item-wrapper-' + item.type}>
+                        <ChecklistItem key={item.id} item={item}/>
+                      </div>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  </DragDropContext>
   </div>;
 }
 
@@ -100,15 +151,11 @@ function ChecklistItem({item}: { item: ChecklistInFirestore['items'][number] }) 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(item.title);
   const ref = useRef<HTMLElement | null>(null);
-  const update = (update: Parameters<typeof updateItem>[1]) => updateItem(item.id, update);
-  const onSave = () => {
+  const update = useCallback((update: Parameters<typeof updateItem>[1]) => updateItem(item.id, update), [item, updateItem]);
+  const onSave = useCallback(() => {
     update({title});
     setIsEditing(false);
-  };
-    /* useClickOutside({
-    ref,
-    callback: onSave,
-  });*/
+  }, [update, setIsEditing, title]);
   return <div className={checklistItemsInnerClassName}>
     <div className={checklistItemTitleClassName}>
       {

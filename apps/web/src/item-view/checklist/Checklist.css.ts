@@ -26,6 +26,11 @@ export const checklistItemTitleClassName = style({
   maxWidth: '100%',
 });
 
+globalStyle(`${checklistItemTitleClassName} checkbox:checked`, {
+  animation: 'none',
+});
+
+
 globalStyle(`${checklistItemTitleClassName} h5`, {
   padding: 0,
   fontSize: '14px',
@@ -41,13 +46,13 @@ export const checklistItemTitleEditClassName = style({
 });
 globalStyle(`${checklistItemTitleEditClassName} .item-type-headline h5`, {
   fontWeight: '600',
-  marginLeft: '0',
   paddingLeft: '0',
   borderLeft: '0',
+  marginLeft: '-2px',
 });
 globalStyle(`${checklistItemTitleEditClassName} .item-type-headline input`, {
   fontWeight: '600',
-  marginLeft: '-5px',
+  marginLeft: '-7px',
 });
 globalStyle(`${checklistItemTitleEditClassName} .item-type-headline`, {
   maxWidth: 'calc(100vw - 193px)',

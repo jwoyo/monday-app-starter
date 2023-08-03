@@ -1,4 +1,4 @@
-import {style} from '@vanilla-extract/css';
+import {globalStyle, style} from '@vanilla-extract/css';
 
 export const checklistSkeletonClassName = style({
   display: 'flex',
@@ -13,18 +13,65 @@ export const addItemClassName = style({
   alignItems: 'flex-end',
 });
 
-export const checklistItemClassName = style({
+globalStyle(`${addItemClassName} button`, {
+  width: '140px',
+});
+
+export const checklistItemTitleClassName = style({
   display: 'flex',
   flexDirection: 'row',
   gap: '0.25rem',
   alignItems: 'center',
-  width: 'calc(100% - 101px - 0.5rem)',
+  width: '100%',
+  maxWidth: '100%',
+});
+
+globalStyle(`${checklistItemTitleClassName} h5`, {
+  padding: 0,
+  fontSize: '14px',
+});
+
+globalStyle(`${checklistItemTitleClassName} input`, {
+  marginLeft: '-4px',
+});
+
+export const checklistItemTitleEditClassName = style({
+  width: '100%',
+  paddingRight: '1rem',
+});
+globalStyle(`${checklistItemTitleEditClassName} .item-type-headline h5`, {
+  fontWeight: '600',
+  marginLeft: '0',
+  paddingLeft: '0',
+  borderLeft: '0',
+});
+globalStyle(`${checklistItemTitleEditClassName} .item-type-headline input`, {
+  fontWeight: '600',
+  marginLeft: '-5px',
+});
+globalStyle(`${checklistItemTitleEditClassName} .item-type-headline`, {
+  maxWidth: 'calc(100vw - 193px)',
+});
+globalStyle(`${checklistItemTitleEditClassName} .item-type-item`, {
+  maxWidth: 'calc(100vw - 223px)',
+});
+globalStyle(`${checklistItemTitleEditClassName} .optional h5`, {
+  fontStyle: 'italic',
+  opacity: 0.7,
+});
+globalStyle(`${checklistItemTitleEditClassName} input`, {
+  fontSize: '14px',
 });
 
 export const checklistItemsClassName = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '0.3rem',
+  marginTop: '-0.5rem',
+});
+
+globalStyle(`${checklistItemsClassName} .checklist-item-wrapper-headline`, {
+  paddingTop: '0.75rem',
 });
 
 export const checklistItemsInnerClassName = style({
@@ -35,11 +82,15 @@ export const checklistItemsInnerClassName = style({
 
 export const checklistItemToolbarClassName = style({
   flexDirection: 'row',
-  gap: '5px',
-  display: 'none',
+  justifyContent: 'space-between',
+  display: 'flex',
+  opacity: 0,
+  pointerEvents: 'none',
+  width: '140px',
   selectors: {
     [`${checklistItemsInnerClassName}:hover &`]: {
-      display: 'flex',
+      pointerEvents: 'all',
+      opacity: 1,
     },
   },
 });

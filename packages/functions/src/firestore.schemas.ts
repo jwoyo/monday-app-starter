@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {CHECKLIST_ITEM_MAX_LENGTH} from 'bridge/constants';
 
 export const oauthTokenInFirestoreSchema = z.object({
   token_type: z.string(),
@@ -28,7 +29,7 @@ const checklistItemInFirestoreItemSchema = z.object({
 const checklistItemHeadlineInFirestoreItemSchema = z.object({
   id: z.string(),
   type: z.enum(['headline']),
-  title: z.string(),
+  title: z.string().max(CHECKLIST_ITEM_MAX_LENGTH),
 });
 
 export const checklistInFirestoreSchema = z.object({

@@ -89,12 +89,24 @@ export function useChecklist() {
     mutateServerState(newChecklist);
   }, [query.data, mutateServerState]);
 
+  const deleteItem = useCallback((id: string) => {
+    const newChecklist = produce(query.data!, (state) => {
+      if (!state) {
+        return;
+      }
+      const itemIdx = state.items.findIndex((item) => item.id === id);
+      state.items.splice(itemIdx, 1);
+    });
+    mutateServerState(newChecklist);
+  }, [query.data, mutateServerState]);
+
 
   return {
     checklistQuery: query,
     checklist: query.data,
     addItem,
     updateItem,
+    deleteItem,
   };
 }
 

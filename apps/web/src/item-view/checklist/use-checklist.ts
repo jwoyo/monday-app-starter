@@ -1,10 +1,10 @@
 import {useMonday} from '../../use-monday.ts';
-import {useQueryClient} from '@tanstack/react-query';
+import {useIsMutating, useQueryClient} from '@tanstack/react-query';
 import {trpc} from '../../trpc.ts';
 import {produce} from 'immer';
 import {v4 as uuidv4} from 'uuid';
 import {ChecklistInFirestore} from 'functions/firestore.schemas.ts';
-import {createContext, useCallback, useContext} from 'react';
+import {useCallback} from 'react';
 import {getQueryKey} from '@trpc/react-query';
 
 /**
@@ -13,11 +13,13 @@ import {getQueryKey} from '@trpc/react-query';
  *
  * @returns {object} checklist and server state operations
  */
-export function useChecklistMutations() {
+export function useChecklist() {
   const {context} = useMonday();
   const queryClient = useQueryClient();
   const queryKey = getQueryKey( trpc.checklist.get, {itemId: context!.itemId}, 'query');
-  const {mutate, isLoading} = trpc.checklist.set.useMutation({
+  const mutationKey = ['checklist', 'set'];
+  const {mutate} = trpc.checklist.set.useMutation({
+    mutationKey,
     onMutate: async ({checklist}) => {
       await queryClient.cancelQueries({queryKey});
       const previousChecklist = queryClient.getQueryData(queryKey);
@@ -31,8 +33,8 @@ export function useChecklistMutations() {
       await queryClient.invalidateQueries(queryKey);
     },
   });
-
-  const query = trpc.checklist.get.useQuery({itemId: context!.itemId}, {enabled: !isLoading});
+  const runningMutationCount = useIsMutating([mutationKey]);
+  const query = trpc.checklist.get.useQuery({itemId: context!.itemId}, {enabled: runningMutationCount === 0});
 
   const mutateServerState = useCallback((checklist: ChecklistInFirestore) => {
     return mutate({
@@ -95,10 +97,6 @@ export function useChecklistMutations() {
     updateItem,
   };
 }
-
-export const ChecklistContext = createContext<ReturnType<typeof useChecklistMutations>>(null!);
-
-export const useChecklist = () => useContext(ChecklistContext);
 
 const EMPTY_CHECKLIST: ChecklistInFirestore = {
   items: [],

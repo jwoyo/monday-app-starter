@@ -1,24 +1,34 @@
-import {AttentionBox, Button, Checkbox, LinearProgressBar, Skeleton, Text, TextField} from 'monday-ui-react-core';
-import {AddSmall} from 'monday-ui-react-core/icons';
+import {
+  AttentionBox,
+  Button,
+  Checkbox,
+  IconButton,
+  Skeleton,
+  Text,
+  TextField,
+} from 'monday-ui-react-core';
+import {AddSmall, Erase, Note, Quote, Help, Completed, Edit} from 'monday-ui-react-core/icons';
 import React, {useCallback, useState} from 'react';
 import {
   addItemClassName,
   checklistClassName,
-  checklistItemClassName, checklistItemsClassName,
+  checklistItemClassName, checklistItemsClassName, checklistItemsInnerClassName, checklistItemToolbarClassName,
   checklistSkeletonClassName,
 } from './Checklist.css.ts';
-import {ChecklistContext, useChecklist, useChecklistMutations} from './use-checklist.ts';
+import {useChecklist} from './use-checklist.ts';
 import {
+  ChecklistInFirestore,
   ChecklistItemHeadlineInFirestore,
   ChecklistItemInFirestore,
 } from 'functions/firestore.schemas.ts';
+import {Progress} from 'antd';
 
 /**
  * checklist view
  * @return {ReactElement}
  */
 export function Checklist() {
-  const checklist = useChecklistMutations();
+  const checklist = useChecklist();
   const {checklistQuery} = checklist;
 
   if (checklistQuery.isLoading) {
@@ -40,13 +50,13 @@ export function Checklist() {
   }
 
   return (
-    <ChecklistContext.Provider value={checklist}>
-      <div className={checklistClassName}>
-        <ChecklistProgressBar/>
+    <div className={checklistClassName}>
+      <ChecklistProgressBar/>
+      <div>
         <ChecklistItems/>
-        <AddItem/>
       </div>
-    </ChecklistContext.Provider>
+      <AddItem/>
+    </div>
   );
 }
 
@@ -79,12 +89,12 @@ function ChecklistItems() {
   const {checklist} = useChecklist();
   return <div className={checklistItemsClassName}>
     {
-      checklist?.items.map((item) => {
-        if (item.type === 'headline') {
-          return <ChecklistItemHeadline key={item.id} item={item}/>;
+      checklist?.items.map((item) => <div className={checklistItemsInnerClassName}>
+        {
+          item.type === 'headline' ? <ChecklistItemHeadline key={item.id} item={item}/> : <ChecklistItem key={item.id} item={item}/>
         }
-        return <ChecklistItem key={item.id} item={item}/>;
-      })
+        <ChecklistItemToolbar item={item}/>
+      </div>)
     }
   </div>;
 }
@@ -102,7 +112,24 @@ function ChecklistItem({item}: {item: ChecklistItemInFirestore}) {
       onChange={(e) => updateItem(item.id, {isChecked: e.target.checked})}
       defaultChecked={item.isChecked}
     />
-    <Text>{item.title}</Text>
+    <Text style={{opacity: item.isOptional ? '0.6' : '1'}}>{item.title} {item.isOptional ? '(optional)' : ''}</Text>
+  </div>;
+}
+
+function ChecklistItemToolbar({item}: {item: ChecklistInFirestore['items'][number]}) {
+  const {updateItem} = useChecklist();
+  const update = (update: Parameters<typeof updateItem>[1]) => () => updateItem(item.id, update);
+  const iconProps = {
+    kind: IconButton.kinds.SECONDARY, size: IconButton.sizes.XS,
+  };
+  return <div className={checklistItemToolbarClassName}>
+    <IconButton icon={Edit}{...iconProps} ariaLabel="Edit item" />
+    {item.type === 'item' && <IconButton icon={Note}{...iconProps} ariaLabel="Turn into headline" onClick={update( {type: 'headline'})} />}
+    {item.type === 'headline' && <IconButton icon={Note}{...iconProps} ariaLabel="Turn into item" onClick={update( {type: 'item'})} />}
+    {item.type === 'headline' && <IconButton icon={Completed}{...iconProps} disabled />}
+    {item.type === 'item' && item.isOptional && <IconButton icon={Completed}{...iconProps} ariaLabel="Turn into mandatory item" onClick={update( {isOptional: false})} />}
+    {item.type === 'item' && !item.isOptional && <IconButton icon={Completed}{...iconProps} ariaLabel="Turn into optional item" onClick={update( {isOptional: true})} />}
+    <IconButton icon={Erase}{...iconProps} ariaLabel="Delete item" />
   </div>;
 }
 
@@ -113,9 +140,8 @@ function ChecklistProgressBar() {
   if (!checklist) {
     return <></>;
   }
-  return <LinearProgressBar
-    size={LinearProgressBar.sizes.LARGE as never}
-    indicateProgress
-    value={value * 100}
+  return <Progress
+    style={{marginBottom: 0}}
+    percent={Math.round(value * 100)}
   />;
 }

@@ -9,7 +9,6 @@ import {getQueryKey} from '@trpc/react-query';
 
 /**
  * handles query and mutation management for a single checklist in the item view.
- * should not be called twice with the same itemId as multiple invocation would introduce states that prevent proper optimistic updates.
  *
  * @returns {object} checklist and server state operations
  */

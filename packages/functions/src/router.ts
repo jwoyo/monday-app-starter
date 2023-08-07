@@ -1,8 +1,21 @@
-import {trpc, mondaySessionUserProcedure, publicProcedure} from './server';
+import {trpc, mondaySessionUserProcedure, publicProcedure, mondayOAuthUserProcedure} from './server';
 import {z} from 'zod';
 import {exchangeOAuthCodeForAccessToken} from './monday-oauth-api';
-import {getChecklistForItemId, getGlobalOAuthTokenByAccountId, setChecklistForItemId, setGlobalOAuthToken} from './db';
-import {checklistInFirestoreSchema, oauthTokenInFirestoreSchema} from './firestore.schemas';
+import {
+  createBlueprint,
+  deleteBlueprint,
+  getAllBlueprints,
+  getChecklistForItemId,
+  getGlobalOAuthTokenByAccountId,
+  setChecklistForItemId,
+  setGlobalOAuthToken, updateBlueprint,
+} from './db';
+import {
+  blueprintInFirestoreSchema,
+  checklistInFirestoreSchema,
+  oauthTokenInFirestoreSchema,
+  withIdSchema,
+} from './firestore.schemas';
 import {checklistProcedure} from './checklist.procedure';
 
 /**
@@ -25,6 +38,33 @@ export const router = trpc.router({
           const {itemId, checklist} = opts.input;
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           return await setChecklistForItemId({accountId, itemId, checklist});
+        }),
+  }),
+  blueprint: trpc.router({
+    getAllBlueprints: mondayOAuthUserProcedure
+        .query(async (opts) => {
+          const {account_id: accountId} = opts.ctx.mondayContext.dat;
+          return getAllBlueprints({accountId});
+        }),
+    updateBlueprint: mondayOAuthUserProcedure
+        .input(blueprintInFirestoreSchema.merge(withIdSchema))
+        .mutation(async (opts) => {
+          const {account_id: accountId} = opts.ctx.mondayContext.dat;
+          return updateBlueprint({accountId, blueprint: opts.input});
+        }),
+    deleteBlueprint: mondayOAuthUserProcedure
+        .input(z.object({blueprintId: z.string()}))
+        .mutation(async (opts) => {
+          const {account_id: accountId} = opts.ctx.mondayContext.dat;
+          const {blueprintId} = opts.input;
+          return deleteBlueprint({accountId, blueprintId});
+        }),
+    createBlueprint: mondayOAuthUserProcedure
+        .input(blueprintInFirestoreSchema)
+        .mutation(async (opts) => {
+          const {account_id: accountId} = opts.ctx.mondayContext.dat;
+          const blueprint = opts.input;
+          return createBlueprint({accountId, blueprint});
         }),
   }),
   OAuth: trpc.router({

@@ -100,7 +100,6 @@ export const checklistItemToolbarClassName = style({
 });
 
 export const checklistClassName = style({
-  padding: '0.5rem 1.5rem',
   display: 'flex',
   flexDirection: 'column',
   gap: '1.25rem',

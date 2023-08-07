@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import {CHECKLIST_ITEM_MAX_LENGTH} from 'bridge/constants';
+import {NAME_MAX_LENGTH} from 'bridge/constants';
 
 export const oauthTokenInFirestoreSchema = z.object({
   token_type: z.string(),
@@ -26,10 +26,11 @@ const checklistItemInFirestoreItemSchema = z.object({
   assigneeIds: z.array(z.string()),
   isOptional: z.boolean(),
 });
+
 const checklistItemHeadlineInFirestoreItemSchema = z.object({
   id: z.string(),
   type: z.enum(['headline']),
-  title: z.string().max(CHECKLIST_ITEM_MAX_LENGTH),
+  title: z.string().max(NAME_MAX_LENGTH),
 });
 
 export const checklistInFirestoreSchema = z.object({
@@ -39,6 +40,17 @@ export const checklistInFirestoreSchema = z.object({
       )),
 });
 
+export const blueprintInFirestoreSchema = z.object({
+  name: z.string().min(1).max(NAME_MAX_LENGTH),
+  items: z.array(
+      checklistItemInFirestoreItemSchema.or(
+          checklistItemHeadlineInFirestoreItemSchema
+      )),
+});
+
 export type ChecklistInFirestore = z.infer<typeof checklistInFirestoreSchema>;
+export type BlueprintInFirestore = z.infer<typeof blueprintInFirestoreSchema>;
 export type ChecklistItemInFirestore = z.infer<typeof checklistItemInFirestoreItemSchema>;
 export type ChecklistItemHeadlineInFirestore = z.infer<typeof checklistItemHeadlineInFirestoreItemSchema>;
+export type WithId<T> = T & { id: string };
+export const withIdSchema = z.object({id: z.string()});

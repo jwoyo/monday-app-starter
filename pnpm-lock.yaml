@@ -25,6 +25,7 @@ importers:
 
   apps/web:
     specifiers:
+      '@hookform/resolvers': ^3.2.0
       '@mondaydotcomorg/tunnel': ^0.4.2
       '@tanstack/react-query': ^4.32.0
       '@trpc/client': ^10.36.0
@@ -58,13 +59,16 @@ importers:
       react: ^16.14.0
       react-beautiful-dnd: ^13.1.1
       react-dom: ^16.14.0
+      react-hook-form: ^7.45.4
       react-router-dom: ^6.14.2
       typescript: ^5.1.6
       use-immer: ^0.9.0
       uuid: ^9.0.0
       vite: ^4.4.5
+      zod: link:@hookform/resolvers/zod
       zustand: ^4.4.0
     dependencies:
+      '@hookform/resolvers': 3.2.0_react-hook-form@7.45.4
       '@tanstack/react-query': 4.32.0_wcqkhtmu7mswc6yz4uyexck3ty
       '@trpc/client': 10.36.0_@trpc+server@10.36.0
       '@trpc/react-query': 10.36.0_od2aehox2xhrxwlntg2m2jn4eq
@@ -85,9 +89,11 @@ importers:
       react: 16.14.0
       react-beautiful-dnd: 13.1.1_wcqkhtmu7mswc6yz4uyexck3ty
       react-dom: 16.14.0_react@16.14.0
+      react-hook-form: 7.45.4_react@16.14.0
       react-router-dom: 6.14.2_wcqkhtmu7mswc6yz4uyexck3ty
       use-immer: 0.9.0_immer@10.0.2+react@16.14.0
       uuid: 9.0.0
+      zod: link:@hookform/resolvers/zod
       zustand: 4.4.0_npf4ibmypfeag46bloa72pz6wq
     devDependencies:
       '@mondaydotcomorg/tunnel': 0.4.2_tslib@2.6.1
@@ -127,7 +133,7 @@ importers:
       '@types/jsonwebtoken': ^9.0.2
       '@typescript-eslint/eslint-plugin': ^5.12.0
       '@typescript-eslint/parser': ^5.12.0
-      bridge: '*'
+      bridge: workspace:*
       cors: ^2.8.5
       esbuild: ^0.18.17
       esbuild-node-externals: ^1.8.0
@@ -148,7 +154,7 @@ importers:
       zod: ^3.21.4
     dependencies:
       '@trpc/server': 10.36.0
-      bridge: 2.0.70
+      bridge: link:../bridge
       cors: 2.8.5
       express: 4.18.2
       firebase-admin: 11.10.1
@@ -2270,6 +2276,14 @@ packages:
       protobufjs: 7.2.4
       yargs: 17.7.2
     optional: true
+
+  /@hookform/resolvers/3.2.0_react-hook-form@7.45.4:
+    resolution: {integrity: sha512-skXQHhLxq0Sz2xDwCyv5dygBCtXJe1GmWwxDzfdtl0X6agD6qcyTG8HrZWkjJoy8AkiLARqYvSYJ8z7+Nwmi7w==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.45.4_react@16.14.0
+    dev: false
 
   /@humanwhocodes/config-array/0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==}
@@ -4467,10 +4481,6 @@ packages:
 
   /brcast/2.0.2:
     resolution: {integrity: sha512-Tfn5JSE7hrUlFcOoaLzVvkbgIemIorMIyoMr3TgvszWW7jFt2C9PdeMLtysYD9RU0MmU17b69+XJG1eRY2OBRg==}
-    dev: false
-
-  /bridge/2.0.70:
-    resolution: {integrity: sha512-cWnM/Yw2WpGkuxDXX9hFjoWoYSXoerxvCwuRqkOs+NLzpWhERRjOuienkQ6VNoJA8wnGYT8CW4M58eWq88qMHw==}
     dev: false
 
   /browserslist/4.21.9:
@@ -9720,6 +9730,15 @@ packages:
     resolution: {integrity: sha512-qvWWTL/4xw4k/Dywd41RBpLQUSq97csuv15qrxN+izNeLYlD9wn5W8LspbfYe5CWbaSdkZ72BsaYBPQf2x4VbQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 16.14.0
+    dev: false
+
+  /react-hook-form/7.45.4_react@16.14.0:
+    resolution: {integrity: sha512-HGDV1JOOBPZj10LB3+OZgfDBTn+IeEsNOKiq/cxbQAIbKaiJUe/KV8DBUzsx0Gx/7IG/orWqRRm736JwOfUSWQ==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
     dependencies:
       react: 16.14.0
     dev: false

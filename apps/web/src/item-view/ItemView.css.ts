@@ -1,6 +1,14 @@
-import {style} from '@vanilla-extract/css';
+import {globalStyle, style} from '@vanilla-extract/css';
 
+export const itemViewClassName = style({
+  padding: '0.5rem 1.5rem',
+  display: 'flex',
+  gap: '1rem',
+  flexDirection: 'column',
+});
 
-export const className = style({
-
+export const itemViewControlsClassName = style( {
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '0.5rem',
 });

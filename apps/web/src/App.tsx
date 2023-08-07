@@ -9,6 +9,8 @@ import {errorMessageStyles} from './App.css.ts';
 import {CallbackDestination} from './oauth/CallbackDestination';
 import {MondayOAuthBoundary} from './oauth/MondayOAuthBoundary';
 import {MondayBoundary} from './MondayBoundary';
+import {Modal} from './components/Modal.tsx';
+import {NewBlueprint} from './blueprints/NewBlueprint.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +19,24 @@ const router = createBrowserRouter([
       {
         path: 'item-view',
         element: <ItemView/>,
+      },
+      {
+        path: 'blueprints',
+        element: <Outlet/>,
+        children: [
+          {
+            path: '',
+            element: <Modal headline="Your checklist blueprints"><div>list</div></Modal>,
+          },
+          {
+            path: 'create',
+            element: <Modal headline="Create new blueprint"><NewBlueprint/></Modal>,
+          },
+          {
+            path: ':blueprintId',
+            element: <Modal headline="Edit blueprint"><div>list</div></Modal>,
+          },
+        ],
       },
     ],
     element: <MondayBoundary>

@@ -26,10 +26,9 @@ export const checklistItemTitleClassName = style({
   maxWidth: '100%',
 });
 
-globalStyle(`${checklistItemTitleClassName} checkbox:checked`, {
-  animation: 'none',
+globalStyle(`${checklistItemTitleClassName} [data-testid=checkbox-checkbox]`, {
+  animation: 'none!important',
 });
-
 
 globalStyle(`${checklistItemTitleClassName} h5`, {
   padding: 0,
@@ -101,7 +100,7 @@ export const checklistItemToolbarClassName = style({
 });
 
 export const checklistClassName = style({
-  padding: '1.5rem',
+  padding: '0.5rem 1.5rem',
   display: 'flex',
   flexDirection: 'column',
   gap: '1.25rem',

@@ -22,6 +22,9 @@ import {
 import {Progress} from 'antd';
 import {CHECKLIST_ITEM_MAX_LENGTH} from 'bridge/constants.ts';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
+import * as linkify from 'linkifyjs';
+import Linkify from 'linkify-react';
+import linkifyHtml from 'linkify-html';
 
 /**
  * checklist view
@@ -156,6 +159,11 @@ function ChecklistItem({item}: { item: ChecklistInFirestore['items'][number] }) 
     update({title});
     setIsEditing(false);
   }, [update, setIsEditing, title]);
+  const editableText = item.title;
+  const visibleText = item.title + (item.type === 'item' && item.isOptional ? ' (optional)' : '');
+  const LinkifiedElement = <Linkify as="" options={{defaultProtocol: 'https', target: '_blank'}}>
+    {visibleText}
+  </Linkify>;
   return <div className={checklistItemsInnerClassName}>
     <div className={checklistItemTitleClassName}>
       {
@@ -177,7 +185,7 @@ function ChecklistItem({item}: { item: ChecklistInFirestore['items'][number] }) 
         });
       }}>
         <div className={'item-type-' + item.type + (item.type === 'item' && item.isOptional ? ' optional' : '')}>
-          <EditableHeading disabled={!isEditing} onChange={setTitle} onBlur={onSave} type={EditableHeading.types.h5} value={item.title + (item.type === 'item' && item.isOptional && !isEditing ? ' (optional)' : '')}/>
+          <EditableHeading disabled={!isEditing} onChange={setTitle} onBlur={onSave} type={EditableHeading.types.h5} value={isEditing ? editableText : LinkifiedElement as any}/>
         </div>
       </div>
     </div>

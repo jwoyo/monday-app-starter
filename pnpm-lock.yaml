@@ -49,6 +49,9 @@ importers:
       eslint-plugin-react-refresh: ^0.4.3
       functions: workspace:*
       immer: ^10.0.2
+      linkify-html: ^4.1.1
+      linkify-react: ^4.1.1
+      linkifyjs: ^4.1.1
       monday-client: workspace:*
       monday-sdk-js: ^0.4.8
       monday-ui-react-core: ^2.17.1
@@ -73,6 +76,9 @@ importers:
       dotenv: 16.3.1
       functions: link:../../packages/functions
       immer: 10.0.2
+      linkify-html: 4.1.1_linkifyjs@4.1.1
+      linkify-react: 4.1.1_p74bnvn44bmea4a6jprvygjg2u
+      linkifyjs: 4.1.1
       monday-client: link:../../packages/monday-client
       monday-sdk-js: 0.4.8
       monday-ui-react-core: 2.17.1_l5imnbphv7wdnvhymdfhzo35fq_qdptt4hppc5xf7atj22fz4gzly
@@ -7785,11 +7791,33 @@ packages:
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
+  /linkify-html/4.1.1_linkifyjs@4.1.1:
+    resolution: {integrity: sha512-7RcF7gIhEOGBBvs7orCJ2tevaz7iF0ZLZSRPWNNBOnW/uGjOOQYB+ztSeHF6dchMC2dM9H8zZlt6Z959bjteaw==}
+    peerDependencies:
+      linkifyjs: ^4.0.0
+    dependencies:
+      linkifyjs: 4.1.1
+    dev: false
+
   /linkify-it/3.0.3:
     resolution: {integrity: sha512-ynTsyrFSdE5oZ/O9GEf00kPngmOfVwazR5GKDq6EYfhlpFug3J2zybX56a2PRRpc9P+FuSoGNAwjlbDs9jJBPQ==}
     dependencies:
       uc.micro: 1.0.6
     optional: true
+
+  /linkify-react/4.1.1_p74bnvn44bmea4a6jprvygjg2u:
+    resolution: {integrity: sha512-2K9Y1cUdvq40dFWqCJ//X+WP19nlzIVITFGI93RjLnA0M7KbnxQ/ffC3AZIZaEIrLangF9Hjt3i0GQ9/anEG5A==}
+    peerDependencies:
+      linkifyjs: ^4.0.0
+      react: '>= 15.0.0'
+    dependencies:
+      linkifyjs: 4.1.1
+      react: 16.14.0
+    dev: false
+
+  /linkifyjs/4.1.1:
+    resolution: {integrity: sha512-zFN/CTVmbcVef+WaDXT63dNzzkfRBKT1j464NJQkV7iSgJU0sLBus9W0HBwnXK13/hf168pbrx/V/bjEHOXNHA==}
+    dev: false
 
   /listr2/4.0.5:
     resolution: {integrity: sha512-juGHV1doQdpNT3GSTs9IUN43QJb7KHdF9uqg7Vufs/tG9VTzpFphqF4pm/ICdAABGQxsyNn9CiYA3StkI6jpwA==}

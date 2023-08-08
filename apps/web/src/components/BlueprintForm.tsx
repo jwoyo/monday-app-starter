@@ -1,5 +1,5 @@
 import {BlueprintInFirestore, blueprintInFirestoreSchema} from 'functions/firestore.schemas.ts';
-import {Controller, useForm} from 'react-hook-form';
+import {Controller, useForm, UseFormHandleSubmit} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {blueprintFormControlsCss, blueprintFormCss} from './BlueprintForm.css.ts';
 import {Divider, Text, TextField} from 'monday-ui-react-core';
@@ -15,18 +15,19 @@ import {buildItemsProducers} from '../producers.ts';
  * @param submitElement
  * @constructor
  */
-export function BlueprintForm({onSubmit, submitElement}: {onSubmit: (blueprint: BlueprintInFirestore) => void, submitElement: ReactElement}) {
+export function BlueprintForm({onSubmit, submitElement}: {onSubmit: (blueprint: BlueprintInFirestore) => void, submitElement: (onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>) => ReactElement}): ReactElement {
   const {control, setValue, handleSubmit, formState: {errors}} = useForm<BlueprintInFirestore>({
     resolver: zodResolver(blueprintInFirestoreSchema),
   });
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={blueprintFormCss}>
+    <form className={blueprintFormCss}>
       <Text size="small" weight="bold">Blueprint name</Text>
       <Controller
         name="name"
         control={control}
         render={({field}) => <TextField
           {...field}
+          required
           size={TextField.sizes.SMALL}
           placeholder="Give this blueprint a meaningful name"
           validation={{status: errors.name?.message ? 'error' : undefined, text: errors.name?.message}}
@@ -49,7 +50,7 @@ export function BlueprintForm({onSubmit, submitElement}: {onSubmit: (blueprint: 
       />
       <Divider/>
       <div className={blueprintFormControlsCss}>
-        {submitElement}
+        {submitElement(handleSubmit(onSubmit))}
       </div>
     </form>
   );

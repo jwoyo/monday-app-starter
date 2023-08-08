@@ -41,7 +41,7 @@ export const checklistInFirestoreSchema = z.object({
 });
 
 export const blueprintInFirestoreSchema = z.object({
-  name: z.string().min(1).max(NAME_MAX_LENGTH),
+  name: z.string().min(2).max(NAME_MAX_LENGTH),
   items: z.array(
       checklistItemInFirestoreItemSchema.or(
           checklistItemHeadlineInFirestoreItemSchema

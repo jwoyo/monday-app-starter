@@ -11,6 +11,7 @@ import {MondayOAuthBoundary} from './oauth/MondayOAuthBoundary';
 import {MondayBoundary} from './MondayBoundary';
 import {Modal} from './components/Modal.tsx';
 import {NewBlueprint} from './blueprints/NewBlueprint.tsx';
+import {ListBlueprints} from './blueprints/ListBlueprints.tsx';
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: '',
-            element: <Modal headline="Your checklist blueprints"><div>list</div></Modal>,
+            element: <Modal headline="Your checklist blueprints"><ListBlueprints/></Modal>,
           },
           {
             path: 'create',

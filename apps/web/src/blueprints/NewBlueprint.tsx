@@ -11,6 +11,6 @@ export function NewBlueprint({}: Props) {
     mutate(blueprint);
   };
   return <BlueprintForm submitElement={
-    <Button loading={isLoading} type={Button.types.SUBMIT} size={Button.sizes.SMALL}>Create blueprint</Button>
+    (onSubmit) => <Button loading={isLoading} onClick={onSubmit} type={Button.types.SUBMIT} size={Button.sizes.SMALL}>Create blueprint</Button>
   } onSubmit={onSubmit}/>;
 }

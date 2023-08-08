@@ -9,9 +9,9 @@ import monday from 'monday-sdk-js';
  * @return {ReactElement}
  */
 export function ItemView() {
-  const openModal = () => {
+  const openModal = (path: string) => {
     monday().execute('openAppFeatureModal', {
-      url: import.meta.env.__MONDAY_APP_HOSTING_URL__ + '/module/blueprints/create',
+      url: import.meta.env.__MONDAY_APP_HOSTING_URL__ + path,
       width: 800,
       height: 600,
     });
@@ -20,8 +20,8 @@ export function ItemView() {
     <Checklist/>
     <Divider direction={Divider.directions.HORIZONTAL} />
     <div className={itemViewControlsClassName}>
-      <Button leftIcon={Download} size={Button.sizes.XS} kind={Button.kinds.TERTIARY} onClick={openModal}>Save as blueprint</Button>
-      <Button leftIcon={Upload} size={Button.sizes.XS} kind={Button.kinds.TERTIARY} onClick={() => window.location.href = '/module/blueprints'}>Load from blueprint</Button>
+      <Button leftIcon={Download} size={Button.sizes.XS} kind={Button.kinds.TERTIARY} onClick={() => openModal('/module/blueprints/create')}>Save as blueprint</Button>
+      <Button leftIcon={Upload} size={Button.sizes.XS} kind={Button.kinds.TERTIARY} onClick={() => openModal('/module/blueprints')}>Load from blueprint</Button>
     </div>
   </div>;
 }

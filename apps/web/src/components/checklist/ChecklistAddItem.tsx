@@ -21,6 +21,7 @@ export function AddItem({onAdd}: { onAdd: (title: string) => void }) {
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
           add();
+          e.preventDefault();
         }
       }}
       placeholder="Enter text for a new checklist item here"

@@ -1,13 +1,9 @@
 import {
   AttentionBox,
-  Button,
   Skeleton,
-  TextField,
 } from 'monday-ui-react-core';
-import {AddSmall} from 'monday-ui-react-core/icons';
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import {
-  addItemClassName,
   checklistClassName,
   checklistSkeletonClassName,
 } from './Checklist.css.ts';

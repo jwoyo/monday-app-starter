@@ -1,35 +1,35 @@
 import {globalStyle, style} from '@vanilla-extract/css';
 
 export const modalCss = style({
-  padding: '0 0 1rem 1rem',
+  padding: '0 1rem 0',
   display: 'flex',
   flexDirection: 'column',
   gap: '1rem',
   position: 'relative',
-  width: 'calc(100% - 8px)',
+  boxSizing: 'border-box',
+  height: 'calc(100vh - 20px)',
 });
 
 globalStyle(`${modalCss} [data-testid=divider]`, {
-  'marginLeft': '-24px',
+  marginLeft: '-24px',
+  width: 'calc(100% + 48px)',
 });
 
 export const modalFooterCss = style({
-  position: 'fixed',
-  bottom: '0',
+  position: 'sticky',
+  marginTop: 'auto',
   minHeight: '55px',
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
   background: 'white',
   justifyContent: 'space-between',
-  paddingBottom: '1rem',
 });
 
 export const modalFooterControlsContainerCss = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  paddingRight: '50px',
 });
 
 export const modalFooterControlsCss = style({
@@ -51,14 +51,12 @@ globalStyle(`${modalFooterCss} .button-controls`, {
 });
 
 export const modalBodyCss = style({
-  marginTop: 'calc(30px + 3rem)',
-  height: 'calc(100vh - 80px - 30px - 3rem)',
-  paddingRight: '15px',
   overflowY: 'auto',
 });
 export const modalHeaderCss = style({
-  position: 'fixed',
+  position: 'sticky',
   width: '100%',
   padding: '0',
+  top: '0',
   background: 'white',
 });

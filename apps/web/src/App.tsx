@@ -12,6 +12,7 @@ import {MondayBoundary} from './MondayBoundary';
 import {NewBlueprintModal} from './blueprints/NewBlueprintModal.tsx';
 import {ListBlueprintsModal} from './blueprints/ListBlueprintsModal.tsx';
 import {EditBlueprintModal} from './blueprints/EditBlueprintModal.tsx';
+import {PickBlueprintModal} from '@/blueprints/PickBlueprintModal.tsx';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
           {
             path: 'create',
             element: <NewBlueprintModal/>,
+          },
+          {
+            path: 'use',
+            element: <PickBlueprintModal/>,
           },
           {
             path: ':blueprintId',

@@ -2,6 +2,7 @@ import {trpc, mondaySessionUserProcedure, publicProcedure, mondayOAuthUserProced
 import {z} from 'zod';
 import {exchangeOAuthCodeForAccessToken} from './monday-oauth-api';
 import {
+  applyBlueprint,
   createBlueprint,
   deleteBlueprint,
   getAllBlueprints,
@@ -65,6 +66,13 @@ export const router = trpc.router({
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           const blueprint = opts.input;
           return createBlueprint({accountId, blueprint});
+        }),
+    applyBlueprint: mondayOAuthUserProcedure
+        .input(z.object({blueprintId: z.string(), itemId: z.number()}))
+        .mutation(async (opts) => {
+          const {account_id: accountId} = opts.ctx.mondayContext.dat;
+          const {blueprintId, itemId} = opts.input;
+          return applyBlueprint({accountId, blueprintId, itemId});
         }),
   }),
   OAuth: trpc.router({

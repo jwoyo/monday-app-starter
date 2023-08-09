@@ -3,7 +3,7 @@ import {produce} from 'immer';
 import {v4 as uuidv4} from 'uuid';
 
 /**
- * builds a set of producers for the items array of a checklist.
+ * builds a set of producers for the items array of a checklist or a blueprint.
  * @param items
  * @returns {object} producers
  */

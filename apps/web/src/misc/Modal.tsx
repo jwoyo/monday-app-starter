@@ -26,11 +26,11 @@ export function Modal({children, controls, secondaryControls, headline}: Props) 
           {<div>
             {secondaryControls ? secondaryControls : <></>}
           </div>}
-          <div className={modalFooterControlsCss}>
+          { controls && <div className={modalFooterControlsCss}>
             <div>
               {controls}
             </div>
-          </div>
+          </div> }
         </div>
       </div> : <></>}
     </div>

@@ -149,3 +149,28 @@ export async function getAllBlueprints({accountId}: {
       .get();
   return snapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
 }
+
+/**
+ * Applies a blueprint to a checklist. This will overwrite the current checklist. The blueprint must exist.
+ * @param accountId
+ * @param blueprintId
+ * @param itemId
+ */
+export async function applyBlueprint({accountId, blueprintId, itemId}: {
+    accountId: number,
+    blueprintId: string
+    itemId: number,
+}) {
+  const blueprintDocSnapshot= await getBlueprintCollection({accountId}).doc(blueprintId).get();
+  const blueprint = blueprintDocSnapshot.data();
+  if (!blueprintDocSnapshot.exists || !blueprint) {
+    throw new Error(`Blueprint with id ${blueprintId} does not exist.`);
+  }
+  return setChecklistForItemId({
+    accountId,
+    itemId,
+    checklist: {
+      items: blueprint.items,
+    },
+  });
+}

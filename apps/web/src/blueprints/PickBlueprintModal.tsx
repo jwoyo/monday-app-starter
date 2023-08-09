@@ -1,16 +1,16 @@
 import React from 'react';
 import {trpc} from '../trpc.ts';
 import {AttentionBox, Button} from 'monday-ui-react-core';
+import {Info} from 'monday-ui-react-core/icons';
 import {listBlueprintsClassName} from './Blueprints.css.tsx';
 import {useNavigate} from 'react-router-dom';
-import {AddSmall} from 'monday-ui-react-core/icons';
 import {Modal} from '@/misc/Modal.tsx';
 import {BlueprintTable} from '@/blueprints/BlueprintTable.tsx';
 import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
 
 type Props = {};
 
-export function ListBlueprintsModal({}: Props) {
+export function PickBlueprintModal({}: Props) {
   const {data, isLoading, isError} = trpc.blueprint.getAllBlueprints.useQuery();
   const navigate = useNavigate();
   if (isLoading) {
@@ -25,12 +25,12 @@ export function ListBlueprintsModal({}: Props) {
   }
 
   return <Modal
-    headline="Your checklist blueprints"
-    controls={<Button size={Button.sizes.SMALL} rightIcon={AddSmall}
-      onClick={() => navigate('/module/blueprints/create')}>Add a blueprint</Button>
-    }>
+    headline="Use a blueprint">
     <div className={listBlueprintsClassName}>
-      <BlueprintTable blueprints={data} onSelect={(id) => navigate('/module/blueprints/' + id)} scroll={{y: 360}} />
+      <AttentionBox title={'How to use blueprints?'} icon={Info}>
+        Click a blueprint from below to use its items for the current checklist. Beware that this will overwrite your current checklist.
+      </AttentionBox>
+      <BlueprintTable blueprints={data} onSelect={(id) => navigate('/module/blueprints/' + id)} scroll={{y: 300}}/>
     </div>
   </Modal>;
 }

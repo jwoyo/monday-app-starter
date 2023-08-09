@@ -21,7 +21,7 @@ export function ItemView() {
     <Divider direction={Divider.directions.HORIZONTAL} />
     <div className={itemViewControlsClassName}>
       <Button leftIcon={Download} size={Button.sizes.XS} kind={Button.kinds.TERTIARY} onClick={() => openModal('/module/blueprints/create')}>Save as blueprint</Button>
-      <Button leftIcon={Upload} size={Button.sizes.XS} kind={Button.kinds.TERTIARY} onClick={() => openModal('/module/blueprints')}>Load from blueprint</Button>
+      <Button leftIcon={Upload} size={Button.sizes.XS} kind={Button.kinds.TERTIARY} onClick={() => openModal('/module/blueprints/use')}>Load from blueprint</Button>
     </div>
   </div>;
 }

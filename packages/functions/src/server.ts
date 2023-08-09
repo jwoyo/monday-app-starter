@@ -2,6 +2,7 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 import type {inferAsyncReturnType} from '@trpc/server';
 import {initTRPC} from '@trpc/server';
 import {buildRequireMondayAuthenticationMiddlewares} from './monday.middleware';
+import superjson from 'superjson';
 
 type Context = inferAsyncReturnType<typeof createContext>;
 export const createContext = ({req}: trpcExpress.CreateExpressContextOptions): { authorization?: string } => {
@@ -10,7 +11,9 @@ export const createContext = ({req}: trpcExpress.CreateExpressContextOptions): {
     authorization,
   });
 };
-export const trpc = initTRPC.context<Context>().create();
+export const trpc = initTRPC.context<Context>().create({
+  transformer: superjson,
+});
 export const middleware = trpc.middleware;
 export const publicProcedure = trpc.procedure;
 

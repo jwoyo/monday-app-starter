@@ -1,4 +1,4 @@
-import {style} from '@vanilla-extract/css';
+import {globalStyle, style} from '@vanilla-extract/css';
 
 export const blueprintFormCss = style({
   display: 'flex',
@@ -6,9 +6,7 @@ export const blueprintFormCss = style({
   gap: '1rem',
 });
 
-export const blueprintFormControlsCss = style({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'flex-end',
+globalStyle(`${blueprintFormCss} .error-text`, {
+  color: 'var(--negative-color)',
+  paddingTop: '0.25rem',
 });

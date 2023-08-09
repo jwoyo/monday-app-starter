@@ -27,12 +27,12 @@ export function ChecklistItem({item, onChange, onDelete, isCheckable}: { item: C
   return <div className={checklistItemsInnerClassName}>
     <div className={checklistItemTitleClassName}>
       {
-        item.type === 'item' &&
-                <Checkbox
-                  disabled={!isCheckable}
-                  onChange={(e) => onChange({isChecked: e.target.checked})}
-                  defaultChecked={item.isChecked}
-                />
+        item.type === 'item' && (isCheckable ? <Checkbox
+          disabled={!isCheckable}
+          onChange={(e) => onChange({isChecked: e.target.checked})}
+          defaultChecked={item.isChecked}
+        /> : <div>-</div>)
+
       }
       <div className={checklistItemTitleEditClassName} onClick={() => setIsEditing(true)} ref={(r) => {
         ref.current = r;

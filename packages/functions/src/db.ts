@@ -1,9 +1,16 @@
 import admin, {firestore} from 'firebase-admin';
-import {BlueprintInFirestore, ChecklistInFirestore, OAuthTokenInFirestore, WithId} from './firestore.schemas';
+import {
+  BlueprintInFirestore,
+  BlueprintUpdatePayload,
+  ChecklistInFirestore,
+  OAuthTokenInFirestore,
+  WithId,
+} from './firestore.schemas';
 import {getFirestore} from 'firebase-admin/firestore';
 import DocumentReference = firestore.DocumentReference;
 import CollectionReference = firestore.CollectionReference;
 import {BLUEPRINT_MAX, NAME_MAX_LENGTH} from 'bridge/constants';
+import Timestamp = firestore.Timestamp;
 
 const app = admin.initializeApp();
 const db = getFirestore(app);
@@ -21,7 +28,18 @@ const getChecklistCollection = ({accountId}: {
 }) => accountsCollection.doc(accountId.toString()).collection('checklists') as CollectionReference<ChecklistInFirestore>;
 const getBlueprintCollection = ({accountId}: {
     accountId: number
-}) => accountsCollection.doc(accountId.toString()).collection('blueprints') as CollectionReference<BlueprintInFirestore>;
+}) => accountsCollection.doc(accountId.toString()).collection('blueprints')
+    .withConverter({
+      toFirestore: (blueprint: BlueprintInFirestore) => blueprint,
+      // annoyingly, we have to convert Firestores absurd Timestamp type to a Date. superjson takes over the rest on the trcp transformation layer
+      fromFirestore: (snapshot: firestore.QueryDocumentSnapshot<BlueprintInFirestore & {createdAt: Timestamp}>) => {
+        const data = snapshot.data();
+        return {
+          ...snapshot.data(),
+          createdAt: data.createdAt.toDate(),
+        };
+      },
+    }) as CollectionReference<BlueprintInFirestore>;
 
 /**
  * Adds a OAuth token to the database which finishes the OAuth dance with monday.
@@ -76,7 +94,7 @@ export async function setChecklistForItemId({accountId, itemId, checklist}: {
 
 export async function createBlueprint({accountId, blueprint}: {
     accountId: number,
-    blueprint: BlueprintInFirestore
+    blueprint: Omit<BlueprintInFirestore, 'createdAt'>
 }): Promise<WithId<BlueprintInFirestore>> {
   const blueprintCollection = getBlueprintCollection({accountId});
   const {count} = (await blueprintCollection.count().get()).data();
@@ -84,22 +102,25 @@ export async function createBlueprint({accountId, blueprint}: {
     throw new Error(`You have reached the maximum number of blueprints (${NAME_MAX_LENGTH}).`);
   }
   const doc = await blueprintCollection.doc();
-  await doc.set(blueprint);
-  return {...blueprint, id: doc.id};
+  const newBlueprint = {...blueprint, createdAt: new Date()};
+  await doc.set(newBlueprint);
+  return {...newBlueprint, id: doc.id};
 }
 
 export async function updateBlueprint({accountId, blueprint}: {
     accountId: number,
-    blueprint: WithId<BlueprintInFirestore>
+    blueprint: WithId<BlueprintUpdatePayload>
 }) {
   const doc = await getBlueprintCollection({accountId}).doc(blueprint.id);
   const snapshot = await doc.get();
-  if (!snapshot.exists) {
+  const oldBlueprint = snapshot.data();
+  if (!snapshot.exists || !oldBlueprint) {
     throw new Error(`Blueprint with id ${blueprint.id} does not exist.`);
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   const {id, ...blueprintWithoutId} = blueprint;
-  await doc.set(blueprintWithoutId);
+  const newBlueprint = {...oldBlueprint, ...blueprintWithoutId};
+  await doc.set(newBlueprint);
 }
 
 export async function deleteBlueprint({accountId, blueprintId}: {
@@ -114,12 +135,17 @@ export async function deleteBlueprint({accountId, blueprintId}: {
   await doc.delete();
 }
 
+/**
+ * Gets all blueprints for an account. We limit the number of blueprints and do not offer pagination for now.
+ * @param accountId
+ * @return {Promise<WithId<BlueprintInFirestore>[]>}
+ */
 export async function getAllBlueprints({accountId}: {
     accountId: number
 }): Promise<WithId<BlueprintInFirestore>[]> {
   const snapshot = await getBlueprintCollection({accountId})
       .limit(BLUEPRINT_MAX)
-      .orderBy('name')
+      .orderBy('createdAt', 'desc')
       .get();
   return snapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
 }

@@ -1,17 +1,40 @@
 import React, {ReactElement} from 'react';
-import {modalCss} from './Modal.css.ts';
-import {Heading} from 'monday-ui-react-core';
+import {
+  modalBodyCss,
+  modalCss, modalFooterControlsContainerCss,
+  modalFooterControlsCss,
+  modalFooterCss,
+  modalHeaderCss,
+} from './Modal.css.ts';
+import {Divider, Heading} from 'monday-ui-react-core';
 
-type Props = {children: ReactElement, headline: string};
+type Props = {children: ReactElement, controls?: ReactElement, secondaryControls?: ReactElement, headline: string};
 
-export function Modal({children, headline}: Props) {
+export function Modal({children, controls, secondaryControls, headline}: Props) {
   return (
     <div className={modalCss}>
-      <Heading value={headline} size={Heading.sizes.MEDIUM}></Heading>
-      <div>
+      <div className={modalHeaderCss}>
+        <Heading value={headline} size={Heading.sizes.MEDIUM}></Heading>
+        <Divider/>
+      </div>
+      <div className={modalBodyCss}>
         {children}
       </div>
+      {controls ? <div className={modalFooterCss}>
+        <Divider/>
+        <div className={modalFooterControlsContainerCss}>
+          {<div>
+            {secondaryControls ? secondaryControls : <></>}
+          </div>}
+          <div className={modalFooterControlsCss}>
+            <div>
+              {controls}
+            </div>
+          </div>
+        </div>
+      </div> : <></>}
     </div>
   );
 }
+
 

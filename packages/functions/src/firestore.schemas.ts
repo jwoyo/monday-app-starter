@@ -42,15 +42,25 @@ export const checklistInFirestoreSchema = z.object({
 
 export const blueprintInFirestoreSchema = z.object({
   name: z.string().min(2).max(NAME_MAX_LENGTH),
+  createdAt: z.date(),
   items: z.array(
       checklistItemInFirestoreItemSchema.or(
           checklistItemHeadlineInFirestoreItemSchema
-      )),
+      ),
+      {required_error: 'A blueprint must have items.'})
+      .min(1, 'A blueprint must have at least one item.'),
 });
+
+export type WithId<T> = T & { id: string };
+export const withIdSchema = z.object({id: z.string()});
+
+export const blueprintCreatePayloadSchema = blueprintInFirestoreSchema.omit({createdAt: true});
+export const blueprintUpdatePayloadSchema = blueprintCreatePayloadSchema.merge(withIdSchema);
 
 export type ChecklistInFirestore = z.infer<typeof checklistInFirestoreSchema>;
 export type BlueprintInFirestore = z.infer<typeof blueprintInFirestoreSchema>;
+export type BlueprintCreatePayload = z.infer<typeof blueprintCreatePayloadSchema>;
+export type BlueprintUpdatePayload = z.infer<typeof blueprintUpdatePayloadSchema>;
 export type ChecklistItemInFirestore = z.infer<typeof checklistItemInFirestoreItemSchema>;
 export type ChecklistItemHeadlineInFirestore = z.infer<typeof checklistItemHeadlineInFirestoreItemSchema>;
-export type WithId<T> = T & { id: string };
-export const withIdSchema = z.object({id: z.string()});
+

@@ -10,8 +10,9 @@ import {CallbackDestination} from './oauth/CallbackDestination';
 import {MondayOAuthBoundary} from './oauth/MondayOAuthBoundary';
 import {MondayBoundary} from './MondayBoundary';
 import {Modal} from './components/Modal.tsx';
-import {NewBlueprint} from './blueprints/NewBlueprint.tsx';
-import {ListBlueprints} from './blueprints/ListBlueprints.tsx';
+import {NewBlueprintModal} from './blueprints/NewBlueprintModal.tsx';
+import {ListBlueprintsModal} from './blueprints/ListBlueprintsModal.tsx';
+import {EditBlueprintModal} from './blueprints/EditBlueprintModal.tsx';
 
 const router = createBrowserRouter([
   {
@@ -27,15 +28,15 @@ const router = createBrowserRouter([
         children: [
           {
             path: '',
-            element: <Modal headline="Your checklist blueprints"><ListBlueprints/></Modal>,
+            element: <ListBlueprintsModal/>,
           },
           {
             path: 'create',
-            element: <Modal headline="Create new blueprint"><NewBlueprint/></Modal>,
+            element: <NewBlueprintModal/>,
           },
           {
             path: ':blueprintId',
-            element: <Modal headline="Edit blueprint"><div>list</div></Modal>,
+            element: <EditBlueprintModal/>,
           },
         ],
       },

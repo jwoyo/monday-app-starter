@@ -6,3 +6,9 @@ export const blueprintsSkeletonClassName = style({
   flexDirection: 'column',
   gap: '8px',
 });
+
+export const listBlueprintsClassName = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+});

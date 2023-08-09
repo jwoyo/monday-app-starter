@@ -11,10 +11,10 @@ import {
   setGlobalOAuthToken, updateBlueprint,
 } from './db';
 import {
-  blueprintInFirestoreSchema,
+  blueprintCreatePayloadSchema,
+  blueprintUpdatePayloadSchema,
   checklistInFirestoreSchema,
   oauthTokenInFirestoreSchema,
-  withIdSchema,
 } from './firestore.schemas';
 import {checklistProcedure} from './checklist.procedure';
 
@@ -47,7 +47,7 @@ export const router = trpc.router({
           return getAllBlueprints({accountId});
         }),
     updateBlueprint: mondayOAuthUserProcedure
-        .input(blueprintInFirestoreSchema.merge(withIdSchema))
+        .input(blueprintUpdatePayloadSchema)
         .mutation(async (opts) => {
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           return updateBlueprint({accountId, blueprint: opts.input});
@@ -60,7 +60,7 @@ export const router = trpc.router({
           return deleteBlueprint({accountId, blueprintId});
         }),
     createBlueprint: mondayOAuthUserProcedure
-        .input(blueprintInFirestoreSchema)
+        .input(blueprintCreatePayloadSchema)
         .mutation(async (opts) => {
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           const blueprint = opts.input;

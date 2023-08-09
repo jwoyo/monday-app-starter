@@ -1,10 +1,10 @@
-import {useMonday} from '../../use-monday.ts';
+import {useMonday} from '@/use-monday.ts';
 import {useIsMutating, useQueryClient} from '@tanstack/react-query';
-import {trpc} from '../../trpc.ts';
+import {trpc} from '@/trpc.ts';
 import {ChecklistInFirestore} from 'functions/firestore.schemas.ts';
 import {useCallback} from 'react';
 import {getQueryKey} from '@trpc/react-query';
-import {buildItemsProducers} from '../../producers.ts';
+import {buildItemsProducers} from '@/producers.ts';
 
 /**
  * handles query and mutation management for a single checklist in the item view.

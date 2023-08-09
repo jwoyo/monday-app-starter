@@ -25,8 +25,9 @@ export default defineConfig({
   plugins: [react(), vanillaExtractPlugin()],
   resolve: {
     alias: {
-      bridge: 'bridge/src',
-      functions: 'functions/src',
+      'bridge': 'bridge/src',
+      'functions': 'functions/src',
+      '@': resolve(__dirname, 'src'),
     },
   },
   define: {

@@ -7,9 +7,9 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {blueprintFormCss} from './BlueprintForm.css.ts';
 import {Text, TextField} from 'monday-ui-react-core';
 import {NAME_MAX_LENGTH} from 'bridge/constants.ts';
-import {ChecklistItems} from './checklist/ChecklistItems.tsx';
+import {ChecklistItems} from '@/checklist/ChecklistItems.tsx';
 import React, {ReactElement, Ref} from 'react';
-import {buildItemsProducers} from '../producers.ts';
+import {buildItemsProducers} from '@/producers.ts';
 
 /**
  * @param onSubmit

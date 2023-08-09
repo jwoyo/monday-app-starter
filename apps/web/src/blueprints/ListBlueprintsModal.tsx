@@ -5,7 +5,7 @@ import {blueprintsSkeletonClassName, listBlueprintsClassName} from './Blueprints
 import {Table} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import {AddSmall} from 'monday-ui-react-core/icons';
-import {Modal} from '../components/Modal.tsx';
+import {Modal} from '@/misc/Modal.tsx';
 
 type Props = {};
 

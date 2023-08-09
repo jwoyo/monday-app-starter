@@ -12,7 +12,7 @@ import {
   ChecklistItemInFirestore,
 } from 'functions/firestore.schemas.ts';
 import {Progress} from 'antd';
-import {ChecklistItems} from '../../components/checklist/ChecklistItems.tsx';
+import {ChecklistItems} from '@/checklist/ChecklistItems.tsx';
 
 /**
  * checklist view

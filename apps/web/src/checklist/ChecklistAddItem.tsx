@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {addItemClassName} from '../../item-view/checklist/Checklist.css.ts';
+import {addItemClassName} from '@/checklist/Checklist.css.ts';
 import {Button, TextField} from 'monday-ui-react-core';
 import {CHECKLIST_ITEM_MAX_LENGTH} from 'bridge/constants.ts';
 import {AddSmall} from 'monday-ui-react-core/icons';

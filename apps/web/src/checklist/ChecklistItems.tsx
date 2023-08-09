@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {DragDropContext, Draggable, Droppable, DropResult} from 'react-beautiful-dnd';
-import {checklistItemsClassName} from '../../item-view/checklist/Checklist.css.ts';
+import {checklistItemsClassName} from '@/checklist/Checklist.css.ts';
 import {ChecklistInFirestore, ChecklistItemInFirestore} from 'functions/firestore.schemas.ts';
 import {ChecklistItem} from './ChecklistItem.tsx';
 import {AddItem} from './ChecklistAddItem.tsx';

@@ -1,6 +1,6 @@
 import {ChecklistInFirestore} from 'functions/firestore.schemas.ts';
 import {IconButton} from 'monday-ui-react-core';
-import {checklistItemToolbarClassName} from '../../item-view/checklist/Checklist.css.ts';
+import {checklistItemToolbarClassName} from '@/checklist/Checklist.css.ts';
 import {Erase, Note, Completed, Edit} from 'monday-ui-react-core/icons';
 import React from 'react';
 

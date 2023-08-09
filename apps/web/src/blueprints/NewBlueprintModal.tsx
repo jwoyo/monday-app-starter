@@ -1,12 +1,12 @@
 import React, {useRef} from 'react';
-import {BlueprintForm} from '../components/BlueprintForm.tsx';
+import {BlueprintForm} from '@/blueprints/BlueprintForm.tsx';
 import {Button} from 'monday-ui-react-core';
 import {trpc} from '../trpc.ts';
 import {BlueprintCreatePayload} from 'functions/firestore.schemas.ts';
 import {useNavigate} from 'react-router-dom';
 import {useQueryClient} from '@tanstack/react-query';
 import {getQueryKey} from '@trpc/react-query';
-import {Modal} from '../components/Modal.tsx';
+import {Modal} from '../misc/Modal.tsx';
 import {AddSmall} from 'monday-ui-react-core/icons';
 
 type Props = {};

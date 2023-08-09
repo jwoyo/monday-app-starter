@@ -22,7 +22,8 @@
 
     "paths": {
       "bridge/*": ["../../packages/bridge/src/*"],
-      "functions/*": ["../../packages/functions/src/*"]
+      "functions/*": ["../../packages/functions/src/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"],

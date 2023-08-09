@@ -1,4 +1,4 @@
-import {Checklist} from './checklist/Checklist.tsx';
+import {Checklist} from '@/checklist/Checklist.tsx';
 import {itemViewClassName, itemViewControlsClassName} from './ItemView.css.ts';
 import {Button, Divider} from 'monday-ui-react-core';
 import {Download, Upload} from 'monday-ui-react-core/icons';

@@ -1,4 +1,4 @@
-import {globalStyle, style} from '@vanilla-extract/css';
+import {style} from '@vanilla-extract/css';
 
 export const itemViewClassName = style({
   padding: '0.5rem 1.5rem',

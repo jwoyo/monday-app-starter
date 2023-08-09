@@ -9,7 +9,6 @@ import {errorMessageStyles} from './App.css.ts';
 import {CallbackDestination} from './oauth/CallbackDestination';
 import {MondayOAuthBoundary} from './oauth/MondayOAuthBoundary';
 import {MondayBoundary} from './MondayBoundary';
-import {Modal} from './components/Modal.tsx';
 import {NewBlueprintModal} from './blueprints/NewBlueprintModal.tsx';
 import {ListBlueprintsModal} from './blueprints/ListBlueprintsModal.tsx';
 import {EditBlueprintModal} from './blueprints/EditBlueprintModal.tsx';

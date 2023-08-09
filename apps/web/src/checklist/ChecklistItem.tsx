@@ -5,7 +5,7 @@ import {
   checklistItemsInnerClassName,
   checklistItemTitleClassName,
   checklistItemTitleEditClassName,
-} from '../../item-view/checklist/Checklist.css.ts';
+} from '@/checklist/Checklist.css.ts';
 import {Checkbox, EditableHeading} from 'monday-ui-react-core';
 import {ChecklistItemToolbar} from './ChecklistItemToolbar.tsx';
 

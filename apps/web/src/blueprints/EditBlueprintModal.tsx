@@ -1,14 +1,14 @@
 import React, {useRef} from 'react';
-import {BlueprintForm} from '../components/BlueprintForm.tsx';
 import {AttentionBox, Button} from 'monday-ui-react-core';
 import {trpc} from '../trpc.ts';
 import {BlueprintCreatePayload} from 'functions/firestore.schemas.ts';
 import {useNavigate, useParams} from 'react-router-dom';
 import {getQueryKey} from '@trpc/react-query';
 import {useQueryClient} from '@tanstack/react-query';
-import {Modal} from '../components/Modal.tsx';
+import {Modal} from '../misc/Modal.tsx';
 import {Edit} from 'monday-ui-react-core/icons';
 import {DeleteBlueprintButton} from './DeleteBlueprintButton.tsx';
+import {BlueprintForm} from '@/blueprints/BlueprintForm.tsx';
 
 export function EditBlueprintModal() {
   const {blueprintId} = useParams();

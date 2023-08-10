@@ -7,10 +7,17 @@ Functionality is inspired by this Jira app: https://marketplace.atlassian.com/ap
 - Firebase & Cloud Functions 2gen only (no other GCP services!, 100% deployable via firebase cli)
 - React 16 (meh, peer deps of mondays vibe components don't like newer versions right now)
 - trpc (https://trpc.io) for backend and derived client frontend
-- react-query
+- react-query (https://react-query.tanstack.com) for data fetching
 - superjson
 - form validation via react-hook-form
+- monday vibe + antd
 - generated graphql client for mondays api
+
+
+### Discarded Technologies & learning
+- Next.js (SSR doesn't work with mondays components)
+- Vercel deployment (doesn't support proper cloud functions right now)
+- monday Storage API (doesn't support proper querying)
 
 #### TODOS
 ##### Infrastructure
@@ -18,6 +25,7 @@ Functionality is inspired by this Jira app: https://marketplace.atlassian.com/ap
 - generate graphql client
 - handle uninstallation for oauth tokens
 - @ mentions
+- dark mode
 ##### App
 - basic template functionality
 - auto creation for checklists

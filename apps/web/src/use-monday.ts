@@ -32,3 +32,12 @@ export function useMonday() {
     sessionToken: sessionToken.data?.data,
   };
 }
+
+/**
+ * Convenience hook to get the defined monday context that throws an error if it doesn't exist.
+ */
+export function useMondayContext() {
+  const {context} = useMonday();
+  if (!context) throw new Error('No monday context found');
+  return context;
+}

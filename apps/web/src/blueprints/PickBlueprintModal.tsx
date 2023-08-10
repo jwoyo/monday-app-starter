@@ -3,16 +3,24 @@ import {trpc} from '../trpc.ts';
 import {AttentionBox, Button} from 'monday-ui-react-core';
 import {Info} from 'monday-ui-react-core/icons';
 import {listBlueprintsClassName} from './Blueprints.css.tsx';
-import {useNavigate} from 'react-router-dom';
+import {useSearchParams} from 'react-router-dom';
 import {Modal} from '@/misc/Modal.tsx';
 import {BlueprintTable} from '@/blueprints/BlueprintTable.tsx';
 import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
+import monday from 'monday-sdk-js';
 
 type Props = {};
 
 export function PickBlueprintModal({}: Props) {
   const {data, isLoading, isError} = trpc.blueprint.getAllBlueprints.useQuery();
-  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const itemId = params.get('itemId');
+  const {mutate} = trpc.blueprint.applyBlueprint.useMutation({
+    onSuccess: () => {
+      monday().execute('closeAppFeatureModal');
+    },
+  });
+
   if (isLoading) {
     return <BlueprintListSkeleton/>;
   }
@@ -24,13 +32,20 @@ export function PickBlueprintModal({}: Props) {
     />;
   }
 
+  if (!itemId) {
+    return <AttentionBox title="Could not find item context"
+      type={AttentionBox.types.DANGER}
+      text="If you see this message we could determine the correct item context. Please try again later or contact app support."
+    />;
+  }
+
   return <Modal
     headline="Use a blueprint">
     <div className={listBlueprintsClassName}>
       <AttentionBox title={'How to use blueprints?'} icon={Info}>
         Click a blueprint from below to use its items for the current checklist. Beware that this will overwrite your current checklist.
       </AttentionBox>
-      <BlueprintTable blueprints={data} onSelect={(id) => navigate('/module/blueprints/' + id)} scroll={{y: 300}}/>
+      <BlueprintTable blueprints={data} onSelect={(blueprintId) => mutate({blueprintId, itemId: Number(itemId)})} scroll={{y: 300}}/>
     </div>
   </Modal>;
 }

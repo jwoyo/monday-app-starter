@@ -67,8 +67,8 @@ export const router = trpc.router({
           const blueprint = opts.input;
           return createBlueprint({accountId, blueprint});
         }),
-    applyBlueprint: mondayOAuthUserProcedure
-        .input(z.object({blueprintId: z.string(), itemId: z.number()}))
+    applyBlueprint: checklistProcedure
+        .input(z.object({blueprintId: z.string()}))
         .mutation(async (opts) => {
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           const {blueprintId, itemId} = opts.input;

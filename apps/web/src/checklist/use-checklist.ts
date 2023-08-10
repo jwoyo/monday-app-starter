@@ -1,4 +1,4 @@
-import {useMonday} from '@/use-monday.ts';
+import {useMonday, useMondayContext} from '@/use-monday.ts';
 import {useIsMutating, useQueryClient} from '@tanstack/react-query';
 import {trpc} from '@/trpc.ts';
 import {ChecklistInFirestore} from 'functions/firestore.schemas.ts';
@@ -12,9 +12,9 @@ import {buildItemsProducers} from '@/producers.ts';
  * @returns {object} checklist and server state operations
  */
 export function useChecklist() {
-  const {context} = useMonday();
+  const context = useMondayContext();
   const queryClient = useQueryClient();
-  const queryKey = getQueryKey( trpc.checklist.get, {itemId: context!.itemId}, 'query');
+  const queryKey = getQueryKey( trpc.checklist.get, {itemId: context.itemId}, 'query');
   const mutationKey = ['checklist', 'set'];
   const {mutate} = trpc.checklist.set.useMutation({
     mutationKey,
@@ -32,11 +32,11 @@ export function useChecklist() {
     },
   });
   const runningMutationCount = useIsMutating([mutationKey]);
-  const query = trpc.checklist.get.useQuery({itemId: context!.itemId}, {enabled: runningMutationCount === 0});
+  const query = trpc.checklist.get.useQuery({itemId: context.itemId}, {enabled: runningMutationCount === 0});
 
   const mutateServerState = useCallback((checklist: ChecklistInFirestore) => {
     return mutate({
-      itemId: context!.itemId,
+      itemId: context.itemId,
       checklist,
     });
   }, [context, mutate]);

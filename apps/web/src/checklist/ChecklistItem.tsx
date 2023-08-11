@@ -16,12 +16,15 @@ export function ChecklistItem({item, onChange, onDelete, isCheckable}: { item: C
   const ref = useRef<HTMLElement | null>(null);
   const update = useCallback((update: Partial<ChecklistInFirestore['items'][number]>) => onChange(update), [onChange]);
   const onSave = useCallback(() => {
-    update({title});
+    if (item.title !== title) {
+      update({title});
+    }
     setIsEditing(false);
-  }, [update, setIsEditing, title]);
+  }, [update, setIsEditing, title, item.title]);
   const editableText = item.title;
   const visibleText = item.title + (item.type === 'item' && item.isOptional ? ' (optional)' : '');
-  const LinkifiedElement = <Linkify as="" options={{defaultProtocol: 'https', target: '_blank'}}>
+  const LinkifiedElement = <Linkify as=""
+    options={{defaultProtocol: 'https', target: '_blank'}}>
     {visibleText}
   </Linkify>;
   return <div className={checklistItemsInnerClassName}>
@@ -30,23 +33,29 @@ export function ChecklistItem({item, onChange, onDelete, isCheckable}: { item: C
         item.type === 'item' && (isCheckable ? <Checkbox
           disabled={!isCheckable}
           onChange={(e) => onChange({isChecked: e.target.checked})}
-          defaultChecked={item.isChecked}
+          checked={item.isChecked}
         /> : <div>-</div>)
 
       }
-      <div className={checklistItemTitleEditClassName} onClick={() => setIsEditing(true)} ref={(r) => {
-        ref.current = r;
-        if (!r || !isEditing) {
-          return;
-        }
-        // focus prop is broken, so we do this instead
-        setTimeout(() => {
-          const input = r.querySelector('h5');
-          input?.click();
-        });
-      }}>
+      <div className={checklistItemTitleEditClassName}
+        onClick={() => setIsEditing(true)}
+        ref={(r) => {
+          ref.current = r;
+          if (!r || !isEditing) {
+            return;
+          }
+          // focus prop is broken, so we do this instead
+          setTimeout(() => {
+            const input = r.querySelector('h5');
+            input?.click();
+          });
+        }}>
         <div className={'item-type-' + item.type + (item.type === 'item' && item.isOptional ? ' optional' : '')}>
-          <EditableHeading disabled={!isEditing} onChange={setTitle} onBlur={onSave} type={EditableHeading.types.h5} value={isEditing ? editableText : LinkifiedElement as any}/>
+          <EditableHeading disabled={!isEditing}
+            onChange={setTitle}
+            onBlur={onSave}
+            type={EditableHeading.types.h5}
+            value={isEditing ? editableText : LinkifiedElement as any}/>
         </div>
       </div>
     </div>

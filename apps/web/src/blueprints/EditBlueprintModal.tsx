@@ -14,10 +14,10 @@ export function EditBlueprintModal() {
   const {blueprintId} = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const blueprintQueryKey = getQueryKey(trpc.blueprint);
+  const blueprintQueryKey = getQueryKey(trpc.blueprint.getAllBlueprints);
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const {mutate, isLoading} = trpc.blueprint.updateBlueprint.useMutation({
-    onSuccess: () => {
+    onMutate: () => {
       queryClient.cancelQueries(blueprintQueryKey);
     },
     onSettled: async () => {

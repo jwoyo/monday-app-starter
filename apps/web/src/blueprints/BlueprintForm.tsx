@@ -31,7 +31,8 @@ export function BlueprintForm({onSubmit, submitBtnRef, defaultValue}: {
   });
   return (
     <form className={blueprintFormCss}>
-      <Text size="small" weight="bold">Blueprint name</Text>
+      <Text size="small"
+        weight="bold">Blueprint name</Text>
       <Controller
         name="name"
         control={control}
@@ -44,7 +45,8 @@ export function BlueprintForm({onSubmit, submitBtnRef, defaultValue}: {
           maxLength={NAME_MAX_LENGTH}/>
         }
       />
-      <Text size="small" weight="bold">Items</Text>
+      <Text size="small"
+        weight="bold">Items</Text>
       <Controller
         name="items"
         control={control}
@@ -57,11 +59,15 @@ export function BlueprintForm({onSubmit, submitBtnRef, defaultValue}: {
               onAddItem={(title) => setValue('items', addItem(title))}
               onChangeItem={(id, update) => setValue('items', updateItem(id, update))}
               defaultValue={field.value}/>
-            {errors.items?.message && <Text size="small" className={'error-text'}>{errors.items?.message}</Text>}
+            {errors.items?.message && <Text size="small"
+              className={'error-text'}>{errors.items?.message}</Text>}
           </div>;
         }}
       />
-      <button hidden ref={submitBtnRef} onClick={handleSubmit(onSubmit)} type="submit"/>
+      <button hidden
+        ref={submitBtnRef}
+        onClick={handleSubmit(onSubmit)}
+        type="submit"/>
     </form>
   );
 }

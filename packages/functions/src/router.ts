@@ -4,7 +4,7 @@ import {exchangeOAuthCodeForAccessToken} from './monday-oauth-api';
 import {
   applyBlueprint,
   createBlueprint,
-  deleteBlueprint,
+  deleteBlueprint, deleteChecklistForItemId,
   getAllBlueprints,
   getChecklistForItemId,
   getGlobalOAuthTokenByAccountId,
@@ -30,15 +30,22 @@ export const router = trpc.router({
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           return await getChecklistForItemId({accountId, itemId});
         }),
-    set: checklistProcedure.input(
-        z.object({
-          itemId: z.number(),
-          checklist: checklistInFirestoreSchema,
-        }))
+    set: checklistProcedure
+        .input(
+            z.object({
+              itemId: z.number(),
+              checklist: checklistInFirestoreSchema,
+            }))
         .mutation(async (opts) => {
           const {itemId, checklist} = opts.input;
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           return await setChecklistForItemId({accountId, itemId, checklist});
+        }),
+    delete: checklistProcedure
+        .mutation(async (opts) => {
+          const {itemId} = opts.input;
+          const {account_id: accountId} = opts.ctx.mondayContext.dat;
+          return await deleteChecklistForItemId({accountId, itemId});
         }),
   }),
   blueprint: trpc.router({

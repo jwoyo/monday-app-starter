@@ -33,10 +33,11 @@ export function BlueprintTable({
             key: 'name',
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.name.localeCompare(b.name),
-            render: (name: string, {key}) => <Link text={name} onClick={(e) => {
-              e.preventDefault();
-              onSelect(key);
-            }}/>,
+            render: (name: string, {key}) => <Link text={name}
+              onClick={(e) => {
+                e.preventDefault();
+                onSelect(key);
+              }}/>,
           },
           {
             title: <Text size='small'>Number of items</Text>,

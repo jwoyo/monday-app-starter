@@ -14,7 +14,8 @@ export function Modal({children, controls, secondaryControls, headline}: Props) 
   return (
     <div className={modalCss}>
       <div className={modalHeaderCss}>
-        <Heading value={headline} size={Heading.sizes.MEDIUM}></Heading>
+        <Heading value={headline}
+          size={Heading.sizes.MEDIUM}></Heading>
         <Divider/>
       </div>
       <div className={modalBodyCss}>

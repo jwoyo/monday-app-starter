@@ -52,7 +52,8 @@ export function MondayOAuthBoundary({children}: { children: ReactElement }) {
             Welcome! checklists app is ready to use. Connect you account to get started.
           </Text>
           <div>
-            <Button color={Button.colors.BRAND} onClick={() => signUp.mutate()}>Get started</Button>
+            <Button color={Button.colors.BRAND}
+              onClick={() => signUp.mutate()}>Get started</Button>
           </div>
         </div>
       </div>

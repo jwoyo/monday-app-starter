@@ -52,15 +52,24 @@ export function ChecklistItems({defaultValue, onMoveItem, onChangeItem, onAddIte
                 .map((id) => items?.find((i) => i.id === id))
                 .filter((i): i is ChecklistItemInFirestore => !!i)
                 .map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                  <Draggable key={item.id}
+                    draggableId={item.id}
+                    index={index}>
                     {(provided) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        <div key={item.id} className={'checklist-item-wrapper-' + item.type}>
-                          <ChecklistItem key={item.id} item={item} onChange={(u) => onChangeItem(item.id, u)} onDelete={() => onDeleteItem(item.id)} isCheckable={isCheckable}/>
+                        <div key={item.id}
+                          className={'checklist-item-wrapper-' + item.type}>
+                          <ChecklistItem
+                            key={item.id}
+                            item={item}
+                            onChange={(u) => onChangeItem(item.id, u)}
+                            onDelete={() => onDeleteItem(item.id)}
+                            isCheckable={isCheckable}
+                          />
                         </div>
                       </div>
                     )}

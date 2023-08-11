@@ -3,7 +3,7 @@ import {produce} from 'immer';
 import {v4 as uuidv4} from 'uuid';
 
 /**
- * builds a set of producers for the items array of a checklist or a blueprint.
+ * builds a set of producers for the items array of a checklist. might be used for blueprint items as well as long as they are similar.
  * @param items
  * @returns {object} producers
  */
@@ -74,10 +74,28 @@ export function buildItemsProducers(items?: ChecklistInFirestore['items']) {
     });
   };
 
+  const uncheckItems = () => {
+    return produce(items || [], (state) => {
+      if (!state) {
+        return;
+      }
+      return state.map((item) => {
+        if (item.type === 'item') {
+          return {
+            ...item,
+            isChecked: false,
+          };
+        }
+        return item;
+      });
+    });
+  };
+
   return {
     addItem,
     updateItem,
     moveItem,
     deleteItem,
+    uncheckItems,
   };
 }

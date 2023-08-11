@@ -42,10 +42,13 @@ export function PickBlueprintModal({}: Props) {
   return <Modal
     headline="Use a blueprint">
     <div className={listBlueprintsClassName}>
-      <AttentionBox title={'How to use blueprints?'} icon={Info}>
+      <AttentionBox title={'How to use blueprints?'}
+        icon={Info}>
         Click a blueprint from below to use its items for the current checklist. Beware that this will overwrite your current checklist.
       </AttentionBox>
-      <BlueprintTable blueprints={data} onSelect={(blueprintId) => mutate({blueprintId, itemId: Number(itemId)})} scroll={{y: 300}}/>
+      <BlueprintTable blueprints={data}
+        onSelect={(blueprintId) => mutate({blueprintId, itemId: Number(itemId)})}
+        scroll={{y: 300}}/>
     </div>
   </Modal>;
 }

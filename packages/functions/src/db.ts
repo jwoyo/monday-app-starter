@@ -10,6 +10,8 @@ import {getFirestore} from 'firebase-admin/firestore';
 import DocumentReference = firestore.DocumentReference;
 import CollectionReference = firestore.CollectionReference;
 import {BLUEPRINT_MAX, NAME_MAX_LENGTH} from 'bridge/constants';
+import {v4 as uuidv4} from 'uuid';
+
 import Timestamp = firestore.Timestamp;
 
 const app = admin.initializeApp();
@@ -91,6 +93,19 @@ export async function setChecklistForItemId({accountId, itemId, checklist}: {
   const doc = getChecklistCollection({accountId}).doc(itemId.toString());
   return doc.set(checklist);
 }
+/**
+ * Sets a checklist in the database by monday item id.
+ * @param accountId
+ * @param itemId
+ * @param checklist
+ */
+export async function deleteChecklistForItemId({accountId, itemId}: {
+    accountId: number,
+    itemId: number,
+}) {
+  const doc = getChecklistCollection({accountId}).doc(itemId.toString());
+  return doc.delete();
+}
 
 export async function createBlueprint({accountId, blueprint}: {
     accountId: number,
@@ -170,7 +185,7 @@ export async function applyBlueprint({accountId, blueprintId, itemId}: {
     accountId,
     itemId,
     checklist: {
-      items: blueprint.items,
+      items: blueprint.items.map((item) => ({...item, id: uuidv4()})),
     },
   });
 }

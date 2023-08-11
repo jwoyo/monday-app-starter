@@ -14,7 +14,7 @@ export function MondayBoundary({children}: { children: ReactElement }) {
     // Monday.com postMessage calls seem to load very fast, so we don't need to show a loading indicator.
     return <></>;
   }
-  if (contextQuery.isError || (contextQuery.data && !contextQuery.data.data?.app?.id)) {
+  if (contextQuery.isError || (contextQuery.data && !contextQuery.data.data?.app?.id) || !contextQuery.data) {
     return <div className={errorMessageStyles}>
       <AttentionBox title="No monday.com context found"
         text="If you see this message you likely opened this application outside of monday.com"

@@ -26,11 +26,14 @@ export function ListBlueprintsModal({}: Props) {
 
   return <Modal
     headline="Your checklist blueprints"
-    controls={<Button size={Button.sizes.SMALL} rightIcon={AddSmall}
+    controls={<Button size={Button.sizes.SMALL}
+      rightIcon={AddSmall}
       onClick={() => navigate('/module/blueprints/create')}>Add a blueprint</Button>
     }>
     <div className={listBlueprintsClassName}>
-      <BlueprintTable blueprints={data} onSelect={(id) => navigate('/module/blueprints/' + id)} scroll={{y: 360}} />
+      <BlueprintTable blueprints={data}
+        onSelect={(id) => navigate('/module/blueprints/' + id)}
+        scroll={{y: 360}} />
     </div>
   </Modal>;
 }

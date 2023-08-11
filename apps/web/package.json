@@ -8,12 +8,13 @@
     "tunnel": "mtunnel -p 5173",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "pnpm run lint -- --fix",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
     "@tanstack/react-query": "^4.32.0",
+    "@tanstack/react-query-devtools": "^4.32.6",
     "@trpc/client": "^10.36.0",
     "@trpc/react-query": "^10.36.0",
     "@vanilla-extract/css": "^1.12.0",

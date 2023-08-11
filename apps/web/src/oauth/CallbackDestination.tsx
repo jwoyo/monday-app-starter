@@ -52,7 +52,8 @@ export function CallbackDestination() {
   }
 
   return (
-    <Skeleton width={660} height={84}/>
+    <Skeleton width={660}
+      height={84}/>
   );
 }
 

@@ -1,17 +1,21 @@
 import React, {useRef} from 'react';
 import {BlueprintForm} from '@/blueprints/BlueprintForm.tsx';
-import {Button} from 'monday-ui-react-core';
+import {AttentionBox, Button} from 'monday-ui-react-core';
 import {trpc} from '../trpc.ts';
 import {BlueprintCreatePayload} from 'functions/firestore.schemas.ts';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
 import {useQueryClient} from '@tanstack/react-query';
 import {getQueryKey} from '@trpc/react-query';
 import {Modal} from '../misc/Modal.tsx';
-import {AddSmall} from 'monday-ui-react-core/icons';
+import {AddSmall, Info} from 'monday-ui-react-core/icons';
+import {useChecklist} from '@/checklist/use-checklist.ts';
+import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
 
 type Props = {};
 
 export function NewBlueprintModal({}: Props) {
+  const [searchParams] = useSearchParams();
+  const fromItemId = searchParams.get('fromItemId') || false;
   const queryClient = useQueryClient();
   const blueprintQueryKey = getQueryKey(trpc.blueprint);
   const submitBtnRef = useRef<HTMLButtonElement>(null);
@@ -28,6 +32,18 @@ export function NewBlueprintModal({}: Props) {
   const onSubmit = (blueprint: BlueprintCreatePayload) => {
     mutate(blueprint);
   };
+  const {checklistQuery} = useChecklist();
+
+
+  if (fromItemId && checklistQuery.isLoading) {
+    return <BlueprintListSkeleton/>;
+  }
+
+  if (checklistQuery.isError) {
+    return <AttentionBox title="No checklist found"
+      text="Woud could not load the checklist you want to create a blueprint from. Please try again later."
+      icon={Info}/>;
+  }
 
   return <Modal headline="Create new blueprint"
     controls={<div className="button-controls">
@@ -43,6 +59,7 @@ export function NewBlueprintModal({}: Props) {
         size={Button.sizes.SMALL}>Create blueprint</Button></div>}
   >
     <BlueprintForm
+      defaultValue={fromItemId && checklistQuery.data ? {...checklistQuery.data, name: ''} : undefined}
       submitBtnRef={submitBtnRef}
       onSubmit={onSubmit}/>
   </Modal>;

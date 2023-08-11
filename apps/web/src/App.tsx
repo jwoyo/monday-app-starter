@@ -13,7 +13,11 @@ import {NewBlueprintModal} from './blueprints/NewBlueprintModal.tsx';
 import {ListBlueprintsModal} from './blueprints/ListBlueprintsModal.tsx';
 import {EditBlueprintModal} from './blueprints/EditBlueprintModal.tsx';
 import {PickBlueprintModal} from '@/blueprints/PickBlueprintModal.tsx';
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 
+/**
+ * we have a SPA here: this is the main entry point for the app.
+ */
 const router = createBrowserRouter([
   {
     path: '/module',
@@ -88,6 +92,7 @@ const queryClient = new QueryClient();
 function App() {
   return <QueryClientProvider client={queryClient}>
     <TrpcAwareApp/>
+    <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>;
 }
 
@@ -97,7 +102,8 @@ function App() {
  */
 function TrpcAwareApp() {
   const trpcClient = useTrpcClient();
-  return <trpc.Provider client={trpcClient} queryClient={queryClient}>
+  return <trpc.Provider client={trpcClient}
+    queryClient={queryClient}>
     <RouterProvider router={router}/>
   </trpc.Provider>;
 }

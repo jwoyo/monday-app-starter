@@ -26,6 +26,9 @@ export function AddItem({onAdd}: { onAdd: (title: string) => void }) {
       }}
       placeholder="Enter text for a new checklist item here"
     />
-    <Button disabled={!value} size={Button.sizes.SMALL} rightIcon={AddSmall} onClick={add}>Add item</Button>
+    <Button disabled={!value}
+      size={Button.sizes.SMALL}
+      rightIcon={AddSmall}
+      onClick={add}>Add item</Button>
   </div>;
 }

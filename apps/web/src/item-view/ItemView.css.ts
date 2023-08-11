@@ -9,6 +9,6 @@ export const itemViewClassName = style({
 
 export const itemViewControlsClassName = style( {
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'row-reverse',
   gap: '0.5rem',
 });

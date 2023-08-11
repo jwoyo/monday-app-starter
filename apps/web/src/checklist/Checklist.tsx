@@ -77,8 +77,12 @@ function ChecklistProgressBar({checklist}: {checklist?: ChecklistInFirestore | n
   }
   return <>
     <Progress
+      strokeColor={'var(--primary-color)'}
       style={{marginBottom: 0}}
-      success={{percent: items.filter((i) => !i.isOptional).every((i) => i.isChecked) ? Math.round(value * 100) : 0}}
+      success={{
+        percent: items.filter((i) => !i.isOptional).every((i) => i.isChecked) ? Math.round(value * 100) : 0,
+        strokeColor: 'var(--color-success)',
+      }}
       percent={Math.round(value * 100)}
     /></>;
 }

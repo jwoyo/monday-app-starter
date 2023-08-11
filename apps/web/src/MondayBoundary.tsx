@@ -9,12 +9,13 @@ import {Info} from 'monday-ui-react-core/icons';
  * @return {ReactElement}
  */
 export function MondayBoundary({children}: { children: ReactElement }) {
-  const {contextQuery} = useMonday();
+  const {contextQuery, context} = useMonday();
   if (contextQuery.isLoading) {
     // Monday.com postMessage calls seem to load very fast, so we don't need to show a loading indicator.
     return <></>;
   }
-  if (contextQuery.isError || (contextQuery.data && !contextQuery.data.data?.app?.id) || !contextQuery.data) {
+  // we won't render children if we don't have a proper context as nearly all components rely on that
+  if (contextQuery.isError || (contextQuery.data && !contextQuery.data.data?.app?.id) || !contextQuery.data || !context) {
     return <div className={errorMessageStyles}>
       <AttentionBox title="No monday.com context found"
         text="If you see this message you likely opened this application outside of monday.com"

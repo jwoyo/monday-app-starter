@@ -1,16 +1,18 @@
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import monday from 'monday-sdk-js';
 import {
   MondayClientContext,
   MondayClientSessionToken,
   MondayClientSettings,
 } from 'bridge/monday-client-context.types.ts';
+import {useEffect} from 'react';
 
 /**
  * custom hook that uses the monday-sdk-js to get the context, settings, and sessionToken via postMessage.
  * @return {context}
  */
 export function useMonday() {
+  const queryClient = useQueryClient();
   const context = useQuery({
     queryKey: ['monday', 'context'],
     queryFn: () => monday().get('context') as Promise<MondayClientContext>,
@@ -23,6 +25,11 @@ export function useMonday() {
     queryKey: ['monday', 'sessionToken'],
     queryFn: () => monday().get('sessionToken') as Promise<MondayClientSessionToken>,
   });
+  useEffect(() => {
+    monday().listen('context', (res) => {
+      queryClient.setQueryData(['monday', 'context'], res);
+    });
+  }, [queryClient]);
   return {
     contextQuery: context,
     settingsQuery: settings,

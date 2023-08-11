@@ -22,7 +22,7 @@ export const modalFooterCss = style({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  background: 'white',
+  background: 'var(--primary-background-color)',
   justifyContent: 'space-between',
 });
 
@@ -58,5 +58,5 @@ export const modalHeaderCss = style({
   width: '100%',
   padding: '0',
   top: '0',
-  background: 'white',
+  background: 'var(--primary-background-color)',
 });

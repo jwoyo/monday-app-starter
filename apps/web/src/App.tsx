@@ -13,6 +13,7 @@ import {NewBlueprintModal} from './blueprints/NewBlueprintModal.tsx';
 import {ListBlueprintsModal} from './blueprints/ListBlueprintsModal.tsx';
 import {EditBlueprintModal} from './blueprints/EditBlueprintModal.tsx';
 import {PickBlueprintModal} from '@/blueprints/PickBlueprintModal.tsx';
+import {ThemeBoundary} from '@/ThemeBoundary.tsx';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 
 /**
@@ -50,9 +51,11 @@ const router = createBrowserRouter([
       },
     ],
     element: <MondayBoundary>
-      <MondayOAuthBoundary>
-        <Outlet/>
-      </MondayOAuthBoundary>
+      <ThemeBoundary>
+        <MondayOAuthBoundary>
+          <Outlet/>
+        </MondayOAuthBoundary>
+      </ThemeBoundary>
     </MondayBoundary>,
   },
   {
@@ -92,7 +95,7 @@ const queryClient = new QueryClient();
 function App() {
   return <QueryClientProvider client={queryClient}>
     <TrpcAwareApp/>
-    <ReactQueryDevtools initialIsOpen={false} />
+
   </QueryClientProvider>;
 }
 

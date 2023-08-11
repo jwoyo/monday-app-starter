@@ -1,4 +1,4 @@
-import {style} from '@vanilla-extract/css';
+import {globalStyle, style} from '@vanilla-extract/css';
 export const errorMessageStyles = style({
   display: 'flex',
   flexDirection: 'column',
@@ -20,4 +20,13 @@ export const signUpMessageChildStyles = style({
       maxWidth: '80%',
     },
   },
+});
+
+// some monday components don't respect their own theme colors
+globalStyle(`[data-testid="heading"]`, {
+  color: 'var(--primary-text-color)',
+});
+// mondays headline component doesn respect the theme colors
+globalStyle(`[data-testid="editable-input"]`, {
+  color: 'var(--primary-text-color)',
 });

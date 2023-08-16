@@ -41,7 +41,8 @@ export function useMonday() {
 }
 
 /**
- * Convenience hook to get the defined monday context that throws an error if it doesn't exist.
+ * Convenience hook to get a non-null monday context
+ * @return {context}
  */
 export function useMondayContext() {
   const {context} = useMonday();

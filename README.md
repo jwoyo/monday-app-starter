@@ -27,16 +27,9 @@ https://style.monday.com/?path=/docs/media-icon--icons-list
 
 #### TODOS
 ##### Infrastructure
-- handle session token expiration
-- generate graphql client
-- handle uninstallation for oauth tokens
-- @ mentions
-- dark mode
 - i18n
+- handle uninstallation for oauth tokens
 - error handling
 ##### App
-- basic template functionality
 - auto creation for checklists
-- save as templates
-- checklist change log
 - embedding of values to item column

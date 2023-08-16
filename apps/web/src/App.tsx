@@ -14,10 +14,10 @@ import {ListBlueprintsModal} from './blueprints/ListBlueprintsModal.tsx';
 import {EditBlueprintModal} from './blueprints/EditBlueprintModal.tsx';
 import {PickBlueprintModal} from '@/blueprints/PickBlueprintModal.tsx';
 import {ThemeBoundary} from '@/ThemeBoundary.tsx';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
+import {useMondayClient} from '@/graphql.ts';
 
 /**
- * we have a SPA here: this is the main entry point for the app.
+ * this is the main routing point for the app.
  */
 const router = createBrowserRouter([
   {
@@ -95,7 +95,6 @@ const queryClient = new QueryClient();
 function App() {
   return <QueryClientProvider client={queryClient}>
     <TrpcAwareApp/>
-
   </QueryClientProvider>;
 }
 

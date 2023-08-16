@@ -10,6 +10,14 @@ import {Divider, Heading} from 'monday-ui-react-core';
 
 type Props = {children: ReactElement, controls?: ReactElement, secondaryControls?: ReactElement, headline: string};
 
+/**
+ * A modal dialog. Uses monday-ui-react-core components, where possible.
+ * @param children
+ * @param controls
+ * @param secondaryControls
+ * @param headline
+ * @constructor
+ */
 export function Modal({children, controls, secondaryControls, headline}: Props) {
   return (
     <div className={modalCss}>

@@ -12,6 +12,8 @@ import React, {ReactElement, Ref} from 'react';
 import {buildItemsProducers} from '@/producers.ts';
 
 /**
+ * provides a form to create a new blueprint or edit an existing one
+ *
  * @param onSubmit
  * @param onCancel
  * @param submitBtnRef

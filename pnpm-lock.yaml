@@ -25,6 +25,7 @@ importers:
 
   apps/web:
     specifiers:
+      '@graphql-typed-document-node/core': ^3.2.0
       '@hookform/resolvers': ^3.2.0
       '@mondaydotcomorg/tunnel': ^0.4.2
       '@tanstack/react-query': ^4.32.0
@@ -50,6 +51,7 @@ importers:
       eslint-plugin-react-hooks: ^4.6.0
       eslint-plugin-react-refresh: ^0.4.3
       functions: workspace:*
+      graphql-request: ^6.1.0
       immer: ^10.0.2
       linkify-html: ^4.1.1
       linkify-react: ^4.1.1
@@ -67,8 +69,6 @@ importers:
       use-immer: ^0.9.0
       uuid: ^9.0.0
       vite: ^4.4.5
-      zod: link:@hookform/resolvers/zod
-      zustand: ^4.4.0
     dependencies:
       '@hookform/resolvers': 3.2.0_react-hook-form@7.45.4
       '@tanstack/react-query': 4.32.0_wcqkhtmu7mswc6yz4uyexck3ty
@@ -82,6 +82,7 @@ importers:
       bridge: link:../../packages/bridge
       dotenv: 16.3.1
       functions: link:../../packages/functions
+      graphql-request: 6.1.0_graphql@15.8.0
       immer: 10.0.2
       linkify-html: 4.1.1_linkifyjs@4.1.1
       linkify-react: 4.1.1_p74bnvn44bmea4a6jprvygjg2u
@@ -97,9 +98,8 @@ importers:
       superjson: 1.13.1
       use-immer: 0.9.0_immer@10.0.2+react@16.14.0
       uuid: 9.0.0
-      zod: link:@hookform/resolvers/zod
-      zustand: 4.4.0_npf4ibmypfeag46bloa72pz6wq
     devDependencies:
+      '@graphql-typed-document-node/core': 3.2.0_graphql@15.8.0
       '@mondaydotcomorg/tunnel': 0.4.2_tslib@2.6.1
       '@types/react': 16.14.43
       '@types/react-beautiful-dnd': 13.1.4
@@ -2265,7 +2265,6 @@ packages:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 15.8.0
-    dev: false
 
   /@grpc/grpc-js/1.8.20:
     resolution: {integrity: sha512-SPse1wE4PcIFojOISsAnrWXCBsCBwDdcDqz2SS0T8nBSxg9jwmCK70Jy7ypRn2nIspwLy3Ls5TNaKNHo+6dF8A==}
@@ -6561,7 +6560,6 @@ packages:
   /graphql/15.8.0:
     resolution: {integrity: sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==}
     engines: {node: '>= 10.x'}
-    dev: false
 
   /gtoken/6.1.2:
     resolution: {integrity: sha512-4ccGpzz7YAr7lxrT2neugmXQ3hP9ho2gcaityLVkiUecAiwiy60Ii8gRbZeOsXV19fYaRjgBSshs8kXw+NKCPQ==}
@@ -11741,25 +11739,4 @@ packages:
 
   /zod/3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
-    dev: false
-
-  /zustand/4.4.0_npf4ibmypfeag46bloa72pz6wq:
-    resolution: {integrity: sha512-2dq6wq4dSxbiPTamGar0NlIG/av0wpyWZJGeQYtUOLegIUvhM2Bf86ekPlmgpUtS5uR7HyetSiktYrGsdsyZgQ==}
-    engines: {node: '>=12.7.0'}
-    peerDependencies:
-      '@types/react': '>=16.8'
-      immer: '>=9.0'
-      react: '>=16.8'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      immer:
-        optional: true
-      react:
-        optional: true
-    dependencies:
-      '@types/react': 16.14.43
-      immer: 10.0.2
-      react: 16.14.0
-      use-sync-external-store: 1.2.0_react@16.14.0
     dev: false

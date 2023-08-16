@@ -14,7 +14,6 @@ import {ListBlueprintsModal} from './blueprints/ListBlueprintsModal.tsx';
 import {EditBlueprintModal} from './blueprints/EditBlueprintModal.tsx';
 import {PickBlueprintModal} from '@/blueprints/PickBlueprintModal.tsx';
 import {ThemeBoundary} from '@/ThemeBoundary.tsx';
-import {useMondayClient} from '@/graphql.ts';
 
 /**
  * this is the main routing point for the app.

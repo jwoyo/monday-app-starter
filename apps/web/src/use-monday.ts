@@ -49,3 +49,13 @@ export function useMondayContext() {
   if (!context) throw new Error('No monday context found');
   return context;
 }
+
+/**
+ * Convenience hook to get a non-null monday settings object
+ * @return {settings}
+ */
+export function useMondaySettings() {
+  const {settings} = useMonday();
+  if (!settings) throw new Error('No monday settings found');
+  return settings;
+}

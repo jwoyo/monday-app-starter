@@ -91,7 +91,8 @@ export async function setChecklistForItemId({accountId, itemId, checklist}: {
     checklist: ChecklistInFirestore
 }) {
   const doc = getChecklistCollection({accountId}).doc(itemId.toString());
-  return doc.set(checklist);
+  await doc.set(checklist);
+  return checklist;
 }
 /**
  * Sets a checklist in the database by monday item id.

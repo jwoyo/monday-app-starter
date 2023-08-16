@@ -32,4 +32,3 @@ https://style.monday.com/?path=/docs/media-icon--icons-list
 - error handling
 ##### App
 - auto creation for checklists
-- embedding of values to item column

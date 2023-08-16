@@ -70,7 +70,7 @@ export interface MondayClientSessionToken {
 export interface MondayClientSettings {
     method: string;
     type: string;
-    data: unknown; // TODO: add when known
+    data: {progress_column: {[columnId: string]: boolean}};
     requestId: string;
 }
 

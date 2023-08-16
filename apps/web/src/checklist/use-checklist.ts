@@ -1,10 +1,11 @@
-import {useMondayContext} from '@/use-monday.ts';
+import {useMondayContext, useMondaySettings} from '@/use-monday.ts';
 import {useIsMutating, useQueryClient} from '@tanstack/react-query';
 import {trpc} from '@/trpc.ts';
-import {ChecklistInFirestore} from 'functions/firestore.schemas.ts';
+import {ChecklistInFirestore, ChecklistItemInFirestore} from 'functions/firestore.schemas.ts';
 import {useCallback} from 'react';
 import {getQueryKey} from '@trpc/react-query';
 import {buildItemsProducers} from '@/producers.ts';
+import {useMondayClient} from '@/graphql.ts';
 
 /**
  * handles query and mutation management for a single checklist in the item view.
@@ -13,6 +14,8 @@ import {buildItemsProducers} from '@/producers.ts';
  */
 export function useChecklist() {
   const context = useMondayContext();
+  const settings = useMondaySettings();
+  const mondayClient = useMondayClient();
   const queryClient = useQueryClient();
   const queryKey = getQueryKey( trpc.checklist.get, {itemId: context.itemId}, 'query');
   const mutationKey = ['checklist', 'set'];
@@ -26,6 +29,29 @@ export function useChecklist() {
     },
     onError: (error, data, context) => {
       queryClient.setQueriesData(queryKey, context?.previousChecklist);
+    },
+    onSuccess: async ({items}) => {
+      const columnConfiguration = Object.entries(settings.progress_column).find(([, value]) => value);
+      const [boardId] = context.boardIds;
+      if (!columnConfiguration || !boardId) {
+        return;
+      }
+      const [columnId] = columnConfiguration;
+      if (!columnId) {
+        return;
+      }
+      const checkableItems = items?.filter((item): item is ChecklistItemInFirestore => item.type === 'item') || [];
+      const percentage = Math.round((checkableItems.filter((item) => item.isChecked).length / checkableItems.length) * 100);
+      if (!items.length) {
+        return;
+      }
+      // drop errors for now
+      mondayClient.setItemValue({
+        boardId: boardId,
+        itemId: context.itemId,
+        columnId,
+        value: percentage.toString(),
+      });
     },
     onSettled: async () => {
       // trpc invalidates the query automatically by matching the queryKey

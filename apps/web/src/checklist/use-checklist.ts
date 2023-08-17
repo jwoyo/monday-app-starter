@@ -18,7 +18,7 @@ export function useChecklist() {
   const mondayClient = useMondayClient();
   const queryClient = useQueryClient();
   const queryKey = getQueryKey( trpc.checklist.get, {itemId: context.itemId}, 'query');
-  const mutationKey = ['checklist', 'set'];
+  const mutationKey = ['mutate-checklist'];
   const {mutate} = trpc.checklist.set.useMutation({
     mutationKey,
     onMutate: async ({checklist}) => {
@@ -31,6 +31,9 @@ export function useChecklist() {
       queryClient.setQueriesData(queryKey, context?.previousChecklist);
     },
     onSuccess: async ({items}) => {
+      if (!settings.progress_column) {
+        return;
+      }
       const columnConfiguration = Object.entries(settings.progress_column).find(([, value]) => value);
       const [boardId] = context.boardIds;
       if (!columnConfiguration || !boardId) {
@@ -54,8 +57,7 @@ export function useChecklist() {
       });
     },
     onSettled: async () => {
-      // trpc invalidates the query automatically by matching the queryKey
-      // queryClient.invalidateQueries(queryKey);
+      queryClient.invalidateQueries(queryKey);
     },
   });
   const runningMutationCount = useIsMutating([mutationKey]);

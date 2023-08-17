@@ -1,8 +1,13 @@
 import * as trpcExpress from '@trpc/server/adapters/express';
 import type {inferAsyncReturnType} from '@trpc/server';
 import {initTRPC} from '@trpc/server';
-import {buildRequireMondayAuthenticationMiddlewares} from './monday.middleware';
+import {
+  buildRequireMondayAuthenticationMiddlewares,
+  buildRequireMondayWebtriggerAuthenticationMiddleware,
+} from './monday.middleware';
 import superjson from 'superjson';
+import {OpenApiMeta} from 'trpc-openapi';
+
 
 /**
  * context object that is common to all procedures. specific procedures may add more properties to this object.
@@ -23,9 +28,12 @@ export const createContext = ({req}: trpcExpress.CreateExpressContextOptions): {
 /**
  * configures trpc to use superjson for serialization on all procedures.
  */
-export const trpc = initTRPC.context<Context>().create({
-  transformer: superjson,
-});
+export const trpc = initTRPC
+    .context<Context>()
+    .meta<OpenApiMeta>()
+    .create({
+      transformer: superjson,
+    });
 /**
  * the middleware object. This object is used to build middlewares.
  */
@@ -48,5 +56,10 @@ export const mondaySessionAdminProcedure = publicProcedure.use(mondayIsAdminMidd
  * procedure that requires that the user is signed up (went throw the OAuth 2.0 dance) and a user in the given account.
  */
 export const mondayOAuthUserProcedure = publicProcedure.use(mondayIsOAuthUserMiddleware);
+
+/**
+ * procedure to be used for incoming monday.com webhooks.
+ */
+export const mondayWebTriggerProcedure = publicProcedure.use(buildRequireMondayWebtriggerAuthenticationMiddleware(middleware));
 
 export type Middleware = typeof middleware;

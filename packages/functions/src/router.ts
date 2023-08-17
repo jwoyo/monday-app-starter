@@ -1,4 +1,10 @@
-import {trpc, mondaySessionUserProcedure, publicProcedure, mondayOAuthUserProcedure} from './server';
+import {
+  trpc,
+  mondaySessionUserProcedure,
+  publicProcedure,
+  mondayOAuthUserProcedure,
+  mondayWebTriggerProcedure,
+} from './server';
 import {z} from 'zod';
 import {exchangeOAuthCodeForAccessToken} from './monday-oauth-api';
 import {
@@ -80,6 +86,59 @@ export const router = trpc.router({
           const {account_id: accountId} = opts.ctx.mondayContext.dat;
           const {blueprintId, itemId} = opts.input;
           return applyBlueprint({accountId, blueprintId, itemId});
+        }),
+  }),
+  workflow: trpc.router({
+    blueprintsFieldDefinitions: mondayWebTriggerProcedure
+        .meta({
+          openapi: {
+            method: 'POST',
+            path: '/workflow/blueprints-field-definitions',
+          },
+        })
+        .input(z.object({}))
+        .output(z.object({
+          options: z.array(
+              z.object(
+                  {
+                    title: z.string(),
+                    value: z.string(),
+                  })),
+        }))
+        .query(async (input) => {
+          const {accountId} = input.ctx.mondayContext;
+          const blueprints = await getAllBlueprints({accountId});
+          const options = blueprints.map(({name, id}) => ({
+            title: name,
+            value: id,
+          }));
+          return {options};
+        }),
+    checklistStartTrigger: mondayWebTriggerProcedure
+        .meta({
+          openapi: {
+            method: 'POST',
+            path: '/workflow/checklist-start-trigger',
+          },
+        })
+        .input(z.object({
+          payload: z.object({
+            inputFields: z.object({
+              blueprintId: z.object({
+                title: z.string(),
+                value: z.string(),
+                invalid: z.boolean(),
+              }),
+              itemId: z.number(),
+            }),
+          }),
+        }))
+        .output(z.object({}))
+        .query(async ({ctx, input}) => {
+          const {accountId} = ctx.mondayContext;
+          const {blueprintId: {value}, itemId} = input.payload.inputFields;
+          console.debug('Applying blueprint via integration', {accountId, blueprintId: value, itemId});
+          await applyBlueprint({accountId, blueprintId: value, itemId});
         }),
   }),
   OAuth: trpc.router({

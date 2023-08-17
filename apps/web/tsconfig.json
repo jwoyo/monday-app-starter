@@ -24,7 +24,7 @@
       "bridge/*": ["../../packages/bridge/src/*"],
       "functions/*": ["../../packages/functions/src/*"],
       "@/*": ["./src/*"],
-      "graphql-request/internal-types": ["node_modules/graphql-request/build/cjs/types"],
+      "graphql-request/internal-types": ["./node_modules/graphql-request/build/cjs/types"],
     }
   },
   "include": ["src"],

@@ -14,3 +14,11 @@ export interface MondayJsonWebTokenDecoded {
         user_kind: string
     }
 }
+export interface MondayIntegrationWebHookJsonWebTokenDecoded {
+    accountId: number
+    userId: number
+    aud: string
+    exp: number
+    shortLivedToken: string
+    iat: number
+}

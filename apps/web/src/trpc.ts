@@ -7,7 +7,7 @@ import superjson from 'superjson';
 /**
  * points to the checklist second gen gcp function url
  */
-const checklistFunctionUrl = import.meta.env.__FUNCTION_URL_CHECKLIST__;
+const checklistFunctionUrl = import.meta.env.__FUNCTION_URL_CHECKLIST__ + '/trpc';
 
 /**
  * creates a trpc client suitable for usage in react. should be used to access trpc functionality in a type safe manner

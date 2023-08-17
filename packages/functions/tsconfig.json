@@ -8,6 +8,7 @@
     "strict": true,
     "target": "es2017",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "paths": {
       "bridge/*": ["../bridge/src/*"],
       "monday-client/*": ["../monday-client/*"],

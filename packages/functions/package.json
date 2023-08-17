@@ -27,6 +27,7 @@
     "monday-client": "*",
     "monday-sdk-js": "^0.4.8",
     "superjson": "^1.13.1",
+    "trpc-openapi": "^1.2.0",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },

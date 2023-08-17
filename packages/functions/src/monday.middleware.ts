@@ -1,10 +1,11 @@
 import {TRPCError} from '@trpc/server';
 import {verify} from 'jsonwebtoken';
 import type {Middleware} from './server';
-import {MONDAY_APP_SECRET} from './variables';
-import {MondayJsonWebTokenDecoded} from 'bridge/json-web-token.types';
+import {MONDAY_APP_SECRET, MONDAY_APP_SIGNING_SECRET} from './variables';
+import {MondayIntegrationWebHookJsonWebTokenDecoded, MondayJsonWebTokenDecoded} from 'bridge/json-web-token.types';
 import {getGlobalOAuthTokenByAccountId} from './db';
 import {buildMondayGraphQLClientOnBehalfOfUser} from './graphql';
+import {SecretParam} from 'firebase-functions/lib/params/types';
 
 /**
  * Build middlewares that require Monday authentication. We pass in the middleware object to reduce circular dependencies.
@@ -14,20 +15,13 @@ import {buildMondayGraphQLClientOnBehalfOfUser} from './graphql';
  */
 export const buildRequireMondayAuthenticationMiddlewares = (middleware: Middleware) => {
   const baseMondayMiddleware = middleware(async (opts) => {
-    const authorization = opts.ctx.authorization;
-    if (!authorization) {
-      throw new TRPCError({code: 'UNAUTHORIZED'});
-    }
-    const jwt = authorization.split(' ')[1];
-    const jwtVerified = verify(jwt, MONDAY_APP_SECRET.value());
-    if (typeof jwtVerified === 'string') {
-      throw new TRPCError({code: 'BAD_REQUEST'});
-    }
-    const mondayJwtVerified = jwtVerified as MondayJsonWebTokenDecoded;
+    const jwt = parseJwtFromAuthorizationHeader<MondayJsonWebTokenDecoded>({
+      authorization: opts.ctx.authorization,
+      secret: MONDAY_APP_SECRET,
+    });
     return opts.next({
       ctx: {
-        mondayContext: mondayJwtVerified,
-        mondayToken: jwt,
+        mondayContext: jwt,
       },
     });
   });
@@ -71,3 +65,43 @@ export const buildRequireMondayAuthenticationMiddlewares = (middleware: Middlewa
     mondayIsOAuthAdminMiddleware: mondayIsAdminMiddleware.unstable_pipe(mondayIsOAuthUserMiddleware),
   };
 };
+
+export const buildRequireMondayWebtriggerAuthenticationMiddleware = (middleware: Middleware) => {
+  return middleware((opts) => {
+    const jwt = parseJwtFromAuthorizationHeader<MondayIntegrationWebHookJsonWebTokenDecoded>({
+      authorization: opts.ctx.authorization,
+      secret: MONDAY_APP_SIGNING_SECRET,
+    });
+    return opts.next({
+      ctx: {
+        mondayContext: jwt,
+      },
+    });
+  });
+};
+
+/**
+ * Parse a monday JWT from an authorization header.
+ * @param authorization
+ * @param secret
+ * @return {MondayJsonWebTokenDecoded | MondayIntegrationWebHookJsonWebTokenDecoded}
+ */
+function parseJwtFromAuthorizationHeader<T extends MondayJsonWebTokenDecoded | MondayIntegrationWebHookJsonWebTokenDecoded>({
+  authorization,
+  secret,
+}: {
+  authorization?: string,
+  secret: SecretParam
+}) {
+  if (!authorization) {
+    throw new TRPCError({code: 'UNAUTHORIZED'});
+  }
+  const segments = authorization.split(' ');
+  const jwt = segments[1] || segments[0];
+  const jwtVerified = verify(jwt, secret.value());
+
+  if (typeof jwtVerified === 'string') {
+    throw new TRPCError({code: 'BAD_REQUEST'});
+  }
+  return jwtVerified as T;
+}

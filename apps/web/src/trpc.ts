@@ -12,7 +12,7 @@ const checklistFunctionUrl = import.meta.env.__FUNCTION_URL_CHECKLIST__ + '/trpc
 /**
  * creates a trpc client suitable for usage in react. should be used to access trpc functionality in a type safe manner
  */
-export const trpc = createTRPCReact<AppRouter>();
+export const trpc = createTRPCReact<AppRouter>({abortOnUnmount: true});
 
 /**
  * bare trpc client to be injected into trpc.Provider. configures the client to use the checklistFunctionUrl with the monday session token

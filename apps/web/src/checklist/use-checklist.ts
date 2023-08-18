@@ -18,11 +18,9 @@ export function useChecklist() {
   const mondayClient = useMondayClient();
   const queryClient = useQueryClient();
   const queryKey = getQueryKey( trpc.checklist.get, {itemId: context.itemId}, 'query');
-  const mutationKey = ['mutate-checklist'];
   const {mutate} = trpc.checklist.set.useMutation({
-    mutationKey,
     onMutate: async ({checklist}) => {
-      await queryClient.cancelQueries({queryKey});
+      await queryClient.cancelQueries(queryKey);
       const previousChecklist = queryClient.getQueryData(queryKey);
       queryClient.setQueryData(queryKey, checklist);
       return {previousChecklist};
@@ -56,11 +54,12 @@ export function useChecklist() {
         value: percentage.toString(),
       });
     },
-    onSettled: async () => {
+    onSettled: () => {
       queryClient.invalidateQueries(queryKey);
     },
   });
-  const runningMutationCount = useIsMutating([mutationKey]);
+
+  const runningMutationCount = useIsMutating([['checklist', 'set']]);
   const query = trpc.checklist.get.useQuery({itemId: context.itemId}, {enabled: runningMutationCount === 0});
   const mutateServerState = useCallback((checklist: ChecklistInFirestore) => {
     return mutate({

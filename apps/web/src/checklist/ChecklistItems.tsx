@@ -5,6 +5,16 @@ import {ChecklistInFirestore, ChecklistItemInFirestore} from 'functions/firestor
 import {ChecklistItem} from './ChecklistItem.tsx';
 import {AddItem} from './ChecklistAddItem.tsx';
 
+/**
+ * renders a list of checklist items and provided edit & drag and drop functionality
+ * @param defaultValue
+ * @param onMoveItem
+ * @param onChangeItem
+ * @param onAddItem
+ * @param onDeleteItem
+ * @param isCheckable
+ * @return {JSX.Element}
+ */
 export function ChecklistItems({defaultValue, onMoveItem, onChangeItem, onAddItem, onDeleteItem, isCheckable}: {
     defaultValue?: ChecklistInFirestore['items'],
     onMoveItem: (fromId: string, toId: string) => void

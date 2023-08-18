@@ -1,5 +1,6 @@
 import admin, {firestore} from 'firebase-admin';
 import {
+  BlueprintCreatePayload,
   BlueprintInFirestore,
   BlueprintUpdatePayload,
   ChecklistInFirestore,
@@ -108,9 +109,15 @@ export async function deleteChecklistForItemId({accountId, itemId}: {
   return doc.delete();
 }
 
+/**
+ * Creates a blueprint
+ * @param accountId
+ * @param blueprint
+ * @return {Promise<WithId<BlueprintInFirestore>>}
+ */
 export async function createBlueprint({accountId, blueprint}: {
     accountId: number,
-    blueprint: Omit<BlueprintInFirestore, 'createdAt'>
+    blueprint: BlueprintCreatePayload
 }): Promise<WithId<BlueprintInFirestore>> {
   const blueprintCollection = getBlueprintCollection({accountId});
   const {count} = (await blueprintCollection.count().get()).data();
@@ -123,6 +130,11 @@ export async function createBlueprint({accountId, blueprint}: {
   return {...newBlueprint, id: doc.id};
 }
 
+/**
+ * Updates a blueprint by id, performs a merge.
+ * @param accountId
+ * @param blueprint
+ */
 export async function updateBlueprint({accountId, blueprint}: {
     accountId: number,
     blueprint: WithId<BlueprintUpdatePayload>
@@ -139,6 +151,11 @@ export async function updateBlueprint({accountId, blueprint}: {
   await doc.set(newBlueprint);
 }
 
+/**
+ * Deletes a blueprint by id.
+ * @param accountId
+ * @param blueprintId
+ */
 export async function deleteBlueprint({accountId, blueprintId}: {
     accountId: number,
     blueprintId: string

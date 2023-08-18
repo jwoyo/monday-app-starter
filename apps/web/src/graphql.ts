@@ -19,6 +19,9 @@ export const useMondayClient = () => {
  * therefore we need to use the monday-sdk-js api to make graphql requests.
  */
 class MondayPostMessageApiClient extends GraphQLClient {
+  /**
+   * constructor, that calls the parent constructor with an empty url as communication is done via postMessage
+   */
   constructor() {
     super('');
   }

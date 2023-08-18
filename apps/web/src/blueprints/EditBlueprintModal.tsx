@@ -10,6 +10,10 @@ import {Edit} from 'monday-ui-react-core/icons';
 import {DeleteBlueprintButton} from './DeleteBlueprintButton.tsx';
 import {BlueprintForm} from '@/blueprints/BlueprintForm.tsx';
 
+/**
+ * modal to edit a blueprint, identified by the blueprintId in the URL
+ * @return {JSX.Element}
+ */
 export function EditBlueprintModal() {
   const {blueprintId} = useParams();
   const navigate = useNavigate();

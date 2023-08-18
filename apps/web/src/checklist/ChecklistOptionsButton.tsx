@@ -11,6 +11,11 @@ type Props = {
     onOpenModal: (path: string) => void
 };
 
+/**
+ * Button & Menu for settings that are available for a checklist in the item view
+ * @param onOpenModal
+ * @return {JSX.Element}
+ */
 export function ChecklistOptionsButton({onOpenModal}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const {itemId} = useMondayContext();

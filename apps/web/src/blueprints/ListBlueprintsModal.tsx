@@ -8,9 +8,11 @@ import {Modal} from '@/misc/Modal.tsx';
 import {BlueprintTable} from '@/blueprints/BlueprintTable.tsx';
 import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
 
-type Props = {};
-
-export function ListBlueprintsModal({}: Props) {
+/**
+ * modal to list all blueprints
+ * @return {JSX.Element}
+ */
+export function ListBlueprintsModal() {
   const {data, isLoading, isError} = trpc.blueprint.getAllBlueprints.useQuery();
   const navigate = useNavigate();
   if (isLoading) {

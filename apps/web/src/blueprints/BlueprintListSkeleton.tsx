@@ -2,6 +2,10 @@ import {blueprintsSkeletonClassName} from '@/blueprints/Blueprints.css.tsx';
 import {Skeleton} from 'monday-ui-react-core';
 import React from 'react';
 
+/**
+ * blueprints skeleton
+ * @return {ReactElement}
+ */
 export function BlueprintListSkeleton() {
   return <div className={blueprintsSkeletonClassName}>
     <Skeleton height={20}

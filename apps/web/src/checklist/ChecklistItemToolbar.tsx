@@ -4,6 +4,14 @@ import {checklistItemToolbarClassName} from '@/checklist/Checklist.css.ts';
 import {Erase, Note, Completed, Edit} from 'monday-ui-react-core/icons';
 import React from 'react';
 
+/**
+ * Checklist item toolbar to appear on hover to edit, delete, and update items
+ * @param item
+ * @param onEdit
+ * @param onDelete
+ * @param onUpdate
+ * @return {ReactElement}
+ */
 export function ChecklistItemToolbar({item, onEdit, onDelete, onUpdate}: {
   item: ChecklistInFirestore['items'][number],
   onEdit: () => void,

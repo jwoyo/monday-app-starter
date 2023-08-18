@@ -69,6 +69,11 @@ export function Checklist() {
   );
 }
 
+/**
+ * checklist progress bar
+ * @param checklist
+ * @return {ReactElement}
+ */
 function ChecklistProgressBar({checklist}: {checklist?: ChecklistInFirestore | null}) {
   const items = checklist?.items.filter((item): item is ChecklistItemInFirestore => item.type === 'item');
   const value = items ? items.filter((item) => item.isChecked).length / items.length : 0;

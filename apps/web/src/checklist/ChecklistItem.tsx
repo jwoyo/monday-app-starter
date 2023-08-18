@@ -9,7 +9,14 @@ import {
 import {Checkbox, EditableHeading} from 'monday-ui-react-core';
 import {ChecklistItemToolbar} from './ChecklistItemToolbar.tsx';
 
-
+/**
+ * Singe checklist item component to be rendered as part of a checklist
+ * @param item
+ * @param onChange
+ * @param onDelete
+ * @param isCheckable
+ * @returns {JSX.Element}
+ */
 export function ChecklistItem({item, onChange, onDelete, isCheckable}: { item: ChecklistInFirestore['items'][number], onChange: (update: Partial<ChecklistInFirestore['items'][number]>) => void, onDelete: () => void, isCheckable?: boolean }) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(item.title);
@@ -55,7 +62,8 @@ export function ChecklistItem({item, onChange, onDelete, isCheckable}: { item: C
             onChange={setTitle}
             onBlur={onSave}
             type={EditableHeading.types.h5}
-            value={isEditing ? editableText : LinkifiedElement as any}/>
+            /* EditableHeading luckily also works with jsx elements from linkify but is not typed accordingly */
+            value={isEditing ? editableText : LinkifiedElement as unknown as string}/>
         </div>
       </div>
     </div>

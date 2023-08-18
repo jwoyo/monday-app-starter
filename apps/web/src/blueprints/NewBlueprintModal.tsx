@@ -11,9 +11,11 @@ import {AddSmall, Info} from 'monday-ui-react-core/icons';
 import {useChecklist} from '@/checklist/use-checklist.ts';
 import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
 
-type Props = {};
-
-export function NewBlueprintModal({}: Props) {
+/**
+ * modal to create a new blueprint
+ * @return {JSX.Element}
+ */
+export function NewBlueprintModal() {
   const [searchParams] = useSearchParams();
   const fromItemId = searchParams.get('fromItemId') || false;
   const queryClient = useQueryClient();

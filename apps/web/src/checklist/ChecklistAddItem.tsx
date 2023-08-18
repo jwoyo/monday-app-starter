@@ -4,6 +4,11 @@ import {Button, TextField} from 'monday-ui-react-core';
 import {CHECKLIST_ITEM_MAX_LENGTH} from 'bridge/constants.ts';
 import {AddSmall} from 'monday-ui-react-core/icons';
 
+/**
+ * button and text field to add a new checklist item, placed at the bottom of the checklist
+ * @param onAdd
+ * @return {React.ReactElement}
+ */
 export function AddItem({onAdd}: { onAdd: (title: string) => void }) {
   const [value, setValue] = useState('');
   const add = useCallback(() => {

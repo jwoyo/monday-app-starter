@@ -1,6 +1,6 @@
 import React from 'react';
 import {trpc} from '../trpc.ts';
-import {AttentionBox, Button} from 'monday-ui-react-core';
+import {AttentionBox} from 'monday-ui-react-core';
 import {Info} from 'monday-ui-react-core/icons';
 import {listBlueprintsClassName} from './Blueprints.css.tsx';
 import {useSearchParams} from 'react-router-dom';
@@ -9,9 +9,11 @@ import {BlueprintTable} from '@/blueprints/BlueprintTable.tsx';
 import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
 import monday from 'monday-sdk-js';
 
-type Props = {};
-
-export function PickBlueprintModal({}: Props) {
+/**
+ * modal that is used to pick a blueprint for a checklist.
+ * @return {JSX.Element}
+ */
+export function PickBlueprintModal() {
   const {data, isLoading, isError} = trpc.blueprint.getAllBlueprints.useQuery();
   const [params] = useSearchParams();
   const itemId = params.get('itemId');

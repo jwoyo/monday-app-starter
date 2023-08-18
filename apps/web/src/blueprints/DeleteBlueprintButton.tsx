@@ -7,6 +7,11 @@ import {useNavigate} from 'react-router-dom';
 
 type Props = {blueprintId: string};
 
+/**
+ * Delete blueprint button, that asks for confirmation
+ * @param blueprintId
+ * @returns {JSX.Element}
+ */
 export function DeleteBlueprintButton({blueprintId}: Props) {
   const queryClient = useQueryClient();
   const blueprintQueryKey = getQueryKey(trpc.blueprint);

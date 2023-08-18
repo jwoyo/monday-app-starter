@@ -30,10 +30,8 @@ This repository offers a comprehensive technology stack to build monday.com apps
 
 - We are using React 16. meh. But mondays vibe components and its peer dependencies complain about other versions. Updating React might be worth a try.
 
-
-
 ## Upcoming Enhancements 📈
 
-- i18 
+- i18n
 - Uninstallation Handling
 

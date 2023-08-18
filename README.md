@@ -1,34 +1,39 @@
-### checklists for monday.com
+# Monday.com App Development Starter 
 
-This is a proof of concept for a checklist app for monday.com. It is a work in progress. It is a demonstration of a working technology stack for building monday.com apps.
-Functionality is inspired by this Jira app: https://marketplace.atlassian.com/apps/1213231/issue-checklist-for-jira-pro?hosting=cloud&tab=overview
-### Technology Stack
-- Typescript
-- pnpm (in favour of npm for patching capability)
-- Firebase & Cloud Functions 2gen only (no other GCP services!, 100% deployable via firebase cli)
-- React 16 (meh, peer deps of mondays vibe components don't like newer versions right now)
-- monday vibe components (https://style.monday.com/?path=/story/welcome--page)
-- trpc (https://trpc.io) for backend and derived client frontend
-- react-query (https://react-query.tanstack.com) for data fetching
-- superjson
-- form validation via react-hook-form
-- immer for dto operations
-- monday vibe + antd
-- generated graphql client for mondays api
+This repository offers a comprehensive technology stack to build monday.com apps. 💼
+
+## Features 📊
+
+- **Technology Stack:** Built on **[TypeScript](https://www.typescriptlang.org/)**, **[Firebase & Cloud Functions (2nd gen)](https://firebase.google.com/)**, and **[React](https://reactjs.org/)**, aligned with the [Monday Vibe Components](https://style.monday.com/?path=/docs/media-icon--icons-list).
+- **Communication Layer:** Utilizes **[trpc](https://github.com/trpc/trpc)** for typesafe backend and client communication.
+- **Data Management:** Data fetching and management with **[react-query](https://github.com/tannerlinsley/react-query)**.
+- **User-friendly Forms:** Employs **[react-hook-form](https://github.com/react-hook-form/react-hook-form)** for form validation.
+- **Immutability Made Easy:** Simplify data transformations and DTO operations using **[immer](https://github.com/immerjs/immer)**.
+- **Stylish UI:** Combine Monday Vibe Components with **[antd](https://github.com/ant-design/ant-design)** for a polished and professional UI.
+- **GraphQL Power:** Leverage a generated GraphQL client to enable **typesafe access** to the Monday GraphQL gateway. 🔒
+
+## Authentication and Events Handling 🔐
+
+- **OAuth 2.0 Authentication:** Seamlessly integrate your Monday apps with secure authorization using OAuth 2.0 authentication.
+- **Webtrigger Events:** Effortlessly handle event authentication for webtrigger events, ensuring a seamless and secure user experience.
+
+## Getting Started 🏁
+
+(TODO)
+
+## Resources 🌐
+
+- Explore the world of **[Monday Vibe Components](https://style.monday.com/?path=/docs/media-icon--icons-list)** for enhanced UI/UX.
+- Curious to see the magic in action? Check out the **[Preview Example](link-to-preview-example)** to get a glimpse of the endless possibilities.
+
+## Known issues 🐛
+
+- We are using React 16. meh. But mondays vibe components and its peer dependencies complain about other versions. Updating React might be worth a try.
 
 
-### Discarded Technologies & learning
-- Next.js (SSR doesn't work with mondays components)
-- Vercel deployment (doesn't support proper cloud functions right now)
-- monday Storage API (doesn't support proper querying)
 
-### Links
-https://style.monday.com/?path=/docs/media-icon--icons-list
+## Upcoming Enhancements 📈
 
-#### TODOS
-##### Infrastructure
-- i18n
-- handle uninstallation for oauth tokens
-- error handling
-##### App
-- auto creation for checklists
+- i18 
+- Uninstallation Handling
+

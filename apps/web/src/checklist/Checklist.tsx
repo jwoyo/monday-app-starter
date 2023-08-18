@@ -55,7 +55,6 @@ export function Checklist() {
 
   return (
     <div className={checklistClassName}>
-      {JSON.stringify(runningMutationCount)}
       <ChecklistProgressBar checklist={checklist}/>
       <div>
         <ChecklistItems

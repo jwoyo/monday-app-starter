@@ -14,7 +14,11 @@
         "firebase-debug.*.log"
       ],
       "predeploy": [
-        "npm run build -- --scope functions"
+        "pnpm --filter functions run build",
+        "pnpm --filter functions run pre-deploy"
+      ],
+      "postdeploy": [
+        "pnpm --filter functions run post-deploy"
       ]
     }
   ],

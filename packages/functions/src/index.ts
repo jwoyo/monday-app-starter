@@ -19,8 +19,7 @@ export const checklistExpressMiddlewareOpenApi = createOpenApiExpressMiddleware(
 const app = express()
     .use(
         cors({
-          origin: ['*'], // TODO: restrict to actual origins
-          credentials: true,
+          origin: true, // allow all origins for now
         })
     )
     .use(

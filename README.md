@@ -60,8 +60,9 @@ apps/web
   └── ✕ unmet peer react-dom@"^0.14 || ^15 || ^16": found 18.2.0
 ```
 
-## Upcoming Enhancements 📈
+## Upcoming features 📈
 
-- i18n
-- Uninstallation Handling
+- Handling of app uninstallation
+- Test Set-up
+- CI/CD Set-up
 

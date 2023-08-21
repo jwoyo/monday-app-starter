@@ -6,12 +6,15 @@ import {
   MondayClientSettings,
 } from 'bridge/monday-client-context.types.ts';
 import {useEffect} from 'react';
+import i18n from '@/i18n.ts';
+import {useTranslation} from 'react-i18next';
 
 /**
  * custom hook that uses the monday-sdk-js to get the context, settings, and sessionToken via postMessage.
  * @return {context}
  */
 export function useMonday() {
+  const {i18n} = useTranslation();
   const queryClient = useQueryClient();
   const context = useQuery({
     queryKey: ['monday', 'context'],
@@ -27,6 +30,8 @@ export function useMonday() {
   });
   useEffect(() => {
     monday().listen('context', (res) => {
+      const context = res.data as MondayClientContext['data'];
+      i18n.changeLanguage(context.user.currentLanguage);
       queryClient.setQueryData(['monday', 'context'], res);
     });
   }, [queryClient]);

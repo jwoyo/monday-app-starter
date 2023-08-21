@@ -10,12 +10,14 @@ import {Modal} from '../misc/Modal.tsx';
 import {AddSmall, Info} from 'monday-ui-react-core/icons';
 import {useChecklist} from '@/checklist/use-checklist.ts';
 import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
+import {useTranslation} from 'react-i18next';
 
 /**
  * modal to create a new blueprint
  * @return {JSX.Element}
  */
 export function NewBlueprintModal() {
+  const {t} = useTranslation('blueprint');
   const [searchParams] = useSearchParams();
   const fromItemId = searchParams.get('fromItemId') || false;
   const queryClient = useQueryClient();
@@ -42,17 +44,17 @@ export function NewBlueprintModal() {
   }
 
   if (checklistQuery.isError) {
-    return <AttentionBox title="No checklist found"
-      text="Woud could not load the checklist you want to create a blueprint from. Please try again later."
+    return <AttentionBox title={t('new.err')}
+      text={t('new.err.text')}
       icon={Info}/>;
   }
 
-  return <Modal headline="Create new blueprint"
+  return <Modal headline={t('new.title')}
     controls={<div className="button-controls">
       <Button
         kind={Button.kinds.SECONDARY}
         size={Button.sizes.SMALL}
-        onClick={() => navigate('/module/blueprints')}>Back</Button>
+        onClick={() => navigate('/module/blueprints')}>{t('back')}</Button>
       <Button
         loading={isLoading}
         onClick={() => submitBtnRef.current?.click()}

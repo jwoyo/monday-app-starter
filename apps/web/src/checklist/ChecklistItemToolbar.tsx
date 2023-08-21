@@ -3,6 +3,7 @@ import {IconButton} from 'monday-ui-react-core';
 import {checklistItemToolbarClassName} from '@/checklist/Checklist.css.ts';
 import {Erase, Note, Completed, Edit} from 'monday-ui-react-core/icons';
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 
 /**
  * Checklist item toolbar to appear on hover to edit, delete, and update items
@@ -18,6 +19,7 @@ export function ChecklistItemToolbar({item, onEdit, onDelete, onUpdate}: {
   onDelete: () => void,
   onUpdate: (update: Partial<ChecklistInFirestore['items'][number]>) => void,
 }) {
+  const {t} = useTranslation('checklist');
   const deleteItem = () => onDelete();
   const iconProps = {
     kind: IconButton.kinds.SECONDARY, size: IconButton.sizes.XS,
@@ -25,17 +27,17 @@ export function ChecklistItemToolbar({item, onEdit, onDelete, onUpdate}: {
   return <div className={checklistItemToolbarClassName}>
     <IconButton icon={Edit}
       {...iconProps}
-      ariaLabel="Edit item"
+      ariaLabel={t('toolbar.edit.item')}
       onClick={onEdit}/>
     {item.type === 'item' &&
             <IconButton icon={Note}
               {...iconProps}
-              ariaLabel="Turn into headline"
+              ariaLabel={t('toolbar.into.headline')}
               onClick={() => onUpdate({type: 'headline'})}/>}
     {item.type === 'headline' &&
             <IconButton icon={Note}
               {...iconProps}
-              ariaLabel="Turn into item"
+              ariaLabel={t('toolbar.into.item')}
               onClick={() => onUpdate({type: 'item'})}/>}
     {item.type === 'headline' && <IconButton icon={Completed}
       {...iconProps}
@@ -43,16 +45,16 @@ export function ChecklistItemToolbar({item, onEdit, onDelete, onUpdate}: {
     {item.type === 'item' && item.isOptional &&
             <IconButton icon={Completed}
               {...iconProps}
-              ariaLabel="Turn into mandatory item"
+              ariaLabel={t('toolbar.into.mandatory.item')}
               onClick={() => onUpdate({isOptional: false})}/>}
     {item.type === 'item' && !item.isOptional &&
             <IconButton icon={Completed}
               {...iconProps}
-              ariaLabel="Turn into optional item"
+              ariaLabel={t('toolbar.into.optional.item')}
               onClick={() => onUpdate({isOptional: true})}/>}
     <IconButton icon={Erase}
       {...iconProps}
-      ariaLabel="Delete item"
+      ariaLabel={t('toolbar.delete.item')}
       onClick={deleteItem}/>
   </div>;
 }

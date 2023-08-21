@@ -14,12 +14,14 @@ import {
 } from 'functions/firestore.schemas.ts';
 import {Progress} from 'antd';
 import {ChecklistItems} from '@/checklist/ChecklistItems.tsx';
+import {useTranslation} from 'react-i18next';
 
 /**
  * checklist view
  * @return {ReactElement}
  */
 export function Checklist() {
+  const {t} = useTranslation('checklist');
   const {checklistQuery: {isLoading, isError}, checklist, moveItem, updateItem, addItem, deleteItem} = useChecklist();
 
   if (isLoading) {
@@ -47,8 +49,8 @@ export function Checklist() {
   }
 
   if (isError) {
-    return <AttentionBox title="Could not load checklist"
-      text="We could not fetch the checklist from monday.com. Please try again later or contact app support."
+    return <AttentionBox title={t('loading.error.title')}
+      text={t('loading.error.text')}
       type={AttentionBox.types.DANGER}
     />;
   }

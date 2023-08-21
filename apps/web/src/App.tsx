@@ -2,7 +2,7 @@ import {createBrowserRouter, Outlet, RouterProvider} from 'react-router-dom';
 import {ItemView} from './item-view/ItemView.tsx';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {trpc, useTrpcClient} from './trpc.ts';
-import React from 'react';
+import React, {Suspense} from 'react';
 import {Info} from 'monday-ui-react-core/icons';
 import {AttentionBox} from 'monday-ui-react-core';
 import {errorMessageStyles} from './App.css.ts';
@@ -89,15 +89,16 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient();
 
 /**
- * initializes react-query
+ * initializes react-query, suspense needed for i18next
  * @return {JSX.Element}
  */
 function App() {
-  return <QueryClientProvider client={queryClient}>
-    <TrpcAwareApp/>
-    <ReactQueryDevtools initialIsOpen={false} />
-
-  </QueryClientProvider>;
+  return <Suspense>
+    <QueryClientProvider client={queryClient}>
+      <TrpcAwareApp/>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  </Suspense>;
 }
 
 /**

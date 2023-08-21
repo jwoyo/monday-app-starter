@@ -2,12 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {trpc} from '../trpc.ts';
 import {AttentionBox, Skeleton} from 'monday-ui-react-core';
 import {ThumbsUp} from 'monday-ui-react-core/icons';
+import {useTranslation} from 'react-i18next';
 
 /**
  * This component is responsible for handling the OAuth callback from monday.com.
  * @return {ReactElement}
  */
 export function CallbackDestination() {
+  const {t} = useTranslation();
   const {mutate, isSuccess, isError} = trpc.OAuth.exchangeCode.useMutation({});
   const [rejectionError, setRejectionError] = useState<string | null>(null);
   useEffect(function reactToCallbackOnComponentLoad() {
@@ -33,21 +35,23 @@ export function CallbackDestination() {
   }, [isSuccess]);
 
   if (isSuccess) {
-    return <AttentionBox title="Success! You're doing great"
-      text="We connected you with your brand new monday.com app. If this windows doesn't close itself, please close it yourself."
+    return <AttentionBox
+      title={t('oauth.success.title')}
+      text={t('oauth.success.text')}
       type={AttentionBox.types.SUCCESS}
       icon={ThumbsUp}/>;
   }
 
   if (isError) {
-    return <AttentionBox title="Oh no. Could not connect to monday.app"
-      text="We could not sign up your account to this monday.com app. Please try again or contact app support."
+    return <AttentionBox
+      title={t('oauth.err.title')}
+      text={t('oauth.err.text')}
       type={AttentionBox.types.DANGER}/>;
   }
 
   if (rejectionError) {
     return <AttentionBox title={rejectionError}
-      text={'Please try again or contact app support.'}
+      text={t('oauth.err.retry.text')}
       type={AttentionBox.types.DANGER}/>;
   }
 

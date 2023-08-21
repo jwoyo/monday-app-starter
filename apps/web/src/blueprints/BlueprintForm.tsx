@@ -10,6 +10,7 @@ import {NAME_MAX_LENGTH} from 'bridge/constants.ts';
 import {ChecklistItems} from '@/checklist/ChecklistItems.tsx';
 import React, {ReactElement, Ref} from 'react';
 import {buildItemsProducers} from '@/producers.ts';
+import {useTranslation} from 'react-i18next';
 
 /**
  * provides a form to create a new blueprint or edit an existing one
@@ -24,6 +25,7 @@ export function BlueprintForm({onSubmit, submitBtnRef, defaultValue}: {
     onSubmit: (blueprint: BlueprintCreatePayload) => void,
     submitBtnRef?: Ref<HTMLButtonElement>,
     defaultValue?: BlueprintCreatePayload}): ReactElement {
+  const {t} = useTranslation('blueprint');
   const {control, setValue, handleSubmit, formState: {errors}} = useForm<BlueprintCreatePayload>({
     resolver: zodResolver(blueprintCreatePayloadSchema),
     defaultValues: defaultValue && {
@@ -34,7 +36,7 @@ export function BlueprintForm({onSubmit, submitBtnRef, defaultValue}: {
   return (
     <form className={blueprintFormCss}>
       <Text size="small"
-        weight="bold">Blueprint name</Text>
+        weight="bold">{t('form.name')}</Text>
       <Controller
         name="name"
         control={control}
@@ -42,13 +44,13 @@ export function BlueprintForm({onSubmit, submitBtnRef, defaultValue}: {
           {...field}
           required
           size={TextField.sizes.SMALL}
-          placeholder="Give this blueprint a meaningful name"
-          validation={{status: errors.name?.message ? 'error' : undefined, text: errors.name?.message}}
+          placeholder={t('form.name.placeholder')}
+          validation={{status: errors.name?.message ? 'error' : undefined, text: t(errors.name?.message || '')}}
           maxLength={NAME_MAX_LENGTH}/>
         }
       />
       <Text size="small"
-        weight="bold">Items</Text>
+        weight="bold">{t('form.items')}</Text>
       <Controller
         name="items"
         control={control}
@@ -62,7 +64,7 @@ export function BlueprintForm({onSubmit, submitBtnRef, defaultValue}: {
               onChangeItem={(id, update) => setValue('items', updateItem(id, update))}
               defaultValue={field.value}/>
             {errors.items?.message && <Text size="small"
-              className={'error-text'}>{errors.items?.message}</Text>}
+              className={'error-text'}>{t(errors.items?.message)}</Text>}
           </div>;
         }}
       />

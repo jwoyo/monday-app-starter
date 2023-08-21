@@ -8,12 +8,14 @@ import {Modal} from '@/misc/Modal.tsx';
 import {BlueprintTable} from '@/blueprints/BlueprintTable.tsx';
 import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
 import monday from 'monday-sdk-js';
+import {useTranslation} from 'react-i18next';
 
 /**
  * modal that is used to pick a blueprint for a checklist.
  * @return {JSX.Element}
  */
 export function PickBlueprintModal() {
+  const {t} = useTranslation('blueprint');
   const {data, isLoading, isError} = trpc.blueprint.getAllBlueprints.useQuery();
   const [params] = useSearchParams();
   const itemId = params.get('itemId');
@@ -28,25 +30,25 @@ export function PickBlueprintModal() {
   }
 
   if (isError) {
-    return <AttentionBox title="Could not fetch blueprints"
+    return <AttentionBox title={t('list.err')}
       type={AttentionBox.types.DANGER}
-      text="If you see this message we could not fetch your blueprints. Please try again later or contact app support."
+      text={t('list.err.text')}
     />;
   }
 
   if (!itemId) {
-    return <AttentionBox title="Could not find item context"
+    return <AttentionBox title={t('pick.err')}
       type={AttentionBox.types.DANGER}
-      text="If you see this message we could determine the correct item context. Please try again later or contact app support."
+      text={t('pick.err.text')}
     />;
   }
 
   return <Modal
-    headline="Use a blueprint">
+    headline={t('pick.title')}>
     <div className={listBlueprintsClassName}>
-      <AttentionBox title={'How to use blueprints?'}
+      <AttentionBox title={t('pick.help.title')}
         icon={Info}>
-        Click a blueprint from below to use its items for the current checklist. Beware that this will overwrite your current checklist.
+        {t('pick.help.text')}
       </AttentionBox>
       <BlueprintTable blueprints={data}
         onSelect={(blueprintId) => mutate({blueprintId, itemId: Number(itemId)})}

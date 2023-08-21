@@ -6,6 +6,7 @@ import {QueryClient, useQueryClient} from '@tanstack/react-query';
 import {getQueryKey} from '@trpc/react-query';
 import {useMondayContext} from '@/use-monday.ts';
 import {buildItemsProducers} from '@/producers.ts';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
     onOpenModal: (path: string) => void
@@ -17,6 +18,7 @@ type Props = {
  * @return {JSX.Element}
  */
 export function ChecklistOptionsButton({onOpenModal}: Props) {
+  const {t} = useTranslation('checklist');
   const [isOpen, setIsOpen] = useState(false);
   const {itemId} = useMondayContext();
   const queryClient: QueryClient = useQueryClient();
@@ -71,27 +73,27 @@ export function ChecklistOptionsButton({onOpenModal}: Props) {
   };
   return (
     <>
-      <MenuButton text="More options"
+      <MenuButton text={t('more.options')}
         size={MenuButton.sizes.XS}
         open={isOpen}
         onMenuShow={() => setIsOpen(true)}
         onMenuHide={() => setIsOpen(false)}
       >
         <Menu size={Menu.sizes.XXS}>
-          <MenuTitle caption="Blueprints"
+          <MenuTitle caption={t('blueprints', {ns: 'blueprint'})}
             captionPosition={MenuTitle.positions.TOP}/>
           <MenuItem icon={CheckList}
             onClick={() => openModal('/module/blueprints')}
             iconType={MenuItem.iconType.SVG}
-            title="Manage blueprints"/>
+            title={t('options.manage', {ns: 'blueprint'})}/>
           <MenuItem icon={Upload}
             onClick={() => openModal('/module/blueprints/use')}
             iconType={MenuItem.iconType.SVG}
-            title="Load checklist"/>
+            title={t('options.load')}/>
           <MenuItem icon={Download}
             onClick={() => openModal('/module/blueprints/create?fromItemId=true')}
             iconType={MenuItem.iconType.SVG}
-            title="Save this checklist"/>
+            title={t('options.save.as', {ns: 'blueprint'})}/>
         </Menu>
         <Menu size={Menu.sizes.XXS}>
           <MenuTitle caption="Other"
@@ -99,11 +101,11 @@ export function ChecklistOptionsButton({onOpenModal}: Props) {
           <MenuItem icon={MoveArrowLeftDouble}
             onClick={reset}
             iconType={MenuItem.iconType.SVG}
-            title="Reset this checklist"/>
+            title={t('options.reset.this')}/>
           <MenuItem icon={Delete}
             onClick={() => deleteChecklist.mutate({itemId})}
             iconType={MenuItem.iconType.SVG}
-            title="Delete this checklist"/>
+            title={t('options.delete.this')}/>
         </Menu>
       </MenuButton>
     </>

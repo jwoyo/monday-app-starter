@@ -8,6 +8,7 @@ import {
 } from '@/checklist/Checklist.css.ts';
 import {Checkbox, EditableHeading} from 'monday-ui-react-core';
 import {ChecklistItemToolbar} from './ChecklistItemToolbar.tsx';
+import {useTranslation} from 'react-i18next';
 
 /**
  * Singe checklist item component to be rendered as part of a checklist
@@ -18,6 +19,7 @@ import {ChecklistItemToolbar} from './ChecklistItemToolbar.tsx';
  * @returns {JSX.Element}
  */
 export function ChecklistItem({item, onChange, onDelete, isCheckable}: { item: ChecklistInFirestore['items'][number], onChange: (update: Partial<ChecklistInFirestore['items'][number]>) => void, onDelete: () => void, isCheckable?: boolean }) {
+  const {t} = useTranslation('checklist');
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(item.title);
   const ref = useRef<HTMLElement | null>(null);
@@ -29,7 +31,7 @@ export function ChecklistItem({item, onChange, onDelete, isCheckable}: { item: C
     setIsEditing(false);
   }, [update, setIsEditing, title, item.title]);
   const editableText = item.title;
-  const visibleText = item.title + (item.type === 'item' && item.isOptional ? ' (optional)' : '');
+  const visibleText = item.title + (item.type === 'item' && item.isOptional ? ` (${t('item.optional')})` : '');
   const LinkifiedElement = <Linkify as=""
     options={{defaultProtocol: 'https', target: '_blank'}}>
     {visibleText}

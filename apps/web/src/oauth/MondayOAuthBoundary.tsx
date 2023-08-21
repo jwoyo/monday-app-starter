@@ -4,13 +4,14 @@ import {useMutation} from '@tanstack/react-query';
 import {errorMessageStyles, signUpMessageChildStyles, signUpMessageStyles} from '../App.css.ts';
 import {AttentionBox, Button, Text} from 'monday-ui-react-core';
 import {Card} from 'antd';
-
+import {useTranslation} from 'react-i18next';
 
 /**
  * responsible for showing a sign-up message if we do not have an access token for the current user
  * @return {ReactElement}
  */
 export function MondayOAuthBoundary({children}: { children: ReactElement }) {
+  const {t} = useTranslation();
   const [hasBeenSuccessFullySignedUp, setHasBeenSuccessFullySignedUp] = useState(false);
   const isSignedUp = trpc.OAuth.isSignedUp.useQuery(undefined, {
     enabled: !hasBeenSuccessFullySignedUp,
@@ -39,9 +40,9 @@ export function MondayOAuthBoundary({children}: { children: ReactElement }) {
   }
   if (isSignedUp.isError) {
     return <div className={errorMessageStyles}>
-      <AttentionBox title="Connection error"
+      <AttentionBox title={t('oauth.err.connection.title')}
         type={AttentionBox.types.DANGER}
-        text="Could not connect to server. This should not happen. Please reload or contact app support."/>
+        text={t('oauth.err.connection.text')}/>
     </div>;
   }
   if (isSignedUp.data === false) {
@@ -49,11 +50,11 @@ export function MondayOAuthBoundary({children}: { children: ReactElement }) {
       <div className={signUpMessageStyles}>
         <div className={signUpMessageChildStyles}>
           <Text>
-            Welcome! checklists app is ready to use. Connect you account to get started.
+            {t('oauth.start.text')}
           </Text>
           <div>
             <Button color={Button.colors.BRAND}
-              onClick={() => signUp.mutate()}>Get started</Button>
+              onClick={() => signUp.mutate()}>{t('oauth.start.button.text')}</Button>
           </div>
         </div>
       </div>

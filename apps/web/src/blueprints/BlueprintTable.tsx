@@ -2,6 +2,7 @@ import React from 'react';
 import {Table} from 'antd';
 import {Link, Text} from 'monday-ui-react-core';
 import {BlueprintInFirestore, WithId} from 'functions/firestore.schemas.ts';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
     onSelect: (blueprintId: string) => void;
@@ -22,13 +23,14 @@ export function BlueprintTable({
   blueprints,
   scroll,
 }: Props) {
+  const {t} = useTranslation('blueprint');
   return (
     <Table
       scroll={scroll}
       columns={
         [
           {
-            title: <Text size='small'>Name</Text>,
+            title: <Text size='small'>{t('table.head.name')}</Text>,
             dataIndex: 'name',
             key: 'name',
             defaultSortOrder: 'descend',
@@ -40,7 +42,7 @@ export function BlueprintTable({
               }}/>,
           },
           {
-            title: <Text size='small'>Number of items</Text>,
+            title: <Text size='small'>{t('table.head.number')}</Text>,
             dataIndex: 'items',
             key: 'items',
             width: 200,
@@ -48,7 +50,7 @@ export function BlueprintTable({
             render: (items: number) => <Text size='small'>{items} items</Text>,
           },
           {
-            title: <Text size='small'>Created at</Text>,
+            title: <Text size='small'>{t('table.head.created.at')}</Text>,
             dataIndex: 'createdAt',
             key: 'createdAt',
             width: 200,

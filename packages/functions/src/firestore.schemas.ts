@@ -41,14 +41,14 @@ export const checklistInFirestoreSchema = z.object({
 });
 
 export const blueprintInFirestoreSchema = z.object({
-  name: z.string().min(2, 'You should give your blueprint a meaningful name two characters or more!').max(NAME_MAX_LENGTH),
+  name: z.string().min(2, 'zod.err.name.too.short').max(NAME_MAX_LENGTH),
   createdAt: z.date(),
   items: z.array(
       checklistItemInFirestoreItemSchema.or(
           checklistItemHeadlineInFirestoreItemSchema
       ),
-      {required_error: 'A blueprint must have items.'})
-      .min(1, 'A blueprint must have at least one item.'),
+      {required_error: 'zod.err.items.required'})
+      .min(1, 'zod.err.items.too.few'),
 });
 
 export type WithId<T> = T & { id: string };

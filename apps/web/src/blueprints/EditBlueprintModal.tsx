@@ -9,12 +9,14 @@ import {Modal} from '../misc/Modal.tsx';
 import {Edit} from 'monday-ui-react-core/icons';
 import {DeleteBlueprintButton} from './DeleteBlueprintButton.tsx';
 import {BlueprintForm} from '@/blueprints/BlueprintForm.tsx';
+import {useTranslation} from 'react-i18next';
 
 /**
  * modal to edit a blueprint, identified by the blueprintId in the URL
  * @return {JSX.Element}
  */
 export function EditBlueprintModal() {
+  const {t} = useTranslation('blueprint');
   const {blueprintId} = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -40,7 +42,7 @@ export function EditBlueprintModal() {
   };
   if (!blueprint) {
     return <AttentionBox>
-        Could not fetch blueprint. Please try again later.
+      {t('err.fetching')}
     </AttentionBox>;
   }
   return <Modal headline="Edit blueprint"
@@ -48,13 +50,13 @@ export function EditBlueprintModal() {
       <Button
         kind={Button.kinds.SECONDARY}
         size={Button.sizes.SMALL}
-        onClick={() => navigate('/module/blueprints')}>Back</Button>
+        onClick={() => navigate('/module/blueprints')}>{t('back')}</Button>
       <Button
         loading={isLoading}
         onClick={() => submitBtnRef.current?.click()}
         rightIcon={Edit}
         type={Button.types.SUBMIT}
-        size={Button.sizes.SMALL}>Update blueprint</Button></div>}
+        size={Button.sizes.SMALL}>{t('update')}</Button></div>}
     secondaryControls={<DeleteBlueprintButton blueprintId={blueprint.id}/>}
   >
     <BlueprintForm

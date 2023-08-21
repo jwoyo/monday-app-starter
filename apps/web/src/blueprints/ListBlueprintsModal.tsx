@@ -7,12 +7,14 @@ import {AddSmall} from 'monday-ui-react-core/icons';
 import {Modal} from '@/misc/Modal.tsx';
 import {BlueprintTable} from '@/blueprints/BlueprintTable.tsx';
 import {BlueprintListSkeleton} from '@/blueprints/BlueprintListSkeleton.tsx';
+import {useTranslation} from 'react-i18next';
 
 /**
  * modal to list all blueprints
  * @return {JSX.Element}
  */
 export function ListBlueprintsModal() {
+  const {t} = useTranslation('blueprint');
   const {data, isLoading, isError} = trpc.blueprint.getAllBlueprints.useQuery();
   const navigate = useNavigate();
   if (isLoading) {
@@ -20,9 +22,9 @@ export function ListBlueprintsModal() {
   }
 
   if (isError) {
-    return <AttentionBox title="Could not fetch blueprints"
+    return <AttentionBox title={t('list.err')}
       type={AttentionBox.types.DANGER}
-      text="If you see this message we could not fetch your blueprints. Please try again later or contact app support."
+      text={t('list.err.text')}
     />;
   }
 
@@ -30,7 +32,7 @@ export function ListBlueprintsModal() {
     headline="Your checklist blueprints"
     controls={<Button size={Button.sizes.SMALL}
       rightIcon={AddSmall}
-      onClick={() => navigate('/module/blueprints/create')}>Add a blueprint</Button>
+      onClick={() => navigate('/module/blueprints/create')}>{t('list.add')}</Button>
     }>
     <div className={listBlueprintsClassName}>
       <BlueprintTable blueprints={data}

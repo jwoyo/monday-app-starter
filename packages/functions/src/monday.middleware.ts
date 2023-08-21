@@ -5,7 +5,7 @@ import {MONDAY_APP_SECRET, MONDAY_APP_SIGNING_SECRET} from './variables';
 import {MondayIntegrationWebHookJsonWebTokenDecoded, MondayJsonWebTokenDecoded} from 'bridge/json-web-token.types';
 import {getGlobalOAuthTokenByAccountId} from './db';
 import {buildMondayGraphQLClientOnBehalfOfUser} from './graphql';
-import {SecretParam} from 'firebase-functions/lib/params/types';
+import {defineSecret} from 'firebase-functions/params';
 
 /**
  * Build middlewares that require Monday authentication. We pass in the middleware object to reduce circular dependencies.
@@ -91,7 +91,7 @@ function parseJwtFromAuthorizationHeader<T extends MondayJsonWebTokenDecoded | M
   secret,
 }: {
   authorization?: string,
-  secret: SecretParam
+  secret: ReturnType<typeof defineSecret>
 }) {
   if (!authorization) {
     throw new TRPCError({code: 'UNAUTHORIZED'});

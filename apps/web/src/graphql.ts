@@ -24,15 +24,6 @@ class MondayPostMessageApiClient extends GraphQLClient {
     super('');
   }
 
-  async request<T, V extends Variables = Variables>(
-        document: RequestDocument | TypedDocumentNode<T, V>,
-        ...variablesAndRequestHeaders: VariablesAndRequestHeadersArgs<V>
-    ): Promise<T>;
-
-  async request<T, V extends Variables = Variables>(
-        options: RequestOptions<V, T>
-    ): Promise<T>;
-
   /**
    * this method is called by the graphql-request library to make a request to the graphql api. we use the monday-sdk-js api to make the request.
    * @param documentOrOptions

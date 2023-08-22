@@ -14,7 +14,7 @@
         "firebase-debug.*.log"
       ],
       "predeploy": [
-        "pnpm --filter functions run build",
+        "turbo run build --scope functions",
         "pnpm --filter functions run pre-deploy"
       ],
       "postdeploy": [

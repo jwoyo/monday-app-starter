@@ -6,7 +6,6 @@ import {
   MondayClientSettings,
 } from 'bridge/monday-client-context.types.ts';
 import {useEffect} from 'react';
-import i18n from '@/i18n.ts';
 import {useTranslation} from 'react-i18next';
 
 /**
@@ -34,7 +33,7 @@ export function useMonday() {
       i18n.changeLanguage(context.user.currentLanguage);
       queryClient.setQueryData(['monday', 'context'], res);
     });
-  }, [queryClient]);
+  }, [i18n, queryClient]);
   return {
     contextQuery: context,
     settingsQuery: settings,

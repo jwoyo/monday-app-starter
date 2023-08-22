@@ -7,7 +7,7 @@
   "oauth.err.text": "We could not sign up your account to this monday.com app. Please try again or contact app support.",
   "oauth.err.title": "Oh no. Could not connect to monday.app",
   "oauth.start.button.text": "Get started",
-  "oauth.start.text": "Welcome! checklists app is ready to use. Connect you account to get started.\n",
+  "oauth.start.text": "Welcome! checklists app is ready to use.",
   "oauth.success.text": "We connected you with your brand new monday.com app. If this windows doesn't close itself, please close it yourself.",
   "oauth.success.title": "Success! You're doing great"
 }

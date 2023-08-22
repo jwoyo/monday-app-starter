@@ -12,6 +12,8 @@ It implements a simple checklist application that can be used as a starting poin
 - **User-friendly Forms:** Employs **[react-hook-form](https://github.com/react-hook-form/react-hook-form)** for form validation.
 - **Immutability Made Easy:** Simplify data transformations and DTO operations using **[immer](https://github.com/immerjs/immer)**.
 - **Stylish UI:** Combine Monday Vibe Components with **[antd](https://github.com/ant-design/ant-design)** for a polished UI.
+- **Dark Mode:** Supports all 4 monday themes.
+- **i18n:** Comes with a ready to use solution for internationalization that matches the monday users language using **[react-i18next](https://react.i18next.com/)**.
 - **CSS at build time**: State-of-the-art stylesheets that do not impact runtime performance with **[vanilla-extract](https://vanilla-extract.style/)**.
 - **GraphQL Power:** Leverage a generated GraphQL client to enable **typesafe access** to the Monday GraphQL gateway. In client and on the server! 🔒
 
@@ -62,6 +64,7 @@ apps/web
 
 ## Upcoming features 📈
 
+- Getting started guide
 - Handling of app uninstallation
 - Test Set-up
 - CI/CD Set-up

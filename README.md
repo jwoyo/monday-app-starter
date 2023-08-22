@@ -23,8 +23,27 @@ It implements a simple checklist application that can be used as a starting poin
 - **Webtrigger Events:** Effortlessly handle event authentication for webtrigger events, ensuring a seamless and secure user experience.
 
 ## Getting Started 🏁
+### Prerequisites
+1. Clone this repository
+1. Run `pnpm install` to install all dependencies
+1. Make sure you have the [Firebase CLI](https://firebase.google.com/docs/cli) installed. ```firebase --version``` should return a version number (last tested with 12.4.6).
+1. Make sure that you are logged in to your firebase account via ```firebase login ```.
+1. You should also have a Firebase project ready or create a new one. Which has Firestore, Firebase Hosting, Cloud Run, Cloud Build APIs enabled. See [here](https://firebase.google.com/docs/projects/learn-more) for more information.
+1. Also have a monday.com app ready. See [here](https://developer.monday.com/apps/docs/manage) for more information.
 
-(TODO)
+### Setup
+1. Copy the .env.monday-app-checklist-prod file and name it .env.local.
+1. Open .env.local and replace "monday-app-checklist-prod" with your GCP/Firebase project id (mind there are multiple occurrences).
+1. Set MONDAY_APP_CLIENT_ID respectively to the value of your app which can be found in you monday developer view.
+1. Open .firebaserc and replace "monday-app-checklist-prod" with your GCP/Firebase project id.
+1. Run ```firebase use <your-project-id>``` to select your project.
+1. Run ```firebase functions:secrets:set MONDAY_APP_SECRET``` and paste your monday app secret (can be found under "client secret" in you monday developer view).
+1. Run ```firebase functions:secrets:set MONDAY_APP_SIGNING_SECRET``` and paste your monday app signing secret  (can be found under "signing secret" in you monday developer view).
+1. Run ```firebase deploy``` to deploy the app to your firebase project, paste environment variables when asked.
+
+TODO: continue
+
+## 
 
 ## Known issues 🐛
 

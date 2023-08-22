@@ -1,13 +1,13 @@
 {
-  "context.err.text": "If you see this message you likely opened this application outside of monday.com",
-  "context.err.title": "No monday.com context found",
-  "oauth.err.connection.text": "Could not connect to server. This should not happen. Please reload or contact app support.",
-  "oauth.err.connection.title": "Connection error",
-  "oauth.err.retry.text": "Please try again or contact app support.",
-  "oauth.err.text": "We could not sign up your account to this monday.com app. Please try again or contact app support.",
-  "oauth.err.title": "Oh no. Could not connect to monday.app",
-  "oauth.start.button.text": "Get started",
-  "oauth.start.text": "Welcome! checklists app is ready to use.",
-  "oauth.success.text": "We connected you with your brand new monday.com app. If this windows doesn't close itself, please close it yourself.",
-  "oauth.success.title": "Success! You're doing great"
+  "context.err.text": "Wenn Sie diese Nachricht sehen, haben Sie die Anwendung wahrscheinlich außerhalb von monday.com geöffnet.",
+  "context.err.title": "Kein monday.com-Kontext gefunden",
+  "oauth.err.connection.text": "Die Verbindung zum Server konnte nicht hergestellt werden. Dies sollte nicht passieren. Bitte laden Sie die Seite neu oder kontaktieren Sie den App-Support.",
+  "oauth.err.connection.title": "Verbindungsfehler",
+  "oauth.err.retry.text": "Bitte versuchen Sie es erneut oder kontaktieren Sie den App-Support.",
+  "oauth.err.text": "Wir konnten Ihr Konto nicht für diese monday.com-App anmelden. Bitte versuchen Sie es erneut oder kontaktieren Sie den App-Support.",
+  "oauth.err.title": "Oh nein. Konnte keine Verbindung zu monday.app herstellen",
+  "oauth.start.button.text": "Los geht's",
+  "oauth.start.text": "Willkommen! Die Checklisten-App ist einsatzbereit.",
+  "oauth.success.text": "Wir haben Sie mit Ihrer brandneuen monday.com-App verbunden. Wenn sich dieses Fenster nicht von selbst schließt, schließen Sie es bitte manuell.",
+  "oauth.success.title": "Erfolg! Sie machen das großartig"
 }

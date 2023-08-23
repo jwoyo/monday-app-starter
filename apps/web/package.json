@@ -19,6 +19,7 @@
     "@trpc/client": "^10.37.1",
     "@trpc/react-query": "^10.37.1",
     "@vanilla-extract/css": "^1.12.0",
+    "@vitejs/plugin-basic-ssl": "^1.0.1",
     "@vitejs/plugin-react": "^4.0.3",
     "antd": "^5.8.0",
     "bridge": "workspace:*",

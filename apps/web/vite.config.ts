@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import {dirname, resolve} from 'path';
 import {fileURLToPath} from 'url';
 import * as process from 'process';
-
+import basicSsl from '@vitejs/plugin-basic-ssl';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const webRootPath = resolve(__dirname);
@@ -22,13 +22,17 @@ if (environment.error) {
 const isLocalDevServer = process.env.LOCAL_DEV_SERVER === 'true';
 
 export default defineConfig({
-  plugins: [react(), vanillaExtractPlugin()],
+  plugins: [react(), vanillaExtractPlugin(), basicSsl()],
   resolve: {
     alias: {
       'bridge': 'bridge/src',
       'functions': 'functions/src',
       '@': resolve(__dirname, 'src'),
     },
+  },
+  server: {
+    https: true,
+    port: 5173,
   },
   define: {
     'import.meta.env.__FUNCTION_URL_CHECKLIST__': JSON.stringify(
@@ -37,6 +41,6 @@ export default defineConfig({
                 environment.parsed.FUNCTION_URL_CHECKLIST
     ),
     'import.meta.env.__MONDAY_APP_CLIENT_ID__': JSON.stringify(environment.parsed.MONDAY_APP_CLIENT_ID),
-    'import.meta.env.__MONDAY_APP_HOSTING_URL__': JSON.stringify(isLocalDevServer ? 'http://localhost:5173' : environment.parsed.MONDAY_APP_HOSTING_URL),
+    'import.meta.env.__MONDAY_APP_HOSTING_URL__': JSON.stringify(isLocalDevServer ? 'https://localhost:5173' : environment.parsed.MONDAY_APP_HOSTING_URL),
   },
 });

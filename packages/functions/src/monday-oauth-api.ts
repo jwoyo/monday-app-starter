@@ -8,7 +8,7 @@ import {decode} from 'jsonwebtoken';
  * @param {string} code the OAuth code that monday.com provided to us in the redirect URL
  */
 export async function exchangeOAuthCodeForAccessToken(code: string): Promise<OAuthTokenInFirestore> {
-  const redirectUri = (process.env['FUNCTIONS_EMULATOR'] === 'true' ? 'http://localhost:5173' : MONDAY_APP_HOSTING_URL.value()) + '/oauth/callback';
+  const redirectUri = (process.env['FUNCTIONS_EMULATOR'] === 'true' ? 'https://localhost:5173' : MONDAY_APP_HOSTING_URL.value()) + '/oauth/callback';
   const params = {
     code,
     client_id: MONDAY_APP_CLIENT_ID.value(),

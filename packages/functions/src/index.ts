@@ -20,6 +20,7 @@ const app = express()
     .use(
         cors({
           origin: true, // allow all origins for now
+          credentials: true,
         })
     )
     .use(

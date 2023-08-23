@@ -4,6 +4,7 @@ import {trpc} from '../trpc.ts';
 import {useQueryClient} from '@tanstack/react-query';
 import {getQueryKey} from '@trpc/react-query';
 import {useNavigate} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 type Props = {blueprintId: string};
 
@@ -13,6 +14,7 @@ type Props = {blueprintId: string};
  * @returns {JSX.Element}
  */
 export function DeleteBlueprintButton({blueprintId}: Props) {
+  const {t} = useTranslation('blueprint');
   const queryClient = useQueryClient();
   const blueprintQueryKey = getQueryKey(trpc.blueprint);
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ export function DeleteBlueprintButton({blueprintId}: Props) {
       kind={Button.kinds.PRIMARY}
       color={Button.colors.NEGATIVE}
       size={Button.sizes.SMALL}
-    > Delete blueprint (click again to confirm)</Button>;
+    >{t('form.delete.confirm')}</Button>;
   }
 
   return (
@@ -43,7 +45,7 @@ export function DeleteBlueprintButton({blueprintId}: Props) {
       kind={Button.kinds.SECONDARY}
       size={Button.sizes.SMALL}
     >
-            Delete blueprint</Button>
+      {t('form.delete')}</Button>
   );
 }
 

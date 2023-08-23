@@ -10,7 +10,7 @@ import {
 import {getFirestore} from 'firebase-admin/firestore';
 import DocumentReference = firestore.DocumentReference;
 import CollectionReference = firestore.CollectionReference;
-import {BLUEPRINT_MAX, NAME_MAX_LENGTH} from 'bridge/constants';
+import {BLUEPRINT_MAX} from 'bridge/constants';
 import {v4 as uuidv4} from 'uuid';
 
 import Timestamp = firestore.Timestamp;
@@ -121,8 +121,8 @@ export async function createBlueprint({accountId, blueprint}: {
 }): Promise<WithId<BlueprintInFirestore>> {
   const blueprintCollection = getBlueprintCollection({accountId});
   const {count} = (await blueprintCollection.count().get()).data();
-  if (count >= NAME_MAX_LENGTH) {
-    throw new Error(`You have reached the maximum number of blueprints (${NAME_MAX_LENGTH}).`);
+  if (count >= BLUEPRINT_MAX) {
+    throw new Error(`You have reached the maximum number of blueprints (${BLUEPRINT_MAX}).`);
   }
   const doc = await blueprintCollection.doc();
   const newBlueprint = {...blueprint, createdAt: new Date()};

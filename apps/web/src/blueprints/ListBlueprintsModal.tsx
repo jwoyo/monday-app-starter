@@ -15,7 +15,7 @@ import {useTranslation} from 'react-i18next';
  */
 export function ListBlueprintsModal() {
   const {t} = useTranslation('blueprint');
-  const {data, isLoading, isError} = trpc.blueprint.getAllBlueprints.useQuery();
+  const {data, isLoading, isError, error} = trpc.blueprint.getAllBlueprints.useQuery();
   const navigate = useNavigate();
   if (isLoading) {
     return <BlueprintListSkeleton/>;
@@ -24,7 +24,7 @@ export function ListBlueprintsModal() {
   if (isError) {
     return <AttentionBox title={t('list.err')}
       type={AttentionBox.types.DANGER}
-      text={t('list.err.text')}
+      text={t('list.err.text') + ' (' + error.message + ')'}
     />;
   }
 

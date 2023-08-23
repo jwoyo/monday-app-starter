@@ -86,7 +86,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({defaultOptions: {queries: {retry: false}}});
 
 /**
  * initializes react-query, suspense needed for i18next

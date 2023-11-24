@@ -12,7 +12,7 @@ const webRootPath = resolve(__dirname);
 const rootPath = resolve(webRootPath, '..', '..');
 
 const environment = dotenv.config({
-  path: resolve(rootPath, '.env.local'),
+  path: resolve(rootPath, '.env'),
 });
 
 if (environment.error) {

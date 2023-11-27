@@ -84,8 +84,15 @@ Running command: pnpm --filter functions run post-deploy
 
 ### Setup monday.com app
 Now the ugly part begins. You can neither clone nor import the app configuration from this repository as monday does not support that. 
-Hence, we will configure the app in the monday Developer Center UI. As long there is no dedicated IaaS solution by monday we document that configuration in the monday.yml file you find in this repository.
+Hence, we will configure the app in the monday Developer Center UI. As long there is no dedicated IaaS solution by monday we document that configuration in the monday.config.yml file you find in this repository. Install the app on your account afterward.
 
+### Develop locally
+- This set-up allows you to develop locally with the Firestore emulator by running ```npm run dev```. This will emulate Firestore and the Cloud Functions locally. Also, it ships the web client from your computer.
+- To make the iFrames of your app actually display the content from your local machine your can redirect traffic by using:
+```npx localhost-mapper http://localhost:5173 https://monday-app-checklist-[your-projects-suffic-here].web.app ```
+- Your browser will probably complain about the https certificate and won't show the iFrames's content. You can start a Chrome instance with disabled security checks by running:
+```/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --ignore-certificate-errors --ignore-urlfetcher-cert-requests &> /dev/null```
+- Remember that this tricks only your local machine to connect to localhost. Features likes monday workflows involve direct calls from the monday backend to your app. To make such functionality work in the local dev setup you will need to change the URLs referenced in the modules in the monday Developer Center. This is something that obviously can not be done with the production environment as it would affect real users. 
 ## Known issues 🐛
 
 - We are using React 18. But mondays vibe components and its peer dependencies complain about this version. So we have

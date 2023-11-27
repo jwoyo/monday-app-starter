@@ -1,0 +1,62 @@
+# this is for documentation purposes only, it can not get deployed.
+# remember to keep up-to-date
+oauth_scopes:
+  scopes:
+  - me:read
+  - boards:read
+  - boards:write
+  - workspaces:read
+  - workspaces:write
+  - users:read
+  - users:write
+  - account:read
+  - notifications:write
+  - updates:write
+  redirect_urls:
+    - https://localhost:5173/oauth/callback
+    # use your project's url here
+    - https://monday-app-checklist-???.web.app//oauth/callback
+features:
+  - type: Item View
+    description: Add checklists to your items.
+    # use your project's url here
+    build_custom_url: https://monday-app-checklist-???.web.app/module/item-view
+    view_settings:
+      - type: Column
+        title: Progress column
+        subtitle: Column that displays the progress of a checklist in percent.
+        name: progress_column
+        column_types:
+          - Numbers
+        features:
+          - allow to clear selection
+  - type: Workflow
+    name: Checklists workflow
+    # use your project's url here
+    base_url: https://checklist-???-uc.a.run.app/trpc-open-api/
+    field_types:
+      - name: Checklist blueprint
+        default_field_key: blueprintId
+        automation_config:
+          type: list
+          remote_options_url: /workflow/blueprints-field-definitions
+    workflow_blocks_actions:
+      - name: Start checklist
+        fields:
+          - type: Checklist blueprint
+            field_key: blueprintId
+            source: Recipe Sentence
+            display_name: Blueprint
+          - type: Item
+            field_key: itemId
+            source: Trigger Output
+        sentence: start checklist from [[Blueprint]]
+        api_configuration_run_url: /workflow/checklist-start-trigger
+    recipes:
+      - name: When an item is created start checklist from Blueprint
+        items:
+          - type: Trigger
+            name: item created
+            # connected to:
+          - type: Action
+            name: Start checklist (itemId -> itemId)

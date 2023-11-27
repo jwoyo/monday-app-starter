@@ -14,12 +14,12 @@ oauth_scopes:
   - updates:write
   redirect_urls:
     - https://localhost:5173/oauth/callback
-    # use your project's url here
+    # use your project's url here and add /oauth/callback
     - https://monday-app-checklist-???.web.app//oauth/callback
 features:
   - type: Item View
     description: Add checklists to your items.
-    # use your project's url here
+    # use your project's url here and add /module/item-view
     build_custom_url: https://monday-app-checklist-???.web.app/module/item-view
     view_settings:
       - type: Column
@@ -32,7 +32,7 @@ features:
           - allow to clear selection
   - type: Workflow
     name: Checklists workflow
-    # use your project's url here
+    # use your project's url here and add /trpc-open-api/
     base_url: https://checklist-???-uc.a.run.app/trpc-open-api/
     field_types:
       - name: Checklist blueprint
